@@ -11,11 +11,11 @@ export type User = {
     
     appId?:string;
     isAdmin?:Boolean; 
-    scopes?: Array<string>;
+    scopes?: any;
 }
 
 export type UserContextType = {
     user: User | null; setUser: Dispatch<SetStateAction<User|null>>;
     userToken: any | null; setUserToken: Dispatch<SetStateAction<any|null>>;
-    loading: Boolean | null;
+    loading: Boolean | null; loading_permissions: Boolean | null;
 }

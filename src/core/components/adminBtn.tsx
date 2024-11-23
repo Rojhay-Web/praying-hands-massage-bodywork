@@ -2,8 +2,8 @@ import { useContext } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
 
-import userContext from "../context/user.context";
-import { UserContextType } from "../datatypes";
+import userContext from "../../context/user.context";
+import { UserContextType } from "../../datatypes";
 
 
 function AdminBtn(){

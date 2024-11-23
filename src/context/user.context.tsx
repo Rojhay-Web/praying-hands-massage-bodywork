@@ -23,11 +23,7 @@ query getUserPermissions($appId: String!){
     }
 }`;
 
-const UserContext = createContext<UserContextType>({ 
-    user: null, setUser: function(){},
-    userToken: null, setUserToken: function(){},
-    loading: false
-});
+const UserContext = createContext<UserContextType | null>(null);
 
 function Provider({ children }: { children: any }) {
     const [user, setUser] = useState<User|null>(null);
@@ -45,8 +41,8 @@ function Provider({ children }: { children: any }) {
     },[userToken, retrieveUserData]);
 
     useEffect(()=> {
-        if(user && refreshPermissions.current){
-            retrieveUserPermissions({ variables: { id: user.appId }});
+        if(user?.appId && refreshPermissions.current){
+            retrieveUserPermissions({ variables: { appId: user.appId }});
         }
     },[user, refreshPermissions.current]);
 
@@ -80,7 +76,9 @@ function Provider({ children }: { children: any }) {
         }
     },[]);
 
-    return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading }}>{children}</UserContext.Provider>;
+    //console.log(JSON.stringify(error, null, 2));
+
+    return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading, loading_permissions }}>{children}</UserContext.Provider>;
 }
 
 export default { UserContext, Provider };

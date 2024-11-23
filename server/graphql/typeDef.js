@@ -6,6 +6,7 @@ module.exports = gql`
     type Query { 
         user(id: String!):User
         userPermissions(appId: String!):User
+        getSheetData(sheetName: String!):JSONObj
     }
 
     type Mutation {

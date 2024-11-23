@@ -21,6 +21,24 @@
   -webkit-font-smoothing: antialiased;
 }
 /************** FONTS *******************/
+/* latin-ext */
+@font-face {
+  font-family: 'Parkinsans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/parkinsans/v1/-W_7XJXvQyPb1QfpBpRrfkoLfq0k.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Parkinsans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/parkinsans/v1/-W_7XJXvQyPb1QfpBpRrfkQLfg.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 body,
 html {
   margin: 0px !important;
@@ -48,7 +66,26 @@ html {
 .navbar .nav-section + .nav-section {
   margin-left: 8px;
 }
+/* No Match & Loading */
+.no-match-page {
+  position: relative;
+}
+.no-match-page .loading-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.no-match-page .loading-container .no-page-txt {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
 /* Additional Page styles */
+/* Colors */
+/* Fonts */
+/* Admin Button */
 .admin-btn-container {
   border-radius: 50%;
   color: #000000;
@@ -75,4 +112,239 @@ html {
 }
 .admin-btn-container.non-user:hover {
   opacity: 1;
+}
+/* Components Styles */
+.admin-input-container {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  padding: 4px 8px;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.admin-input-container .material-symbols-outlined {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+.admin-input-container input {
+  flex: 1;
+  margin-left: 4px;
+  font-size: 1rem;
+  border: none;
+  background-color: rgba(255, 255, 255, 0);
+  font-family: 'Parkinsans', serif;
+  width: calc(100% -(1.2rem + 4px));
+}
+.admin-input-container input:placeholder {
+  font-size: 0.8rem;
+}
+@media (max-width: 770px) {
+  .admin-input-container {
+    background: #aaaaaa;
+  }
+}
+/* Admin Ctrl Section*/
+.ctrl-panel {
+  font-family: 'Parkinsans', serif;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px 8px 8px 0;
+}
+.ctrl-panel .side-title {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #000;
+}
+.ctrl-panel .side-title .title-txt {
+  margin: auto 0 auto 8px;
+  font-size: 1.2rem;
+}
+@media (max-width: 770px) {
+  .ctrl-panel .side-title {
+    justify-content: center;
+  }
+}
+.ctrl-panel .side-search {
+  margin: 8px 0 16px;
+}
+.ctrl-panel .component-list-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+.ctrl-panel .component-list-container .component-item {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+  cursor: pointer;
+  border-radius: 16px;
+}
+.ctrl-panel .component-list-container .component-item span {
+  font-size: 0.9rem;
+}
+.ctrl-panel .component-list-container .component-item span.material-symbols-outlined {
+  margin: auto 8px auto 0;
+}
+.ctrl-panel .component-list-container .component-item.sel {
+  background-color: #fff;
+  cursor: default;
+  -moz-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+.ctrl-panel .component-list-container .component-item:hover:not(.sel) {
+  background-color: #00295f;
+  color: #fff;
+  -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+.ctrl-panel .component-list-container .component-item + .component-item {
+  margin-top: 8px;
+}
+.ctrl-panel .side-user-container {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.ctrl-panel .side-user-container .user-info {
+  display: flex;
+  flex-direction: row;
+}
+.ctrl-panel .side-user-container .user-info .user-img {
+  border-radius: 50%;
+  color: #000000;
+  background-color: #fff;
+  height: 30px;
+  width: 30px;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+  transition: 0.5s all ease;
+}
+.ctrl-panel .side-user-container .user-info .user-img span {
+  font-size: 25px;
+}
+.ctrl-panel .side-user-container .user-info .user-email {
+  margin: auto 0 auto 8px;
+  font-size: 0.8rem;
+}
+.ctrl-panel .side-user-container .sign-out-link {
+  text-align: center;
+  margin-top: 8px;
+  padding: 8px 0;
+  border-top: 2px solid #000;
+  color: #00295f;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.ctrl-panel .side-user-container .sign-out-link:hover {
+  color: #fff;
+}
+@media (max-width: 770px) {
+  .ctrl-panel {
+    flex: 1;
+    padding: 8px;
+  }
+}
+/* Admin Home Page */
+.admin-home-page {
+  background-color: #aaaaaa;
+  padding: 8px;
+  display: flex;
+  flex-direction: row;
+  height: calc(100vh - 16px);
+  font-family: 'Parkinsans', serif;
+  font-size: 16px;
+  /* Components Styles */
+}
+.admin-home-page .side-panel {
+  width: calc(250px - 16px);
+  height: calc(100% - 16px);
+}
+@media (max-width: 770px) {
+  .admin-home-page .side-panel {
+    display: none;
+  }
+}
+.admin-home-page .mobile-nav-container {
+  display: none;
+}
+@media (max-width: 770px) {
+  .admin-home-page .mobile-nav-container {
+    display: block;
+  }
+}
+.admin-home-page .base-section {
+  flex: 1;
+  height: calc(100% - 16px);
+  border-radius: 8px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  -moz-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+}
+.admin-home-page .base-section h1 {
+  color: #00295f;
+  font-size: 1.3rem;
+  display: flex;
+  flex-direction: row;
+  margin: 0;
+}
+.admin-home-page .base-section h1 .material-symbols-outlined {
+  font-size: 1.7rem;
+  margin: auto 0;
+}
+.admin-home-page .base-section .base-header {
+  display: flex;
+  flex-direction: row;
+}
+.admin-home-page .base-section .base-header .bookend {
+  margin-left: auto;
+}
+.admin-home-page .base-section .base-header .header-btn {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background: #aaaaaa;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-home-page .base-section .base-header .header-btn span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.admin-home-page .base-section .base-header .header-btn span + span {
+  margin-left: 4px;
+}
+.admin-home-page .base-section .base-header .header-btn:hover {
+  color: #fff;
+  background-color: #00295f;
+}
+.admin-home-page .mobile-btn {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  margin-right: 8px;
+}
+@media (max-width: 770px) {
+  .admin-home-page .mobile-btn {
+    display: flex;
+  }
 }

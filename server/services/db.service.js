@@ -3,8 +3,16 @@ require('dotenv').config();
 const { google } = require('googleapis');
 const { v4: uuidv4 } = require('uuid');
 
-
 const log = require('./log.service');
+
+const sheets = {
+    "users": { name:"users", fields:[
+        { title: "appId", type:"id", required: false, default: null },
+        { title: "email", type:"string", required: true, default: null },
+        { title: "isAdmin", type:"boolean", required: false, default: false },
+        { title: "scopes", type:"json", required: false, default: {} }
+    ]}
+};
 
 module.exports = {
     getFullUser: async function(token){
@@ -56,7 +64,7 @@ module.exports = {
 
             let userRow = sheetData.results.map((u) => u.appId).indexOf(appId);
             if(userRow < 0){
-                return { error: 'User DNE', results: false };
+                return { error: 'User DNE', results: null };
             }
 
             let formatted_data = formatUserData({ ...sheetData.results[userRow] });
@@ -170,6 +178,88 @@ module.exports = {
             log.error(`Removing User: ${ex}`);
             return { "error": `Removing User`};
         }
+    },
+
+    // Data By Sheet
+    getDataBySheet: async function(sheet){
+        try {
+            if(!sheet || !(sheet in sheets)){
+                return { error: 'Invalid Sheet Name' };
+            }
+
+            const sheetData = await getSheetData(sheet);
+            if(sheetData?.error){
+                return { error: `Unable to get ${sheet} data [E01]` };
+            }
+
+            let formatted_data = processSheetData(sheets[sheet], sheetData.results);
+            return { results: formatted_data };
+        }
+        catch(ex){
+            log.error(`Getting Data By Sheet: ${ex}`);
+            return { 'error': 'Getting Data By Sheet [E00]'};
+        }
+    },
+    addDataBySheet: async function(sheet, sheetData){
+        try {
+            if(!sheet || !(sheet in sheets)){
+                return { error: 'Invalid Sheet Name' };
+            }
+
+            // Build Row
+            const formatted_data = formatSheetRowData(sheets[sheet], [sheetData], true);
+            if(formatted_data?.error?.length > 0){
+                return { error: formatted_data.error.join(', ') };
+            }
+
+            const googleAuth = getGoogleAuth();
+            const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
+            const updateSheet = await sheetInstance.spreadsheets.values.append({
+                auth: googleAuth,
+                spreadsheetId: process.env.GOOGLE_SHEET_ID,
+                range: 'users',
+                valueInputOption: 'RAW',
+                resource:{ values: formatted_data.data }
+            });
+
+            return { results: updateSheet?.data?.updates && updateSheet?.data?.updates.updatedRows > 0 };
+        }
+        catch(ex){
+            log.error(`Adding Data By Sheet: ${ex}`);
+            return { 'error': 'Adding Data By Sheet [E00]'};
+        }
+    },
+    updatingDataBySheet: async function(sheet, appId, sheetData){
+        try {
+            if(!sheet || !(sheet in sheets)){
+                return { error: 'Invalid Sheet Name' };
+            }
+
+            const sheetData = await getSheetData(sheet);
+            if(sheetData?.error){
+                return { error: `Unable to get ${sheet} data [E03]` };
+            }
+        }
+        catch(ex){
+            log.error(`Updating Data By Sheet: ${ex}`);
+            return { 'error': 'Updating Data By Sheet [E00]'};
+        }
+    },
+    deletingDataBySheet: async function(sheet, appId){
+        try {
+            if(!sheet || !(sheet in sheets)){
+                return { error: 'Invalid Sheet Name' };
+            }
+
+            const sheetData = await getSheetData(sheet);
+            if(sheetData?.error){
+                return { error: `Unable to get ${sheet} data [E04]` };
+            }
+        }
+        catch(ex){
+            log.error(`Deleting Data By Sheet: ${ex}`);
+            return { 'error': 'Deleting Data By Sheet [E00]'};
+        }
     }
 };
 
@@ -254,4 +344,99 @@ function formatUserData(usrData){
     }
 
     return ret;
+}
+
+function processSheetData(sheetInfo, data){
+    let ret = [];
+    try {
+        for(let i=0; i < data.length; i++){
+            let row = {};
+            for(let j=0; j < sheetInfo.fields.length; j++){
+                const field = sheetInfo.fields[j];
+                if(field in data[i] && data[i][field] != null){
+                    switch(field.type){
+                        case "id":
+                        case "string":
+                            row[field] = data[i][field];
+                            break;
+                        case "boolean":
+                            row[field] = data[i][field].toLowerCase() === 'true';
+                            break;
+                        case "json":
+                            try {
+                                row[field] = (data[i][field]?.length > 0 ? JSON.parse(data[i][field]) : {});
+                            }
+                            catch(ex){
+                                row[field] = {};
+                            } 
+                            break;
+                        default:
+                            row[field] = undefined;
+                            break;
+                    }
+                }
+                else {
+                    row[field] = field.default;
+                }
+            }
+            ret.push(row);
+        }
+    }
+    catch(ex){
+        log.error(`Formatting Sheet Data: ${ex}`);
+    }
+
+    return ret;
+}
+
+function formatSheetRowData(sheetInfo, data, isNew = false){
+    let ret = [], errors = [];
+    try {
+        for(let i=0; i < data.length; i++){
+            let row = [];
+            for(let j=0; j < sheetInfo.fields.length; j++){
+                const field = sheetInfo.fields[j];
+                if(field.required === true && (!(field in data[i]) || data[i][field] != null)){
+                    errors.push(`Required field ${field.title} is missing`);
+                    row.push(null);
+                }
+                else if(field in data[i] && data[i][field] != null){
+                    switch(field.type){
+                        case "id":
+                            if(isNew){
+                                row.push(uuidv4());
+                            }
+                            else {
+                                row.push(data[i][field]);
+                            }
+                            break;
+                        case "string":
+                        case "boolean":
+                            row.push(data[i][field]);
+                            break;
+                        case "json":
+                            try {
+                                row.push((data[i][field]?.length > 0 ? JSON.stringify(data[i][field]) : '{}'));
+                            }
+                            catch(ex){
+                                row.push('{}');
+                            } 
+                            break;
+                        default:
+                            row.push(null);
+                            break;
+                    }
+                }
+                else {
+                    row.push(field.default);
+                }
+            }
+            ret.push(row);
+        }
+    }
+    catch(ex){
+        log.error(`Formatting Sheet Data: ${ex}`);
+    }
+
+    return { data: ret, error: errors };
 }

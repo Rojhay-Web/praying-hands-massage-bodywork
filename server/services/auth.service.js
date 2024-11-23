@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config();
 
-const jwt = require("jsonwebtoken"),
+const db = require('./db.service'),
     log = require('./log.service');
 
 module.exports = {
@@ -13,21 +13,17 @@ module.exports = {
                 return { error: "Invalid Token" };
             }
 
-            let decoded = jwt.verify(token, process.env.TOKEN_SECRET);
-            if (!decoded) {
-                log.error(`Verifing Token [E01]: ${err}`);
-                return { error: "Unauthorized", results: false };
+            let usrPermissions = await db.getUserPermissions(token);
+            if(usrPermissions?.error){
+                return { error: 'No User Permissions'};
             }
-
-            // Reading From DB
-            let results = [{}];
             
-            if(results.length <= 0){
-                log.warning(`Validating UserId: User DNE(${decoded.id})`);
+            if(!usrPermissions.results){
+                log.warning(`Validating UserId: User(${decoded.id})`);
                 return { error: `User DNE`, results: false};
             }
 
-            return { results: true, app_id: decoded.appId };
+            return { results: true, app_id: usrPermissions.results };
         }
         catch(ex){
             log.error(`Validating UserId: ${ex}`);
