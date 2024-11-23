@@ -1,0 +1,32 @@
+@mobile-device: ~"(max-width: 770px)";
+@mid-sized-device: ~"(max-width: 1000px)";
+@mobile-nav: ~"(max-width: 992px)";
+
+@import "_fonts.less";
+
+
+body, html { 
+    margin: 0px !important;
+    color: rgba(0,0,0,1);
+    height: 100%; 
+    // font-size: @font-size; 
+    // font-family: serif; 
+}
+
+*:focus { outline: none;}
+
+.app-body { min-height: 100vh; }
+
+/* Main Nav Menu */
+.navbar {
+    z-index: 100; width: calc(100% - 16px); display: flex; flex-direction: row;
+    position: relative; padding: 4px 8px;
+
+    .nav-section {
+        &.end { margin-left: auto; }
+        &+.nav-section { margin-left: 8px; }
+    }
+}
+
+/* Additional Page styles */
+@import "admin.less";
