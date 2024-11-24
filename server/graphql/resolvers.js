@@ -9,6 +9,14 @@ const db = require('../services/db.service.js'),
 module.exports = function (cacheStore) {
     const resolver = {
         Query:{
+            users: async(_obj, args, context, _info) => {
+                // Validate Active User
+                // util.activeUserCheck(context);
+                let ret = await db.getAppTable("users");
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
             user: async(_obj, args, context, _info) => {
                 util.validateGQLParams(["id"], args);
 
@@ -21,6 +29,23 @@ module.exports = function (cacheStore) {
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.getUserPermissions(args._id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            sitePages: async(_obj, args, context, _info) => {
+                // Validate Active User
+                // util.activeUserCheck(context);
+                let ret = await db.getAppTable("site_pages");
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            sitePage: async(_obj, args, context, _info) => {
+                util.validateGQLParams(["key"], args);
+
+                let ret = await db.getPageData(args.key);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
@@ -52,7 +77,38 @@ module.exports = function (cacheStore) {
                 // util.activeUserCheck(context);
                 util.validateGQLParams(["_id"], args);
 
-                let ret = await db.removeUser(args._id);
+                let ret = await db.removeAppTableData("users",args._id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            upsertSitePage: async(_obj, args, context, _info) => {
+                // Validate Active User
+                // util.activeUserCheck(context);
+                util.validateGQLParams(["title"], args);
+
+                let ret = await db.upsertPageData(args.title, args?.pageKeys, args?._id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            removeSitePage: async(_obj, args, context, _info) => {
+                // Validate Active User
+                // util.activeUserCheck(context);
+                util.validateGQLParams(["_id"], args);
+
+                let ret = await db.removeAppTableData("site_pages",args._id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            updatePageKey: async(_obj, args, context, _info) => {
+                // Validate Active User
+                // util.activeUserCheck(context);
+                util.validateGQLParams(["_id","key_id"], args);
+
+                let ret = await db.updatePageKey(args._id, args.key_id, args?.title, args?.type, args?.meta, args?.value);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

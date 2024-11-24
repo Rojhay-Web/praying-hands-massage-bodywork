@@ -4,14 +4,38 @@ module.exports = gql`
     scalar Date
     scalar JSONObj
     type Query { 
+        users:[User]
         user(id: String!):User
         userPermissions(_id: String!):User
+        
+        sitePages:[SitePage]
+        sitePage(key: String!):SitePage
     }
 
     type Mutation {
         addUserPermissions(email: String!, isAdmin: Boolean, scopes: JSONObj): String
         updateUserPermissions(_id: String!, email: String, isAdmin: Boolean, scopes: JSONObj): String
         removeUserPermissions(_id: String!): Boolean
+
+        upsertSitePage(title: String!, pageKeys:[PageKeyInput], _id:String):String
+        removeSitePage(_id: String!):String
+        updatePageKey(_id: String!, key_id: String!, title: String, type: String, meta:JSONObj, value:JSONObj): String
+    }
+
+    input PageKeyInput {
+        _id: String
+        title: String
+        type: String
+        metaData: JSONObj
+        value: JSONObj
+    }
+
+    type PageKey {
+        _id: String
+        title: String
+        type: String
+        metaData: JSONObj
+        value: JSONObj
     }
 
     type User {
@@ -26,5 +50,14 @@ module.exports = gql`
         _id: String
         isAdmin: Boolean
         scopes: JSONObj
+    }
+
+    
+
+    type SitePage {
+        _id: String!
+        title: String
+        key: String
+        pageKeys: [PageKey]
     }
 `;

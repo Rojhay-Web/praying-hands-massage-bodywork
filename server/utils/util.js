@@ -64,7 +64,7 @@ module.exports = {
             if(!ret?.errorCode || ret?.errorCode >= 0){
                 log.error(ret.error);
             }            
-            throw new GraphQLError(ret.error, { extensions: { code: 'KNOD_SERVICE_ERROR' } }); 
+            throw new GraphQLError(ret.error, { extensions: { code: 'SERVICE_ERROR' } }); 
         }
     },
     jsonStrFormatter(str, isString){
