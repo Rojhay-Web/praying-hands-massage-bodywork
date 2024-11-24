@@ -5,14 +5,13 @@ module.exports = gql`
     scalar JSONObj
     type Query { 
         user(id: String!):User
-        userPermissions(appId: String!):User
-        getSheetData(sheetName: String!):JSONObj
+        userPermissions(_id: String!):User
     }
 
     type Mutation {
-        addUserPermissions(email: String!, isAdmin: Boolean, scopes: JSONObj): Boolean
-        updateUserPermissions(appId: String!, isAdmin: Boolean, scopes: JSONObj): Boolean
-        removeUserPermissions(appId: String!): Boolean
+        addUserPermissions(email: String!, isAdmin: Boolean, scopes: JSONObj): String
+        updateUserPermissions(_id: String!, email: String, isAdmin: Boolean, scopes: JSONObj): String
+        removeUserPermissions(_id: String!): Boolean
     }
 
     type User {
@@ -24,7 +23,7 @@ module.exports = gql`
         picture: String
         verified_email: Boolean
 
-        appId: String
+        _id: String
         isAdmin: Boolean
         scopes: JSONObj
     }

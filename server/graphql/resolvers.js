@@ -18,9 +18,9 @@ module.exports = function (cacheStore) {
                 return ret?.results;
             },
             userPermissions: async(_obj, args, context, _info) => {
-                util.validateGQLParams(["appId"], args);
+                util.validateGQLParams(["_id"], args);
 
-                let ret = await db.getUserPermissions(args.appId);
+                let ret = await db.getUserPermissions(args._id);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
@@ -32,7 +32,7 @@ module.exports = function (cacheStore) {
                 // util.activeUserCheck(context);
                 util.validateGQLParams(["email"], args);
 
-                let ret = await db.addUser(args.email, args?.isAdmin, args?.scopes);
+                let ret = await db.upsertUser(args.email, args?.isAdmin, args?.scopes, null);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
@@ -40,9 +40,9 @@ module.exports = function (cacheStore) {
             updateUserPermissions: async(_obj, args, context, _info) => {
                 // Validate Active User
                 // util.activeUserCheck(context);
-                util.validateGQLParams(["appId"], args);
+                util.validateGQLParams(["_id"], args);
 
-                let ret = await db.updateUser(args.appId, args?.isAdmin, args?.scopes);
+                let ret = await db.upsertUser(args.email, args?.isAdmin, args?.scopes, args._id);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
@@ -50,9 +50,9 @@ module.exports = function (cacheStore) {
             removeUserPermissions: async(_obj, args, context, _info) => {
                 // Validate Active User
                 // util.activeUserCheck(context);
-                util.validateGQLParams(["appId"], args);
+                util.validateGQLParams(["_id"], args);
 
-                let ret = await db.removeUser(args.appId);
+                let ret = await db.removeUser(args._id);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

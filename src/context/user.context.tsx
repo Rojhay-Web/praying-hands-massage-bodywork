@@ -10,14 +10,14 @@ query getUser($id: String!){
         email
         name
         picture
-        appId
+        _id
         isAdmin
         scopes
     }
 }`,
 GET_USER_PERMISSIONS_QUERY = gql`
-query getUserPermissions($appId: String!){
-    userPermissions(appId: $appId){
+query getUserPermissions($_id: String!){
+    userPermissions(_id: $_id){
         isAdmin
         scopes
     }
@@ -41,8 +41,8 @@ function Provider({ children }: { children: any }) {
     },[userToken, retrieveUserData]);
 
     useEffect(()=> {
-        if(user?.appId && refreshPermissions.current){
-            retrieveUserPermissions({ variables: { appId: user.appId }});
+        if(user?._id && refreshPermissions.current){
+            retrieveUserPermissions({ variables: { _id: user._id }});
         }
     },[user, refreshPermissions.current]);
 

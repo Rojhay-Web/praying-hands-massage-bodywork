@@ -9,7 +9,7 @@ export type User = {
     picture?:string;
     verified_email?:Boolean; 
     
-    appId?:string;
+    _id?:string;
     isAdmin?:Boolean; 
     scopes?: any;
 }

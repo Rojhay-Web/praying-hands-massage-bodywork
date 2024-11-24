@@ -67,4 +67,20 @@ module.exports = {
             throw new GraphQLError(ret.error, { extensions: { code: 'KNOD_SERVICE_ERROR' } }); 
         }
     },
+    jsonStrFormatter(str, isString){
+        let ret = null;
+        try {
+            if(isString){
+                ret = (str?.length > 0 ? JSON.parse(str) : {});
+            }
+            else {
+                ret = (str ? JSON.stringify(str) : '{}');
+            }
+        }
+        catch(ex){
+            ret = (isString ? {} : '{}');
+        }
+
+        return ret;
+    }
 }

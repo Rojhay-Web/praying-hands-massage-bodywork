@@ -1,24 +1,17 @@
-"use strict";
 require('dotenv').config();
-const { google } = require('googleapis');
-const { v4: uuidv4 } = require('uuid');
+const { MongoClient, ObjectId } = require('mongodb');
 
 const log = require('./log.service');
 
-const sheets = {
-    "users": { name:"users", fields:[
-        { title: "appId", type:"id", required: false, default: null },
-        { title: "email", type:"string", required: true, default: null },
-        { title: "isAdmin", type:"boolean", required: false, default: false },
-        { title: "scopes", type:"json", required: false, default: {} }
-    ]}
-};
+const client = new MongoClient(process.env.DatabaseConnectionString);
+(async () => { await client.connect(); log.debug(`Connected Successfully to server`); })();
+
 
 module.exports = {
     getFullUser: async function(token){
         try {
+            // Get User Info From G-Suite
             const url = `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${token}`;
-
             const ret = await fetch(url, {
                 method: "GET", headers: {
                     Authorization: `Bearer ${token}`,
@@ -37,406 +30,117 @@ module.exports = {
                 return { error: `Unable to retrieve G-User Data [E01]` };
             }
 
-            const sheetData = await getSheetData('users');
-            if(sheetData?.error){
+            // Get Permissions Data From DB
+            const collection = await dbCollection("users");
+            if(collection == null){
                 return { results: { ...res }};
             }
 
-            let emailFilter = sheetData.results.filter((usr)=> { 
-                return usr.email.toLowerCase() === res.email.toLowerCase(); 
-            });
+            /* Check if User Exists with Email or UserId */
+            const query = { email: res.email.toLowerCase() };
+            const findUser = await collection.findOne(query);
+            if(!findUser){
+                return { results: { ...res }};
+            }
 
-            let formatted_data = formatUserData({ ...res, ...(emailFilter?.length > 0 ? emailFilter[0] : {}) });
-            return { results: formatted_data};
-        }   
+            return { results: { ...res, ...findUser }};
+        }
         catch(ex){
             log.error(`Getting Full User: ${ex}`);
             return { 'error': 'Getting Full User [E00]'};
         }
     },
-    getUserPermissions: async function(appId){
+    getUserPermissions: async function(_id){
         try {
-            // Check if User Exists
-            const sheetData = await getSheetData('users');
-            if(sheetData?.error){
-                return { error: 'Unable to get User Permissions' };
+            const collection = await dbCollection("users");
+            if(collection == null){
+                return { "error": "Unable to connect to DB [Please contact site admin]"};
             }
 
-            let userRow = sheetData.results.map((u) => u.appId).indexOf(appId);
-            if(userRow < 0){
-                return { error: 'User DNE', results: null };
+            /* Check if User Exists with UserId */
+            const query = { _id: new ObjectId(_id) };
+            const findUser = await collection.findOne(query);
+            if(!findUser){
+                return { error: `User DNE` };
             }
 
-            let formatted_data = formatUserData({ ...sheetData.results[userRow] });
-            return { results: formatted_data };
+            return { results: findUser };
         }
         catch(ex){
             log.error(`Getting User Permissions: ${ex}`);
             return { "error": `Getting User Permissions`};
         }
     },
-    addUser: async function(email, isAdmin=false, scopes={}){
+    upsertUser: async function(email, isAdmin=false, scopes={}, _id=null){
         try {
-            // Check if User Exists
-            const sheetData = await getSheetData('users');
-            if(sheetData?.error){
-                return { results: false };
+            const collection = await dbCollection("users");
+            if(collection == null){
+                return { "error": "Unable to connect to DB [Please contact site admin]"};
             }
 
-            let emailFilter = sheetData.results.filter((usr)=> { 
-                return usr.email.toLowerCase() === email.toLowerCase(); 
-            });
+            if(_id){
+                /* Check if User Exists with Email or UserId */
+                const query = { _id: new ObjectId(_id) };
+                const findUser = await collection.findOne(query);
 
-            if(emailFilter?.length > 0){
-                return { results: false, error: 'User Email Exists' };
+                if(!findUser){
+                    return { error: `User DNE` };
+                }
+
+                // Update User
+                let setDict = { ...(email ? email : {}), isAdmin: isAdmin, scopes: scopes};
+                const result = await collection.updateOne(query, 
+                    { $set: setDict});
+
+                return { results: (result.matchedCount ? _id : null) };
             }
-
-            // appId | email | isAdmin | scope
-            const scopeStr = JSON.stringify(scopes);
-            const formatted_data = [[uuidv4(), email, isAdmin, scopeStr]];
-
-            const googleAuth = getGoogleAuth();
-
-            const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
-            const updateSheet = await sheetInstance.spreadsheets.values.append({
-                auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
-                range: 'users',
-                valueInputOption: 'RAW',
-                resource:{ values: formatted_data }
-            });
-
-            return { results: updateSheet?.data?.updates && updateSheet?.data?.updates.updatedRows > 0 };
+        
+            // Add User
+            const result = await collection.insertOne({ email: email, isAdmin: isAdmin, scopes: scopes });
+            return { results: (result?.insertedId ?? null) };    
         }
         catch(ex){
             log.error(`Adding User: ${ex}`);
             return { "error": `Adding User`};
         }
     },
-    updateUser: async function(appId, isAdmin=false, scopes={}){
+    removeUser: async function(_id){
         try {
-            // Check if User Exists
-            const sheetData = await getSheetData('users');
-            if(sheetData?.error){
-                return { results: false };
+            const collection = await dbCollection("users");
+            if(collection == null){
+                return { "error": "Unable to connect to DB [Please contact site admin]"};
             }
 
-            let userRow = sheetData.results.map((u) => u.appId).indexOf(appId);
-            if(userRow < 0){
-                return { error: 'User DNE', results: false };
-            }
-
-            // appId | email | isAdmin | scope
-            const rowEmail = sheetData.results[userRow]?.email,
-                scopeStr = JSON.stringify(scopes);
-            const formatted_data = [[appId, rowEmail, isAdmin, scopeStr]];
-
-            const googleAuth = getGoogleAuth();
-
-            const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
-            const updateSheet = await sheetInstance.spreadsheets.values.update({
-                auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
-                range: `users!${(userRow + 2)}:${(userRow + 2)}`,
-                valueInputOption: 'RAW',
-                resource:{ values: formatted_data }
-            });
-
-            return { results: updateSheet?.data && updateSheet?.data?.updatedRows > 0 };
-        }
-        catch(ex){
-            log.error(`Updating User: ${ex}`);
-            return { "error": `Updating User`};
-        }
-    },
-    removeUser: async function(appId){
-        try {
-            // Check if User Exists
-            const sheetData = await getSheetData('users');
-            if(sheetData?.error){
-                return { results: false };
-            }
-
-            let userRow = sheetData.results.map((u) => u.appId).indexOf(appId);
-            if(userRow < 0){
-                return { error: 'User DNE', results: false };
-            }
-
-            const googleAuth = getGoogleAuth();
-
-            const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
-            const updateSheet = await sheetInstance.spreadsheets.values.clear ({
-                auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
-                range: `users!${(userRow + 2)}:${(userRow + 2)}`
-            });
-            console.log(updateSheet);
-
-            return { results: !!updateSheet?.data?.clearedRange };
+            const result = await collection.deleteOne({ _id: new ObjectId(_id) });
+            return { results: (result?.deletedCount ? true : false)};
         }
         catch(ex){
             log.error(`Removing User: ${ex}`);
             return { "error": `Removing User`};
         }
-    },
-
-    // Data By Sheet
-    getDataBySheet: async function(sheet){
-        try {
-            if(!sheet || !(sheet in sheets)){
-                return { error: 'Invalid Sheet Name' };
-            }
-
-            const sheetData = await getSheetData(sheet);
-            if(sheetData?.error){
-                return { error: `Unable to get ${sheet} data [E01]` };
-            }
-
-            let formatted_data = processSheetData(sheets[sheet], sheetData.results);
-            return { results: formatted_data };
-        }
-        catch(ex){
-            log.error(`Getting Data By Sheet: ${ex}`);
-            return { 'error': 'Getting Data By Sheet [E00]'};
-        }
-    },
-    addDataBySheet: async function(sheet, sheetData){
-        try {
-            if(!sheet || !(sheet in sheets)){
-                return { error: 'Invalid Sheet Name' };
-            }
-
-            // Build Row
-            const formatted_data = formatSheetRowData(sheets[sheet], [sheetData], true);
-            if(formatted_data?.error?.length > 0){
-                return { error: formatted_data.error.join(', ') };
-            }
-
-            const googleAuth = getGoogleAuth();
-            const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
-            const updateSheet = await sheetInstance.spreadsheets.values.append({
-                auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
-                range: 'users',
-                valueInputOption: 'RAW',
-                resource:{ values: formatted_data.data }
-            });
-
-            return { results: updateSheet?.data?.updates && updateSheet?.data?.updates.updatedRows > 0 };
-        }
-        catch(ex){
-            log.error(`Adding Data By Sheet: ${ex}`);
-            return { 'error': 'Adding Data By Sheet [E00]'};
-        }
-    },
-    updatingDataBySheet: async function(sheet, appId, sheetData){
-        try {
-            if(!sheet || !(sheet in sheets)){
-                return { error: 'Invalid Sheet Name' };
-            }
-
-            const sheetData = await getSheetData(sheet);
-            if(sheetData?.error){
-                return { error: `Unable to get ${sheet} data [E03]` };
-            }
-        }
-        catch(ex){
-            log.error(`Updating Data By Sheet: ${ex}`);
-            return { 'error': 'Updating Data By Sheet [E00]'};
-        }
-    },
-    deletingDataBySheet: async function(sheet, appId){
-        try {
-            if(!sheet || !(sheet in sheets)){
-                return { error: 'Invalid Sheet Name' };
-            }
-
-            const sheetData = await getSheetData(sheet);
-            if(sheetData?.error){
-                return { error: `Unable to get ${sheet} data [E04]` };
-            }
-        }
-        catch(ex){
-            log.error(`Deleting Data By Sheet: ${ex}`);
-            return { 'error': 'Deleting Data By Sheet [E00]'};
-        }
-    }
-};
-
-
-/* Private Functions */
-function getGoogleAuth(){
-    let ret = null;
-    try {
-        const privateKey = process.env.PRIVATE_KEY;
-        
-        ret = new google.auth.JWT(
-            process.env.CLIENT_EMAIL,
-            null,
-            privateKey.replace(/\\n/g, '\n'),
-            'https://www.googleapis.com/auth/spreadsheets'
-        );
-    }
-    catch(ex){
-        log.error(`Authenticating Google Account: ${ex}`);
-    }
-
-    return ret;
-}
-
-function buildSheetObject(listData) {
-    let ret = [];
-    try {
-        let colNames = listData[0];
-
-        for(let i=1; i< listData.length; i++){
-            let item = {};
-            for(let j=0; j < listData[i].length; j++){
-                let colName = colNames.length >= j ? colNames[j] : `col-${j}`;
-                item[colName] = listData[i][j];
-            }
-
-            ret.push(item);
-        }
-    }
-    catch(ex){
-        log.error(`Building Sheet Data: ${ex}`);
-    }
-    return ret;
-}
-
-async function getSheetData(sheetName){
-    try {
-        let googleAuth = getGoogleAuth();
-        if(!googleAuth){
-            return { 'error': 'Retrieving Sheet Auth [E01]' };
-        }
-
-        const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth });
-        const sheetInfo = await sheetInstance.spreadsheets.values.get({
-            auth: googleAuth,
-            spreadsheetId: process.env.GOOGLE_SHEET_ID,
-            range: `${sheetName}`
-        });
-
-        return { "results":(sheetInfo?.data?.values ? buildSheetObject(sheetInfo.data.values) : []) };
-    }
-    catch(ex){
-        log.error(`Getting Sheet Data: ${ex}`);
-        return { 'error': 'Getting Sheet Data [E00]'};
     }
 }
 
-function formatUserData(usrData){
-    let ret = { ...usrData };
-
+/* Private FUnctions */
+async function dbCollection(conn_collection) {
+    let collection = null;
     try {
-        ret.isAdmin = usrData?.isAdmin?.toLowerCase() === "true";
-        try {
-            ret.scopes = (usrData?.scopes?.length > 0 ? JSON.parse(usrData?.scopes) : {});
-        }
-        catch(ex){
-            ret.scopes = {};
-        }
+        //await client.connect(); //log.debug(`Connected Successfully to server`);
+        const db = client.db(process.env.DatabaseName);
+        collection = db.collection(conn_collection);
     }
     catch(ex){
-        log.error(`Formating User Data: ${ex}`);
+        log.error(`Connection to Database: ${ex}`);
     }
 
-    return ret;
+    return collection;
 }
 
-function processSheetData(sheetInfo, data){
-    let ret = [];
-    try {
-        for(let i=0; i < data.length; i++){
-            let row = {};
-            for(let j=0; j < sheetInfo.fields.length; j++){
-                const field = sheetInfo.fields[j];
-                if(field in data[i] && data[i][field] != null){
-                    switch(field.type){
-                        case "id":
-                        case "string":
-                            row[field] = data[i][field];
-                            break;
-                        case "boolean":
-                            row[field] = data[i][field].toLowerCase() === 'true';
-                            break;
-                        case "json":
-                            try {
-                                row[field] = (data[i][field]?.length > 0 ? JSON.parse(data[i][field]) : {});
-                            }
-                            catch(ex){
-                                row[field] = {};
-                            } 
-                            break;
-                        default:
-                            row[field] = undefined;
-                            break;
-                    }
-                }
-                else {
-                    row[field] = field.default;
-                }
-            }
-            ret.push(row);
-        }
-    }
-    catch(ex){
-        log.error(`Formatting Sheet Data: ${ex}`);
-    }
-
-    return ret;
+/* Connection Clean Up */
+const cleanup = (event) => {
+    log.debug(`Closing Connection`);
+    client.close(); process.exit(); 
 }
 
-function formatSheetRowData(sheetInfo, data, isNew = false){
-    let ret = [], errors = [];
-    try {
-        for(let i=0; i < data.length; i++){
-            let row = [];
-            for(let j=0; j < sheetInfo.fields.length; j++){
-                const field = sheetInfo.fields[j];
-                if(field.required === true && (!(field in data[i]) || data[i][field] != null)){
-                    errors.push(`Required field ${field.title} is missing`);
-                    row.push(null);
-                }
-                else if(field in data[i] && data[i][field] != null){
-                    switch(field.type){
-                        case "id":
-                            if(isNew){
-                                row.push(uuidv4());
-                            }
-                            else {
-                                row.push(data[i][field]);
-                            }
-                            break;
-                        case "string":
-                        case "boolean":
-                            row.push(data[i][field]);
-                            break;
-                        case "json":
-                            try {
-                                row.push((data[i][field]?.length > 0 ? JSON.stringify(data[i][field]) : '{}'));
-                            }
-                            catch(ex){
-                                row.push('{}');
-                            } 
-                            break;
-                        default:
-                            row.push(null);
-                            break;
-                    }
-                }
-                else {
-                    row.push(field.default);
-                }
-            }
-            ret.push(row);
-        }
-    }
-    catch(ex){
-        log.error(`Formatting Sheet Data: ${ex}`);
-    }
-
-    return { data: ret, error: errors };
-}
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
