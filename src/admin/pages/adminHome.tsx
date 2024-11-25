@@ -1,16 +1,20 @@
 import { useContext, useEffect, useState } from "react";
 import { Sheet } from 'react-modal-sheet';
-
-import userContext from "../../context/user.context";
-import { UserContextType } from "../../datatypes";
-import UserManagement from "../components/userManagement";
-import { appSessKey } from "../../utils";
 import { Link } from "react-router-dom";
 
+import userContext from "../../context/user.context";
+
+import UserManagement from "../components/userManagement";
+import CmsSiteEditor from "../components/cmsEditor";
+
+import { UserContextType } from "../../datatypes";
+import { appSessKey } from "../../utils";
+
 const adminComponents = [
-    { title: "User Management", scope:"users", icon:"group", component: null },
-    { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail", component: null },
-    { title: "Site Editor", scope:"site_content", icon:"dvr", component: null },
+    { title: "CMS Editor", scope:"cms_admin", icon:"engineering" },
+    { title: "User Management", scope:"users", icon:"group" },
+    { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail" },
+    { title: "Site Editor", scope:"site_content", icon:"dvr" },
 ];
 
 type CtrlContainerType = {
@@ -97,7 +101,7 @@ function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery
 function AdminHome(){
     const [query, setQuery] = useState("");
     const [displayComponents, setDisplayComponents] = useState<any>([]);
-    const [selComponent, setSelComponent] = useState("");
+    const [selComponent, setSelComponent] = useState("cms_admin");
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [header, setHeader] = useState({ icon: "shield_person", title:"Admin Portal" });
 
@@ -132,6 +136,8 @@ function AdminHome(){
     const getAdminPage = () => {
         try {
             switch(selComponent){
+                case "cms_admin":
+                    return <CmsSiteEditor />;
                 case "users":
                     return <UserManagement />;
                 case "gallery":

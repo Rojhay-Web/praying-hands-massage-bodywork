@@ -2,7 +2,7 @@
 @font-face {
   font-family: 'Material Symbols Outlined';
   font-style: normal;
-  font-weight: 100 700;
+  font-weight: 100 400;
   src: url(https://fonts.gstatic.com/s/materialsymbolsoutlined/v156/kJEhBvYX7BgnkSrUwT8OhrdQw4oELdPIeeII9v6oFsI.woff2) format('woff2');
 }
 .material-symbols-outlined {
@@ -360,6 +360,7 @@ html {
   flex: 1;
   margin-top: 14px;
   overflow-y: auto;
+  overflow-x: hidden;
   /* */
 }
 .admin-component .table-action-container {
@@ -413,6 +414,112 @@ html {
 }
 .admin-component .table-action-container .table-action-btn:hover {
   color: #969696;
+}
+.admin-component .table-action-container .pill-list-title {
+  font-size: 1.2rem;
+  padding-right: 8px;
+  border-right: 2px solid #000;
+}
+.admin-component .table-action-container .pill-add-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  background: #00295f;
+  border-radius: 50%;
+  display: flex;
+  opacity: 0.5;
+  flex-direction: column;
+  justify-content: center;
+  margin: auto 8px;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+}
+.admin-component .table-action-container .pill-add-btn span {
+  margin: 0 auto;
+  color: #fff;
+  font-size: 1rem;
+}
+.admin-component .table-action-container .pill-add-btn:hover {
+  opacity: 1;
+}
+.admin-component .table-action-container .pill-list-container {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+.admin-component .table-action-container .pill-list-container .ctrl {
+  font-size: 1.8rem;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .table-action-container .pill-list-container .ctrl:hover {
+  opacity: 1;
+  color: #00295f;
+}
+.admin-component .table-action-container .pill-list-container .scroll-pill-list {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item {
+  padding: 4px 16px;
+  border-radius: 16px;
+  background-color: #aaaaaa;
+  cursor: pointer;
+  opacity: 0.5;
+  margin-left: 16px;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item.sel {
+  opacity: 1;
+  background: rgba(0, 41, 95, 0.5) !important;
+}
+.admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item:hover:not(.admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item.sel) {
+  opacity: 1;
+}
+.admin-component .page-title-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 24px;
+}
+.admin-component .page-title-container .title-input {
+  border: none;
+  font-family: 'Parkinsans', serif;
+  border-radius: 8px;
+  padding: 0 8px;
+  font-size: 2rem;
+  background-color: rgba(170, 170, 170, 0.1) !important;
+}
+.admin-component .page-title-container .title-input:placeholder {
+  font-size: 0.8rem;
+}
+.admin-component .page-title-container .title-btn-container {
+  display: flex;
+  flex-direction: row;
+  margin: auto 0;
+}
+.admin-component .page-title-container .title-btn-container span {
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .page-title-container .title-btn-container span.remove {
+  color: #960000;
+}
+.admin-component .page-title-container .title-btn-container span.hide {
+  opacity: 0;
+  cursor: default;
+}
+.admin-component .page-title-container .title-btn-container span + span {
+  margin-left: 16px;
+}
+.admin-component .page-title-container .title-btn-container span:hover:not(.hide) {
+  opacity: 1;
 }
 .admin-component .admin-table-container {
   margin-top: 16px;

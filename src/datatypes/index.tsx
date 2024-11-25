@@ -24,3 +24,18 @@ export type AdminTableColType = {
     title: string; key: string; type: string;
     default: any; required: boolean;
 }
+
+export type PageKey = {
+    _id: String
+    title: String
+    type: String
+    metaData: any
+    value: { [key:string]:any}
+}
+
+export type SitePage = {
+    _id?:string;
+    title:string;
+    key?:string;
+    pageKeys: PageKey[];
+}

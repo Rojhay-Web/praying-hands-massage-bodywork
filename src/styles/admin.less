@@ -209,6 +209,7 @@
     display: flex;
     flex-direction: column; flex:1; 
     margin-top: 14px; overflow-y: auto;
+    overflow-x: hidden;
     &.user-management {
     
     }
@@ -257,6 +258,78 @@
     
             &:hover { 
                 color: rgba(150,150,150,1);
+            }
+        }
+
+        .pill-list-title {
+            font-size: 1.2rem; padding-right: 8px;
+            border-right: 2px solid #000;
+        }
+
+        .pill-add-btn {
+            width: 1.5rem; height: 1.5rem; background: @admin-color1;
+            border-radius: 50%; display: flex; opacity: 0.5;
+            flex-direction: column; justify-content: center;
+            margin: auto 8px; transition: 0.5s all ease-in-out;
+            cursor: pointer;
+
+            span { margin: 0 auto; color: #fff; font-size: 1rem; }
+            &:hover { opacity: 1; }
+        }
+
+        .pill-list-container {
+            flex: 1; display: flex; flex-direction: row;
+            overflow: hidden;
+            .ctrl {
+                font-size: 1.8rem; opacity: 0.5;
+                cursor: pointer; transition: 0.5s all ease-in-out;
+                &:hover { opacity: 1; color: @admin-color1; }
+            }
+
+            .scroll-pill-list { 
+                flex: 1; display: flex; flex-direction: row; 
+                white-space: nowrap; overflow: hidden;
+                scroll-behavior: smooth;
+
+                .pill-item { 
+                    padding: 4px 16px; border-radius: 16px; 
+                    background-color: @admin-background;
+                    cursor: pointer; opacity: 0.5;
+                    margin-left: 16px;
+                    transition: 0.5s all ease-in-out;
+
+                    &.sel { opacity: 1; .admin-color1(background, 0.5); }
+
+                    &:hover:not(&.sel){ opacity: 1; }
+                }
+            }
+        }
+    }
+
+    .page-title-container {
+        display: flex; flex-direction: row; justify-content: space-between;
+        margin-top: 24px;
+
+        .title-input { 
+            border: none; font-family: 'Parkinsans', serif;
+            border-radius: 8px; padding: 0 8px; font-size: 2rem;
+            .admin-background(background-color, 0.1);
+
+            &:placeholder { font-size: .8rem; }
+        }
+
+        .title-btn-container {
+            display: flex; flex-direction: row; margin: auto 0;
+
+            span {
+                cursor: pointer; opacity: 0.5;
+                transition: 0.5s all ease-in-out;
+
+                &.remove { color: rgba(150,0,0,1); }
+                &.hide { opacity: 0; cursor: default; }
+                &+span { margin-left: 16px; }
+
+                &:hover:not(.hide) { opacity: 1; }
             }
         }
     }
