@@ -13,9 +13,13 @@ import userContext from "./context/user.context";
 import Layout from "./core/components/layout";
 import AdminLayout from "./admin/components/adminLayout";
 
-/* Pages */
-import NoMatch from "./core/pages/nomatch";
+/* Admin Pages */
 import AdminHome from "./admin/pages/adminHome";
+
+/* Core Pages */
+import NoMatch from "./core/pages/nomatch";
+import Home from "./core/pages/home";
+
 
 const paths = [
     { path: "*", element: NoMatch }
@@ -26,14 +30,12 @@ function SiteRoutes(){
 
     return(
         <Routes>
-            {user?.isAdmin ?
-                <Route path="/allAccess" element={<AdminLayout />}>
-                    <Route index element={<AdminHome />} />
-                </Route> : <></>
-            }
+            <Route path="/allAccess" element={<AdminLayout />}>
+                <Route index element={(user?.isAdmin ? <AdminHome /> : <Home />)} />
+            </Route>
 
             <Route path="/" element={<Layout />}>
-                <Route index element={<>{/*HOME*/}</>} />
+                <Route index element={<Home />} />
                 {paths.map((rt, i) => 
                     <Route path={rt.path} element={<rt.element />}  key={i} /> 
                 )}

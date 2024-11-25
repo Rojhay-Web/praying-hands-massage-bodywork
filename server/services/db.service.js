@@ -130,7 +130,7 @@ module.exports = {
                 }
 
                 // Update User
-                let setDict = { ...(email ? email : {}), isAdmin: isAdmin, scopes: scopes};
+                let setDict = { ...(email ? { email: email } : {}), isAdmin: isAdmin, scopes: scopes};
                 const result = await collection.updateOne(query, 
                     { $set: setDict});
 

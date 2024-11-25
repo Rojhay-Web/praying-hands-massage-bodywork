@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 import userContext from "../../context/user.context";
 import { UserContextType } from "../../datatypes";
@@ -40,7 +41,7 @@ function AdminBtn(){
                     <span className="material-symbols-outlined">account_circle</span>:
                     <>
                         {user?.isAdmin ? 
-                            <span className="material-symbols-outlined">apps</span> :
+                            <Link className="app-link" to="/allAccess"><span className="material-symbols-outlined">apps</span></Link> :
                             <>  
                                 {user?.picture ?
                                     <img src={user.picture} alt="User Profile" /> :

@@ -19,3 +19,8 @@ export type UserContextType = {
     userToken: any | null; setUserToken: Dispatch<SetStateAction<any|null>>;
     loading: Boolean | null; loading_permissions: Boolean | null;
 }
+
+export type AdminTableColType = {
+    title: string; key: string; type: string;
+    default: any; required: boolean;
+}

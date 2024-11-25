@@ -3,25 +3,42 @@ import { Sheet } from 'react-modal-sheet';
 
 import userContext from "../../context/user.context";
 import { UserContextType } from "../../datatypes";
+import UserManagement from "../components/userManagement";
+import { appSessKey } from "../../utils";
+import { Link } from "react-router-dom";
 
 const adminComponents = [
     { title: "User Management", scope:"users", icon:"group", component: null },
     { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail", component: null },
-    { title: "Site Content", scope:"site_content", icon:"dvr", component: null },
+    { title: "Site Editor", scope:"site_content", icon:"dvr", component: null },
 ];
 
 type CtrlContainerType = {
     displayComponents: any, selComponent: string,
-    query: string, searchQuery: (e: any)=> void
+    query: string, searchQuery: (e: any)=> void,
+    setSelComponent: (e:string) => void
 }
 type MobileNavType = {
     displayComponents: any, selComponent: string,
     query: string, searchQuery: (e: any)=> void, 
-    isOpen: boolean, setOpen:(a:any) => void
+    isOpen: boolean, setOpen:(a:any) => void,
+    setSelComponent: (e:string) => void
 };
 
-function CtrlContainer({ displayComponents, selComponent, query, searchQuery }: CtrlContainerType){
-    const { user } = useContext(userContext.UserContext) as UserContextType;
+function CtrlContainer({ displayComponents, selComponent, query, searchQuery, setSelComponent }: CtrlContainerType){
+    const { user, setUser } = useContext(userContext.UserContext) as UserContextType;
+
+    const signOff = () => {
+        try {
+            if(window.confirm('Are you sure you want to Sign out?')){
+                setUser(null);
+                localStorage.removeItem(appSessKey);
+            }
+        }
+        catch(ex){
+            console.log(`Unable to signOff: ${ex}`);
+        }
+    }
 
     return(
         <>
@@ -39,7 +56,7 @@ function CtrlContainer({ displayComponents, selComponent, query, searchQuery }: 
 
             <div className="component-list-container">
                 {displayComponents.map((item: any, i:number)=>
-                    <div className={`component-item ${selComponent === item.scope ? 'sel':''}`} key={i}>
+                    <div className={`component-item ${selComponent === item.scope ? 'sel':''}`} key={i} onClick={()=>{ setSelComponent(item.scope); }}>
                         <span className="material-symbols-outlined">{item.icon}</span>
                         <span className="item-title">{item.title}</span>
                     </div>
@@ -53,13 +70,13 @@ function CtrlContainer({ displayComponents, selComponent, query, searchQuery }: 
                     </div>
                     <span className="user-email">{user?.email}</span>
                 </div>
-                <div className="sign-out-link">Sign-out</div>
+                <div className="sign-out-link" onClick={signOff}>Sign-out</div>
             </div>
         </>
     );
 }
 
-function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery, setOpen }: MobileNavType){
+function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery, setOpen, setSelComponent }: MobileNavType){
     return(
         <div className="mobile-nav-container">
             <Sheet isOpen={isOpen} onClose={() => setOpen(false)} snapPoints={[0.75]}>
@@ -67,7 +84,7 @@ function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery
                     <Sheet.Content>
                         <div className="ctrl-panel">
                             <CtrlContainer displayComponents={displayComponents} selComponent={selComponent} 
-                                query={query} searchQuery={searchQuery} />
+                                query={query} searchQuery={searchQuery} setSelComponent={setSelComponent} />
                         </div>
                     </Sheet.Content>
                 </Sheet.Container>
@@ -111,6 +128,26 @@ function AdminHome(){
 
         setHeader(ret);
     }
+    
+    const getAdminPage = () => {
+        try {
+            switch(selComponent){
+                case "users":
+                    return <UserManagement />;
+                case "gallery":
+                    return <></>;
+                case "site_content":
+                    return <></>;
+                default:
+                    return <></>;
+            }
+        }
+        catch(ex){
+            console.log(`Getting Admin Page: ${ex}`);
+        }
+
+        return <></>;
+    }
 
     useEffect(()=>{
         let filterList = adminComponents.filter((comp) => {
@@ -123,7 +160,7 @@ function AdminHome(){
         });
 
         setDisplayComponents(filterList);
-    },[query]);
+    },[query, user]);
 
     useEffect(()=>{
         getHeaderTitle();
@@ -132,11 +169,11 @@ function AdminHome(){
     return (
         <div className="admin-home-page">
             <MobileNav displayComponents={displayComponents} selComponent={selComponent} 
-                query={query} searchQuery={searchQuery} isOpen={mobileNavOpen}
-                setOpen={setMobileNavOpen} />
+                setSelComponent={setSelComponent} query={query} searchQuery={searchQuery} 
+                isOpen={mobileNavOpen} setOpen={setMobileNavOpen} />
             <div className="side-panel ctrl-panel">
                 <CtrlContainer displayComponents={displayComponents} selComponent={selComponent} 
-                    query={query} searchQuery={searchQuery} />
+                    setSelComponent={setSelComponent} query={query} searchQuery={searchQuery} />
             </div>
             <div className="base-section">
                 <div className="base-header">
@@ -146,11 +183,13 @@ function AdminHome(){
                         <span>{header.title}</span>
                     </h1>
 
-                    <div className="bookend header-btn">
+                    <Link className="app-link bookend header-btn" to="/">
                         <span className="material-symbols-outlined">language</span>
                         <span>Website</span>
-                    </div>
+                    </Link>
                 </div>
+
+                {getAdminPage()}
             </div>
         </div>
     );

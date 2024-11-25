@@ -54,7 +54,7 @@ module.exports = function (cacheStore) {
         Mutation:{
             addUserPermissions: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["email"], args);
 
                 let ret = await db.upsertUser(args.email, args?.isAdmin, args?.scopes, null);
@@ -64,7 +64,7 @@ module.exports = function (cacheStore) {
             },
             updateUserPermissions: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.upsertUser(args.email, args?.isAdmin, args?.scopes, args._id);
@@ -74,7 +74,7 @@ module.exports = function (cacheStore) {
             },
             removeUserPermissions: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.removeAppTableData("users",args._id);

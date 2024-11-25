@@ -17,7 +17,7 @@ app.use(express.json());
 // Set CORS Headers & Run Request Auth
 app.use((req, res, next) => { 
     res.setHeader('Access-Control-Allow-Origin', '*'); 
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, K-Authorization");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     
     next();
 });

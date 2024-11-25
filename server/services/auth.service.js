@@ -1,7 +1,7 @@
 'use strict';
 require('dotenv').config();
 
-const db = require('./sheet.service'),
+const db = require('./db.service'),
     log = require('./log.service');
 
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
             }
             
             if(!usrPermissions.results){
-                log.warning(`Validating UserId: User(${decoded.id})`);
+                log.warning(`Validating UserId: User ID`);
                 return { error: `User DNE`, results: false};
             }
 
