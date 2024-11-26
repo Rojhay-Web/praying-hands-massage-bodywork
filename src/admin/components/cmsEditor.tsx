@@ -296,7 +296,7 @@ function CmsSiteEditor(){
         if(site_page_data?.sitePage){
             setSelPageData(site_page_data.sitePage);
         }
-    },[site_page_data])
+    },[site_page_data]);
 
     // Refresh Page Data On Completion of action
     useEffect(()=>{ 
@@ -330,7 +330,6 @@ function CmsSiteEditor(){
             }
         }
     },[upsert_pg_data]);
-
 
     // Refresh on key changes
     useEffect(()=>{ 

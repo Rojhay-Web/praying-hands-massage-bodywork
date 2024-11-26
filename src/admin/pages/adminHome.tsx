@@ -6,6 +6,7 @@ import userContext from "../../context/user.context";
 
 import UserManagement from "../components/userManagement";
 import CmsSiteEditor from "../components/cmsEditor";
+import SiteEditor from "../components/siteEditor";
 
 import { UserContextType } from "../../datatypes";
 import { appSessKey } from "../../utils";
@@ -22,6 +23,7 @@ type CtrlContainerType = {
     query: string, searchQuery: (e: any)=> void,
     setSelComponent: (e:string) => void
 }
+
 type MobileNavType = {
     displayComponents: any, selComponent: string,
     query: string, searchQuery: (e: any)=> void, 
@@ -101,7 +103,7 @@ function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery
 function AdminHome(){
     const [query, setQuery] = useState("");
     const [displayComponents, setDisplayComponents] = useState<any>([]);
-    const [selComponent, setSelComponent] = useState("cms_admin");
+    const [selComponent, setSelComponent] = useState("site_content");
     const [mobileNavOpen, setMobileNavOpen] = useState(false);
     const [header, setHeader] = useState({ icon: "shield_person", title:"Admin Portal" });
 
@@ -143,7 +145,7 @@ function AdminHome(){
                 case "gallery":
                     return <></>;
                 case "site_content":
-                    return <></>;
+                    return <SiteEditor />;
                 default:
                     return <></>;
             }
