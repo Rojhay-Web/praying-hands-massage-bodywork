@@ -9,15 +9,15 @@ const db = require('../services/db.service.js'),
 module.exports = function (cacheStore) {
     const resolver = {
         Query:{
-            users: async(_obj, args, context, _info) => {
+            users: async(_obj, _args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 let ret = await db.getAppTable("users");
                 util.checkGQLResults(ret);
 
                 return ret?.results;
             },
-            user: async(_obj, args, context, _info) => {
+            user: async(_obj, args, _context, _info) => {
                 util.validateGQLParams(["id"], args);
 
                 let ret = await db.getFullUser(args.id);
@@ -25,7 +25,7 @@ module.exports = function (cacheStore) {
 
                 return ret?.results;
             },
-            userPermissions: async(_obj, args, context, _info) => {
+            userPermissions: async(_obj, args, _context, _info) => {
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.getUserPermissions(args._id);
@@ -34,15 +34,15 @@ module.exports = function (cacheStore) {
                 return ret?.results;
             },
 
-            sitePages: async(_obj, args, context, _info) => {
+            sitePages: async(_obj, _args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 let ret = await db.getAppTable("site_pages");
                 util.checkGQLResults(ret);
 
                 return ret?.results;
             },
-            sitePage: async(_obj, args, context, _info) => {
+            sitePage: async(_obj, args, _context, _info) => {
                 util.validateGQLParams(["key"], args);
 
                 let ret = await db.getPageData(args.key);
@@ -85,7 +85,7 @@ module.exports = function (cacheStore) {
 
             upsertSitePage: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["title"], args);
 
                 let ret = await db.upsertPageData(args.title, args?.pageKeys, args?._id);
@@ -95,7 +95,7 @@ module.exports = function (cacheStore) {
             },
             removeSitePage: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.removeAppTableData("site_pages",args._id);
@@ -109,6 +109,16 @@ module.exports = function (cacheStore) {
                 util.validateGQLParams(["_id"], args);
 
                 let ret = await db.upsertPageKey(args._id, args.key_id, args?.title, args?.type, args?.meta, args?.value);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            removePageKey: async(_obj, args, context, _info) => {
+                // Validate Active User
+                util.activeUserCheck(context);
+                util.validateGQLParams(["_id","key_id"], args);
+
+                let ret = await db.removePageKey(args._id, args.key_id);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

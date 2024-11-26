@@ -18,8 +18,10 @@ module.exports = gql`
         removeUserPermissions(_id: String!): Boolean
 
         upsertSitePage(title: String!, pageKeys:[PageKeyInput], _id:String):String
-        removeSitePage(_id: String!):String
+        removeSitePage(_id: String!):Boolean
+
         upsertPageKey(_id: String!, key_id: String, title: String, type: String, meta:JSONObj, value:JSONObj): String
+        removePageKey(_id: String!, key_id: String!):Boolean
     }
 
     input PageKeyInput {

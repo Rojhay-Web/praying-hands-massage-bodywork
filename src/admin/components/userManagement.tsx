@@ -111,7 +111,7 @@ function UserManagement(){
             }
             else if(newIdx >= 0){
                 setNewUsers((d:any)=> {
-                    let tmp = [...d];
+                    let tmp = _.cloneDeep(d);
                     tmp.splice(newIdx,1);
                     return tmp;
                 });

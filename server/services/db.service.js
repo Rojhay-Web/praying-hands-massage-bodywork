@@ -167,7 +167,7 @@ module.exports = {
             return { 'error': 'Getting Page Data [E00]'};
         }
     },
-    upsertPageData: async function(title, pageKeys=[], _id=null){
+    upsertPageData: async function(title, pageKeys, _id=null){
         try {
             const collection = await dbCollection("site_pages");
             if(collection == null){
@@ -175,25 +175,30 @@ module.exports = {
             }
 
             let key = `${title.replace(/[^\w\s]/gi, '').replace(/&/gi,'').split(' ').join('_')}`.toLowerCase();
+
             let validatedKeys = validatePageKeys(pageKeys);
             if(validatedKeys.error){
                 return { error: `Invalid Page Keys: ${validatedKeys.error}`};
             }
 
-            let setDict = { key: key, title: title, pageKeys: validatedKeys.results };
+            let setDict = { key: key, title: title };
 
             if(_id){
+                if(validatedKeys.results){
+                    setDict.pageKeys =  validatedKeys.results;
+                }
                 // Update Page
                 const result = await collection.updateOne(
                     { _id: new ObjectId(_id) },  { $set: setDict }
                 );
 
-                return { results: (result.matchedCount ? _id : null) };
+                return { results: (result.matchedCount ? key : null) };
             }
         
             // Add Page
+            setDict.pageKeys = (validatedKeys.results ? validatedKeys.results : []);
             const result = await collection.insertOne(setDict);
-            return { results: (result?.insertedId ?? null) };    
+            return { results: (result?.insertedId ? key : null) };    
         }
         catch(ex){
             log.error(`Upserting Page Data: ${ex}`);
@@ -229,7 +234,7 @@ module.exports = {
             }
 
             const tmpKeyId = uuidv4();
-            const result = await collection.update(
+            const result = await collection.updateOne(
                 {  _id: new ObjectId(page_id) },  { 
                     $push: { 
                         pageKeys: { 
@@ -245,6 +250,28 @@ module.exports = {
         catch(ex){
             log.error(`Upserting Page Key: ${ex}`);
             return { "error": `Upserting Page Key`};
+        }
+    },
+    removePageKey: async function(page_id, key_id){
+        try {
+            const collection = await dbCollection("site_pages");
+            if(collection == null){
+                return { "error": "Unable to connect to DB [Please contact site admin]"};
+            }
+
+            if(!key_id || !page_id){
+                return { error: "Invalid Page or Key Id" };
+            }
+
+            const result = await collection.updateOne(
+                { _id: new ObjectId(page_id) },  
+                { $pull: { pageKeys: { _id: key_id } }}
+            );
+            return { results: (result?.matchedCount ? true : false)};
+        }
+        catch(ex){
+            log.error(`Removing Page Key: ${ex}`);
+            return { "error": `Removing Page Key`};
         }
     }
 }
@@ -266,6 +293,10 @@ async function dbCollection(conn_collection) {
 
 function validatePageKeys(pageKeys){
     try {
+        if(!pageKeys){
+            return { results: null };
+        }
+
         let ret = pageKeys.map((key)=> {
             if(!(key.type in pageKeyTypes)){
                 throw 'Invalid key type';

@@ -9,7 +9,7 @@ import userContext from "../../context/user.context";
 import { AdminTableColType, SitePage, UserContextType } from "../../datatypes";
 import AdminTable from "./adminTable";
 
-const MAX_NEW_ROWS = 1;
+const MAX_NEW_ROWS = 1, NEW_PAGE_KEY=".~.";
 const tableSetup: AdminTableColType[] = [
     { title: "Title", key:"title", type: "text", default: "", required: true },
     { 
@@ -27,7 +27,7 @@ const tableSetup: AdminTableColType[] = [
 ];
 
 const GET_SITE_PAGES_QUERY = gql`
-    query getSitePages{
+    query GetSitePages{
         sitePages{
             _id
             title
@@ -35,7 +35,7 @@ const GET_SITE_PAGES_QUERY = gql`
         }
     }`,
 GET_IND_SITE_PAGE_QUERY = gql`
-    query getSitePage($key: String!) { 
+    query GetSitePage($key: String!) { 
         sitePage(key: $key) {
             _id
             title
@@ -48,6 +48,22 @@ GET_IND_SITE_PAGE_QUERY = gql`
                 value
             }
         }
+    }`,
+UPSERT_PAGE_MUTATION = gql`
+    mutation UpsertSitePage($title: String!, $_id:String){
+        upsertSitePage(title: $title, _id: $_id)
+    }`,
+REMOVE_PAGE_MUTATION = gql`
+    mutation RemoveSitePage($_id:String!){
+        removeSitePage(_id: $_id)
+    }`,
+UPSERT_PAGEKEY_MUTATION = gql`
+    mutation UpsertPageKey($_id: String!, $key_id: String, $title: String, $type: String, $meta:JSONObj, $value:JSONObj){
+        upsertPageKey(_id: $_id, key_id: $key_id, title: $title, type: $type, meta: $meta, value: $value)
+    }`,
+REMOVE_PAGEKEY_MUTATION = gql`
+    mutation RemovePageKey($_id: String!, $key_id: String!){
+        removePageKey(_id: $_id, key_id: $key_id)
     }`;
 
 function CmsSiteEditor(){
@@ -71,9 +87,17 @@ function CmsSiteEditor(){
     }
 
     // GQL Queries
-    const [retrievePages,{ loading: site_pages_loading, data: site_pages_data }] = useLazyQuery(GET_SITE_PAGES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
-    const [retrievePage,{ loading: site_page_loading, data: site_page_data }] = useLazyQuery(GET_IND_SITE_PAGE_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
+    const authHeader = {context: { headers: { "Authorization": user?._id }}};
+    const [retrievePages,{ loading: site_pages_loading, data: site_pages_data }] = useLazyQuery(GET_SITE_PAGES_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
+    const [retrievePage,{ loading: site_page_loading, data: site_page_data, refetch: site_page_refetch }] = useLazyQuery(GET_IND_SITE_PAGE_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
 
+    // Mutations
+    const [upsertPage,{ loading: upsert_pg_loading, data: upsert_pg_data }] = useMutation(UPSERT_PAGE_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [removePage,{ loading: remove_pg_loading, data: remove_pg_data }] = useMutation(REMOVE_PAGE_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [upsertPageKey,{ loading: upsert_key_loading, data: upsert_key_data }] = useMutation(UPSERT_PAGEKEY_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [removePageKey,{ loading: remove_key_loading, data: remove_key_data }] = useMutation(REMOVE_PAGEKEY_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    
+    /* Application Functions*/
     const controlSlider = (ref:any, dir:string) => {
         try {
             let offsetWidth = ref.current.offsetWidth,
@@ -99,21 +123,16 @@ function CmsSiteEditor(){
     }
 
     const toggleNewPage = () => {
-        if(localNewPage?.current){
-            setSelPageData(localNewPage.current);
-        }
-        else {
-            localNewPage.current = { title:"", pageKeys:[] };
-            setSelPageData({ title:"", pageKeys:[] });
-        }
+        setSelPage(NEW_PAGE_KEY);
     }
 
-    const updatePage = (e:any) => {
+    const handlePageChange = (e:any) => {
         try {
             let { name, value } = e.target;
 
             setSelPageData((d: any)=> {
-                return {...d, [name]:value };
+                let tmp = _.cloneDeep(d);
+                return {...tmp, [name]:value };
             });
         }
         catch(ex){
@@ -136,7 +155,7 @@ function CmsSiteEditor(){
             }
             else {
                 setSelPageData((d: any)=>{
-                    let tmp = {...d};
+                    let tmp = _.cloneDeep(d);
                     tmp.pageKeys.unshift({ title: "", type:"", metaData:{}, value:{ data: ""}});
 
                     return tmp;
@@ -148,25 +167,43 @@ function CmsSiteEditor(){
         }
     }
 
-    const deleteKeyRow = (_id: string | undefined, newIdx: number) => {
+    /* Data Functions */
+    const savePage = () => {
         try {
-            if(_id) {
-                console.log('Delete > ', _id);
-                // removeUser({ variables: { _id: _id }});
+            if(!selPageData?.title){
+                toast.warning(`Please make sure the page has a title`, { position: "top-right",
+                    autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                    draggable: true, progress: undefined, theme: "light" });
             }
-            else if(newIdx >= 0){
-                setSelPageData((d: any)=>{
-                    let tmp = {...d};
-                    tmp.pageKeys.splice(newIdx,1);
-                    return tmp;
-                });
+            else {
+                upsertPage({ variables: { 
+                    title: selPageData.title, 
+                    ...(selPageData?._id ?  {_id: selPageData._id} : {})
+                }});
             }
         }
         catch(ex){
-            console.log(`Deleting Row: ${ex}`);
+            console.log(`Saving Site Page: ${ex}`);
         }
     }
 
+    const deletePage = () => {
+        try {
+            if(window.confirm('Are you sure you want to remove this page and all of its data?')){
+                if(!selPageData?._id){
+                    localNewPage.current = null;
+                    setSelPageData(null);
+                }
+                else {
+                    removePage({ variables: { _id: selPageData._id }});
+                }
+            }
+        }
+        catch(ex){
+            console.log(`Removing Site Page: ${ex}`);
+        }
+    }
+    
     const saveKeyRow = (row: any) => {
         try {
             if(!selPageData?._id){
@@ -191,7 +228,12 @@ function CmsSiteEditor(){
                     if(selPageData && !selPageData?._id) {
                         localNewPage.current = null;
                     }
+
                     // Upsert Page Key
+                    upsertPageKey({ variables: {
+                        _id: selPageData._id, key_id: row._id, title: row.title, 
+                        type: row.type, meta: row.metaData, value: row.value
+                    }});
                 }
             }
         }
@@ -200,15 +242,53 @@ function CmsSiteEditor(){
         }
     }
 
-    useEffect(()=> {
-        if(selPage) {
-            if(selPageData && !selPageData?._id) {
-                localNewPage.current = _.cloneDeep(selPageData);
+    const deleteKeyRow = (_id: string | undefined, newIdx: number) => {
+        try {
+            if(_id) {
+                if(!selPageData?._id){
+                    toast.warning(`Make sure the page has been saved.`, { position: "top-right",
+                        autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                        draggable: true, progress: undefined, theme: "light" });
+                }
+                else {
+                    removePageKey({ variables: { _id: selPageData?._id, key_id: _id }})
+                }
             }
-            retrievePage({ variables: { key: selPage }});
+            else if(newIdx >= 0){
+                setSelPageData((d: any)=>{
+                    let tmp = _.cloneDeep(d);
+                    tmp.pageKeys.splice(newIdx,1);
+                    return tmp;
+                });
+            }
         }
-        else if(selPageData){
-            setSelPageData(null);
+        catch(ex){
+            console.log(`Deleting Row: ${ex}`);
+        }
+    }
+
+    useEffect(()=>{ spiral.register(); },[]);
+
+    useEffect(()=> {
+        if(selPage === NEW_PAGE_KEY){
+            if(localNewPage?.current){
+                setSelPageData(localNewPage.current);
+            }
+            else {
+                localNewPage.current = { title:"", pageKeys:[] };
+                setSelPageData({ title:"", pageKeys:[] });
+            }
+        }
+        else {
+            if(selPage) {
+                if(selPageData && !selPageData?._id) {
+                    localNewPage.current = _.cloneDeep(selPageData);
+                }
+                retrievePage({ variables: { key: selPage }});
+            }
+            else if(selPageData){
+                setSelPageData(null);
+            }
         }
     },[selPage]);
 
@@ -218,14 +298,48 @@ function CmsSiteEditor(){
         }
     },[site_page_data])
 
-    useEffect(()=>{ spiral.register(); },[]);
-
-    // Refresh Users On Completion of action
+    // Refresh Page Data On Completion of action
     useEffect(()=>{ 
-        if(!site_pages_loading){
+        if(!site_pages_loading && !remove_pg_loading && !upsert_pg_loading){
             retrievePages({});
         }
-    },[]);
+    },[upsert_pg_loading, remove_pg_loading]);
+
+    useEffect(()=>{ 
+        if(!site_pages_loading && !remove_pg_loading && remove_pg_data?.removeSitePage){
+            toast.success(`Removed Site Page.`, { position: "top-right",
+                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                draggable: true, progress: undefined, theme: "light" });
+
+            setSelPageData(null);
+        }
+    },[remove_pg_data]);
+
+    useEffect(()=>{ 
+        if(!site_pages_loading && !upsert_pg_loading && upsert_pg_data?.upsertSitePage){
+            toast.success(`Upserted Site Page.`, { position: "top-right",
+                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                draggable: true, progress: undefined, theme: "light" });
+
+            if(selPage === upsert_pg_data.upsertSitePage){
+                site_page_refetch();
+            }
+            else {
+                setSelPage(upsert_pg_data.upsertSitePage);
+                localNewPage.current = null;
+            }
+        }
+    },[upsert_pg_data]);
+
+
+    // Refresh on key changes
+    useEffect(()=>{ 
+        if(!upsert_key_loading && !remove_key_loading && selPage &&
+            (upsert_key_data?.upsertPageKey || remove_key_data?.removePageKey)
+        ){
+            site_page_refetch();
+        }
+    },[upsert_key_loading, remove_key_loading]);
 
     return(
         <div className="admin-component cms-site-editor">
@@ -255,15 +369,15 @@ function CmsSiteEditor(){
                         <></>: 
                         <>
                             <div className="page-title-container">
-                                <input className='title-input' type="text" name="title" placeholder="Enter Page Title..." value={selPageData?.title} onChange={updatePage} />
+                                <input className='title-input' type="text" name="title" placeholder="Enter Page Title..." value={selPageData?.title} onChange={handlePageChange} />
 
                                 <div className="title-btn-container">
                                     <div className="add-key-btn" onClick={addKeyRow}>
                                         <span className="material-symbols-outlined">library_add</span>
                                         <span>Add Page Key</span>
                                     </div>
-                                    <span className={`material-symbols-outlined icon-btn`} onClick={()=>{}}>save</span>
-                                    <span className="material-symbols-outlined icon-btn remove" onClick={()=>{}}>remove_selection</span>
+                                    <span className={`material-symbols-outlined icon-btn`} onClick={savePage}>save</span>
+                                    <span className="material-symbols-outlined icon-btn remove" onClick={deletePage}>remove_selection</span>
                                 </div>
                             </div>
 

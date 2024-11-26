@@ -94,7 +94,7 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
     const updateCell = (col:AdminTableColType, cellRow:any, e:any) =>{
         try {
             setLocalRow((d:any)=> {
-                let tmp = {...d };
+                let tmp = _.cloneDeep(d);
 
                 switch(col.type){
                     case "text":
