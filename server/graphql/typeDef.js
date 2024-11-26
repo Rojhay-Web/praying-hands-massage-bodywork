@@ -19,7 +19,7 @@ module.exports = gql`
 
         upsertSitePage(title: String!, pageKeys:[PageKeyInput], _id:String):String
         removeSitePage(_id: String!):String
-        updatePageKey(_id: String!, key_id: String!, title: String, type: String, meta:JSONObj, value:JSONObj): String
+        upsertPageKey(_id: String!, key_id: String, title: String, type: String, meta:JSONObj, value:JSONObj): String
     }
 
     input PageKeyInput {

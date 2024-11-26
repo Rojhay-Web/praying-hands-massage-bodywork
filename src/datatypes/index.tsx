@@ -21,16 +21,22 @@ export type UserContextType = {
 }
 
 export type AdminTableColType = {
-    title: string; key: string; type: string;
-    default: any; required: boolean;
+    title: string; 
+    key: string; 
+    type: string;
+    default: any; 
+    options?:string[];
+    selectKey?:string;
+    dictionary?:{[key:string]:any };
+    required: boolean;
 }
 
 export type PageKey = {
-    _id: String
+    _id?: String
     title: String
-    type: String
-    metaData: any
-    value: { [key:string]:any}
+    type?: String
+    metaData?: any
+    value?: { [key:string]:any}
 }
 
 export type SitePage = {

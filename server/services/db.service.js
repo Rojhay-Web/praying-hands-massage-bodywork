@@ -200,31 +200,47 @@ module.exports = {
             return { "error": `Upserting Page Data`};
         }
     },
-    updatePageKey: async function(page_id, key_id, title, type, meta, value){
+    upsertPageKey: async function(page_id, key_id, title, type, meta, value){
         try {
             const collection = await dbCollection("site_pages");
             if(collection == null){
                 return { "error": "Unable to connect to DB [Please contact site admin]"};
             }
 
-            if(!page_id || !key_id){
+            if(!page_id){
                 return { error: "Invalid Page or Key Id" };
             }
 
             // Update Page
-            const result = await collection.updateOne(
-                { 
-                    _id: new ObjectId(page_id),
-                    "pageKeys._id": key_id
-                },  { 
-                    $set: { 
-                        "pageKeys.$.title": title, "pageKeys.$.type":type, 
-                        "pageKeys.$.metaData":meta, "pageKeys.$.value":value 
+            if(key_id){
+                const result = await collection.updateOne(
+                    { 
+                        _id: new ObjectId(page_id),
+                        "pageKeys._id": key_id
+                    },  { 
+                        $set: { 
+                            "pageKeys.$.title": title, "pageKeys.$.type":type, 
+                            "pageKeys.$.metaData":meta, "pageKeys.$.value":value 
+                        } 
+                    }
+                );
+    
+                return { results: (result.matchedCount ? page_id : null) };
+            }
+
+            const tmpKeyId = uuidv4();
+            const result = await collection.update(
+                {  _id: new ObjectId(page_id) },  { 
+                    $push: { 
+                        pageKeys: { 
+                            _id: tmpKeyId, title: title, type: type, 
+                            metaData: meta, value: value 
+                        }
                     } 
                 }
             );
 
-            return { results: (result.matchedCount ? page_id : null) };
+            return { results: (result.matchedCount ? tmpKeyId : null) };
         }
         catch(ex){
             log.error(`Upserting Page Key: ${ex}`);

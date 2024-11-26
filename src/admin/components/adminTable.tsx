@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
 import { spiral } from 'ldrs'
 import * as _ from 'lodash';
 
 import { AdminTableColType } from "../../datatypes";
-import { useEffect, useState } from 'react';
 
 type AdminTableType = {
     data: any[], loading: boolean | undefined,
@@ -18,6 +18,13 @@ type AdminRowType = {
 
 type ScopeCellType = { 
     scopeMap: { [key: string]: boolean },
+    updateCellKey: (key: string, value:boolean) => void
+};
+
+type SelectMetaDataType = {
+    dictionary?: {[key:string]:any }, 
+    metaMap: { [key: string]: any },
+    selectVal?: string,
     updateCellKey: (key: string, value:boolean) => void
 };
 
@@ -44,6 +51,42 @@ function ScopeCell({ scopeMap, updateCellKey }: ScopeCellType){
     )
 }
 
+function SelectMetaData({ dictionary, metaMap, selectVal, updateCellKey }:SelectMetaDataType){
+    const [metaFields, setMetaFields] = useState<any[]>([]);
+
+    const updateMeta = (e:any, key: string) => {
+        try {
+            let value = e.target.value;
+            updateCellKey(key, value);
+        }
+        catch(ex){
+            console.log(`Updating Meta Field: ${ex}`);
+        }
+    }
+
+    useEffect(()=>{
+        if(selectVal && dictionary && selectVal in dictionary) {
+            setMetaFields(dictionary[selectVal]);
+        }
+        else {
+            setMetaFields([]);
+        }
+    },[selectVal]);
+
+    return(
+        <div className='meta-select-container'>
+            {metaFields.map((mf,i)=>
+                <div className='meta-admin-input' key={i}>
+                    <span>{mf.key}</span>
+                    <input className='meta-input' type={mf.type} name={mf.key} 
+                        value={metaMap[mf.key] ?? mf.default} onChange={(e)=> { updateMeta(e, mf.key); }}
+                    />
+                </div>
+            )}
+        </div>
+    );
+}
+
 function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
     const [localRow, setLocalRow] = useState<any>(null);
     const [rowTag, setRowTag] = useState("");
@@ -55,12 +98,14 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
 
                 switch(col.type){
                     case "text":
+                    case "select":
                         tmp[col.key] = e.target.value;
                         break;
                     case "toggle":
                         tmp[col.key] = (cellRow[col.key] === true ? false : true);
                         break;
                     case "scope_toggles":
+                    case "select_metadata":
                         let toggleKey = e.target.key,
                             toggleValue = e.target.value;
                         if(!tmp[col.key]){
@@ -96,6 +141,22 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                     return <ScopeCell scopeMap={cellRow[col.key]} updateCellKey={(key: string, value:boolean) => { 
                         updateCell(col, cellRow, { target: { key, value }}); 
                     }} />;
+                case "select":
+                    return <select className='admin-select' name={col.key} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }}>
+                        <option hidden>{`Enter ${col.title}`}</option>
+                        {col?.options?.map((option,j)=>
+                            <option key={j} value={option}>{option}</option>
+                        )}
+                    </select>;
+                case "select_metadata":
+                    return <SelectMetaData dictionary={col.dictionary} metaMap={cellRow[col.key]} 
+                                selectVal={(col?.selectKey ? cellRow[col.selectKey] : "")}
+                                updateCellKey={(key: string, value:boolean) => { 
+                                    updateCell(col, cellRow, { target: { key, value }}); 
+                                }}/>;
+                default:
+                    return <></>;
+                    
             }
         }
         catch(ex){

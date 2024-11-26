@@ -1,10 +1,30 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
+import * as _ from 'lodash';
+import { spiral } from 'ldrs'
 
 import userContext from "../../context/user.context";
 
-import { SitePage, UserContextType } from "../../datatypes";
+import { AdminTableColType, SitePage, UserContextType } from "../../datatypes";
+import AdminTable from "./adminTable";
+
+const MAX_NEW_ROWS = 1;
+const tableSetup: AdminTableColType[] = [
+    { title: "Title", key:"title", type: "text", default: "", required: true },
+    { 
+        title: "Type", key:"type", type: "select", default: "", 
+        options:[ "title", "description","list","images"], required: true 
+    },
+    { 
+        title: "", key:"metaData", type: "select_metadata",
+        selectKey: "type", 
+        dictionary:{ 
+            "list":[{ key: "max", type: "number", default: 0 }],
+            "images":[{ key: "max", type: "number", default: 0 }]
+        }, default: {}, required: false 
+    }
+];
 
 const GET_SITE_PAGES_QUERY = gql`
     query getSitePages{
@@ -13,14 +33,29 @@ const GET_SITE_PAGES_QUERY = gql`
             title
             key
         }
+    }`,
+GET_IND_SITE_PAGE_QUERY = gql`
+    query getSitePage($key: String!) { 
+        sitePage(key: $key) {
+            _id
+            title
+            key
+            pageKeys {
+                _id
+                title
+                type
+                metaData
+                value
+            }
+        }
     }`;
 
 function CmsSiteEditor(){
     const [selPage, setSelPage] = useState("");
-    const [selPageData, setSelPageData] = useState<SitePage | null>({ title: "", pageKeys:[]});
-    const [pageTag, setPageTag] = useState("");
+    const [selPageData, setSelPageData] = useState<SitePage | null>(null);
 
     const pillScrollRef = useRef<HTMLDivElement>(null);
+    const localNewPage = useRef<SitePage | null>(null);
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
 
@@ -36,13 +71,8 @@ function CmsSiteEditor(){
     }
 
     // GQL Queries
-    const [retrieveUsers,{ loading: site_pages_loading, data: site_pages_data }] = useLazyQuery(GET_SITE_PAGES_QUERY, {fetchPolicy: 'no-cache'});
-    
-    const site_pages = [
-        {_id: "abc", key: "home", title: "Home" },
-        {_id: "cde", key: "about-us", title: "About Us" },
-        {_id: "efg", key: "contact-us", title: "Contact Us" }
-    ];
+    const [retrievePages,{ loading: site_pages_loading, data: site_pages_data }] = useLazyQuery(GET_SITE_PAGES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
+    const [retrievePage,{ loading: site_page_loading, data: site_page_data }] = useLazyQuery(GET_IND_SITE_PAGE_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
 
     const controlSlider = (ref:any, dir:string) => {
         try {
@@ -68,12 +98,22 @@ function CmsSiteEditor(){
         }
     }
 
+    const toggleNewPage = () => {
+        if(localNewPage?.current){
+            setSelPageData(localNewPage.current);
+        }
+        else {
+            localNewPage.current = { title:"", pageKeys:[] };
+            setSelPageData({ title:"", pageKeys:[] });
+        }
+    }
+
     const updatePage = (e:any) => {
         try {
-            let { key, value } = e.target;
+            let { name, value } = e.target;
 
             setSelPageData((d: any)=> {
-                return {...d, [key]:value };
+                return {...d, [name]:value };
             });
         }
         catch(ex){
@@ -81,19 +121,126 @@ function CmsSiteEditor(){
         }
     }
 
+    const addKeyRow = () => {
+        try {
+            let newRow = selPageData?.pageKeys.filter((p) => { return !p._id; });
+            if(newRow && newRow?.length >= MAX_NEW_ROWS){
+                toast.warning(`You have ${MAX_NEW_ROWS} pending new page key, please save the pending key before adding any more.`, { position: "top-right",
+                    autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                    draggable: true, progress: undefined, theme: "light" });
+            }
+            else if(!selPageData?._id){
+                toast.warning(`Please save your page before adding keys.`, { position: "top-right",
+                    autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                    draggable: true, progress: undefined, theme: "light" });
+            }
+            else {
+                setSelPageData((d: any)=>{
+                    let tmp = {...d};
+                    tmp.pageKeys.unshift({ title: "", type:"", metaData:{}, value:{ data: ""}});
+
+                    return tmp;
+                });
+            }
+        }
+        catch(ex){
+            console.log(`Adding Key Row: ${ex}`);
+        }
+    }
+
+    const deleteKeyRow = (_id: string | undefined, newIdx: number) => {
+        try {
+            if(_id) {
+                console.log('Delete > ', _id);
+                // removeUser({ variables: { _id: _id }});
+            }
+            else if(newIdx >= 0){
+                setSelPageData((d: any)=>{
+                    let tmp = {...d};
+                    tmp.pageKeys.splice(newIdx,1);
+                    return tmp;
+                });
+            }
+        }
+        catch(ex){
+            console.log(`Deleting Row: ${ex}`);
+        }
+    }
+
+    const saveKeyRow = (row: any) => {
+        try {
+            if(!selPageData?._id){
+                toast.error(`Please save your page prior to adding page key.`, { position: "top-right",
+                    autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                    draggable: true, progress: undefined, theme: "light" });
+            }
+            else {
+                let isValid = true;
+                tableSetup.forEach((s)=> {
+                    if(s.required && _.isEmpty(row[s.key])){
+                        isValid = false;
+                    }
+                });
+
+                if(!isValid) {
+                    toast.error(`Unable to Save Row: Please make sure you don't leave any fields empty.`, { position: "top-right",
+                        autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                        draggable: true, progress: undefined, theme: "light" });
+                }
+                else {
+                    if(selPageData && !selPageData?._id) {
+                        localNewPage.current = null;
+                    }
+                    // Upsert Page Key
+                }
+            }
+        }
+        catch(ex){
+            console.log(`Saving Row: ${ex}`);
+        }
+    }
+
+    useEffect(()=> {
+        if(selPage) {
+            if(selPageData && !selPageData?._id) {
+                localNewPage.current = _.cloneDeep(selPageData);
+            }
+            retrievePage({ variables: { key: selPage }});
+        }
+        else if(selPageData){
+            setSelPageData(null);
+        }
+    },[selPage]);
+
+    useEffect(()=>{
+        if(site_page_data?.sitePage){
+            setSelPageData(site_page_data.sitePage);
+        }
+    },[site_page_data])
+
+    useEffect(()=>{ spiral.register(); },[]);
+
+    // Refresh Users On Completion of action
+    useEffect(()=>{ 
+        if(!site_pages_loading){
+            retrievePages({});
+        }
+    },[]);
+
     return(
         <div className="admin-component cms-site-editor">
             <div className="table-action-container">
                 <div className="pill-list-title">Website Pages</div>
-                <div className="pill-add-btn">
+                <div className={`pill-add-btn ${!selPageData || selPageData?._id ? "" : "text"}`} onClick={toggleNewPage}>
                     <span className="material-symbols-outlined">add</span>
+                    <span className="new-page-title">New Page</span>
                 </div>
 
                 <div className="pill-list-container">
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "prev")}>chevron_left</span>
                     <div className="scroll-pill-list" ref={pillScrollRef}>
-                        {site_pages.map((pg,i)=>
-                            <div className={`pill-item ${pg.key === selPage ? 'sel' : ''}`} key={i}>{pg.title}</div>
+                        {site_pages_data?.sitePages.map((pg: SitePage, i: number)=>
+                            <div className={`pill-item ${pg.key === selPage ? 'sel' : ''}`} key={i} onClick={()=> { if(pg.key) setSelPage(pg.key); }}>{pg.title}</div>
                         )}
                     </div>
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "next")}>chevron_right</span>
@@ -101,17 +248,28 @@ function CmsSiteEditor(){
             </div>
 
             {/* CMS Info */}
-            {!selPageData ?
-                <></>: 
+            {site_page_loading ?
+                <div><l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral></div> :
                 <>
-                    <div className="page-title-container">
-                        <input className='title-input' type="text" name="title" placeholder="Enter Page Title..." value={selPageData?.title} onChange={updatePage} />
+                    {!selPageData ?
+                        <></>: 
+                        <>
+                            <div className="page-title-container">
+                                <input className='title-input' type="text" name="title" placeholder="Enter Page Title..." value={selPageData?.title} onChange={updatePage} />
 
-                        <div className="title-btn-container">
-                            <span className={`material-symbols-outlined ${(pageTag != "") ? "":"hide"}`} onClick={()=>{}}>save</span>
-                            <span className="material-symbols-outlined remove" onClick={()=>{}}>remove_selection</span>
-                        </div>
-                    </div>
+                                <div className="title-btn-container">
+                                    <div className="add-key-btn" onClick={addKeyRow}>
+                                        <span className="material-symbols-outlined">library_add</span>
+                                        <span>Add Page Key</span>
+                                    </div>
+                                    <span className={`material-symbols-outlined icon-btn`} onClick={()=>{}}>save</span>
+                                    <span className="material-symbols-outlined icon-btn remove" onClick={()=>{}}>remove_selection</span>
+                                </div>
+                            </div>
+
+                            <AdminTable data={selPageData?.pageKeys} cols={tableSetup} loading={site_pages_loading} saveRow={saveKeyRow} deleteRow={deleteKeyRow}/>
+                        </>
+                    }   
                 </>
             }
         </div>

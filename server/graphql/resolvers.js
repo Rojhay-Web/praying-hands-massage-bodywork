@@ -103,12 +103,12 @@ module.exports = function (cacheStore) {
 
                 return ret?.results;
             },
-            updatePageKey: async(_obj, args, context, _info) => {
+            upsertPageKey: async(_obj, args, context, _info) => {
                 // Validate Active User
-                // util.activeUserCheck(context);
-                util.validateGQLParams(["_id","key_id"], args);
+                util.activeUserCheck(context);
+                util.validateGQLParams(["_id"], args);
 
-                let ret = await db.updatePageKey(args._id, args.key_id, args?.title, args?.type, args?.meta, args?.value);
+                let ret = await db.upsertPageKey(args._id, args.key_id, args?.title, args?.type, args?.meta, args?.value);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

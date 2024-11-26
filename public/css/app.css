@@ -430,13 +430,30 @@ html {
   flex-direction: column;
   justify-content: center;
   margin: auto 8px;
-  transition: 0.5s all ease-in-out;
+  transition: 0.5s opacity ease-in-out;
   cursor: pointer;
 }
 .admin-component .table-action-container .pill-add-btn span {
   margin: 0 auto;
   color: #fff;
   font-size: 1rem;
+}
+.admin-component .table-action-container .pill-add-btn .new-page-title {
+  display: none;
+}
+.admin-component .table-action-container .pill-add-btn.text {
+  width: initial;
+  height: initial;
+  flex-direction: row;
+  padding: 4px 8px;
+  border-radius: 16px;
+}
+.admin-component .table-action-container .pill-add-btn.text .material-symbols-outlined {
+  margin: auto 0;
+}
+.admin-component .table-action-container .pill-add-btn.text .new-page-title {
+  display: flex;
+  margin-left: 8px;
 }
 .admin-component .table-action-container .pill-add-btn:hover {
   opacity: 1;
@@ -503,22 +520,47 @@ html {
   flex-direction: row;
   margin: auto 0;
 }
-.admin-component .page-title-container .title-btn-container span {
+.admin-component .page-title-container .title-btn-container .icon-btn {
   cursor: pointer;
   opacity: 0.5;
   transition: 0.5s all ease-in-out;
 }
-.admin-component .page-title-container .title-btn-container span.remove {
+.admin-component .page-title-container .title-btn-container .icon-btn.remove {
   color: #960000;
 }
-.admin-component .page-title-container .title-btn-container span.hide {
+.admin-component .page-title-container .title-btn-container .icon-btn.hide {
   opacity: 0;
   cursor: default;
 }
-.admin-component .page-title-container .title-btn-container span + span {
+.admin-component .page-title-container .title-btn-container .icon-btn + .icon-btn {
   margin-left: 16px;
 }
-.admin-component .page-title-container .title-btn-container span:hover:not(.hide) {
+.admin-component .page-title-container .title-btn-container .icon-btn:hover:not(.hide) {
+  opacity: 1;
+}
+.admin-component .page-title-container .title-btn-container .add-key-btn {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 16px;
+  border-radius: 16px;
+  background: #00295f;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+  margin-right: 16px;
+}
+.admin-component .page-title-container .title-btn-container .add-key-btn span {
+  color: #fff;
+  opacity: 1;
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.admin-component .page-title-container .title-btn-container .add-key-btn span + span {
+  margin-left: 8px;
+}
+.admin-component .page-title-container .title-btn-container .add-key-btn:hover {
   opacity: 1;
 }
 .admin-component .admin-table-container {
@@ -597,6 +639,36 @@ html {
   background-color: rgba(170, 170, 170, 0.2) !important;
 }
 .admin-component .admin-table-container .admin-table .admin-input:placeholder {
+  font-size: 0.8rem;
+}
+.admin-component .admin-table-container .admin-table .admin-select {
+  border: none;
+  font-family: 'Parkinsans', serif;
+  border-radius: 8px;
+  padding: 0 8px;
+}
+.admin-component .admin-table-container .admin-table .meta-admin-input {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(170, 170, 170, 0.2) !important;
+  border-radius: 8px;
+  max-width: 100px;
+  text-align: center;
+}
+.admin-component .admin-table-container .admin-table .meta-admin-input span {
+  font-size: 0.7rem;
+  padding: 4px;
+  font-weight: bold;
+}
+.admin-component .admin-table-container .admin-table .meta-admin-input .meta-input {
+  border: none;
+  font-family: 'Parkinsans', serif;
+  border-radius: 8px;
+  padding: 0 8px;
+  text-align: center;
+  background: rgba(0, 0, 0, 0);
+}
+.admin-component .admin-table-container .admin-table .meta-admin-input .meta-input:placeholder {
   font-size: 0.8rem;
 }
 .admin-component .admin-table-container .admin-table .admin-toggle {

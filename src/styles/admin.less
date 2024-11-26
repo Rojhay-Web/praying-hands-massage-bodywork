@@ -270,10 +270,18 @@
             width: 1.5rem; height: 1.5rem; background: @admin-color1;
             border-radius: 50%; display: flex; opacity: 0.5;
             flex-direction: column; justify-content: center;
-            margin: auto 8px; transition: 0.5s all ease-in-out;
+            margin: auto 8px; transition: 0.5s opacity ease-in-out;
             cursor: pointer;
 
             span { margin: 0 auto; color: #fff; font-size: 1rem; }
+            .new-page-title { display: none; }
+
+            &.text {
+                width: initial; height: initial; flex-direction: row;
+                padding: 4px 8px; border-radius: 16px;
+                .material-symbols-outlined { margin: auto 0; }
+                .new-page-title { display: flex; margin-left: 8px; }
+            }
             &:hover { opacity: 1; }
         }
 
@@ -321,15 +329,31 @@
         .title-btn-container {
             display: flex; flex-direction: row; margin: auto 0;
 
-            span {
+            .icon-btn {
                 cursor: pointer; opacity: 0.5;
                 transition: 0.5s all ease-in-out;
 
                 &.remove { color: rgba(150,0,0,1); }
                 &.hide { opacity: 0; cursor: default; }
-                &+span { margin-left: 16px; }
+                &+.icon-btn { margin-left: 16px; }
 
                 &:hover:not(.hide) { opacity: 1; }
+            }
+
+            .add-key-btn {
+                display: flex; flex-direction: row; padding: 4px 16px;
+                border-radius: 16px; background: @admin-color1; opacity: 0.5;
+                cursor: pointer; transition: 0.5s all ease-in-out;
+                margin-right: 16px;
+
+                span { 
+                    color: #fff; opacity: 1; 
+                    font-size: 1rem; display: flex; 
+                    flex-direction: column; justify-content: center;
+                    &+span { margin-left: 8px; }
+                }
+
+                &:hover { opacity: 1; }
             }
         }
     }
@@ -407,6 +431,28 @@
                 .admin-background(background-color, 0.2);
 
                 &:placeholder { font-size: .8rem; }
+            }
+
+            .admin-select {
+                border: none; font-family: 'Parkinsans', serif;
+                border-radius: 8px; padding: 0 8px; 
+            }
+
+            .meta-admin-input {
+                display: flex; flex-direction: column;
+                .admin-background(background-color, 0.2);
+                border-radius: 8px; max-width: 100px;
+                text-align: center;
+
+                span { font-size: .7rem; padding: 4px; font-weight: bold; }
+
+                .meta-input {
+                    border: none; font-family: 'Parkinsans', serif;
+                    border-radius: 8px; padding: 0 8px; text-align: center;
+                    background: rgba(0,0,0,0);
+    
+                    &:placeholder { font-size: .8rem; }
+                }
             }
 
             .admin-toggle { 
