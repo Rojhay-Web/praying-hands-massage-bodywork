@@ -2,8 +2,8 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import * as _ from 'lodash';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 
 import userContext from "../../context/user.context";
 
@@ -27,7 +27,7 @@ const quillSetup = {
     formats: [
         'header', 'font', 'size',
         'bold', 'italic', 'underline', 'strike',
-        'list', 'bullet', 'indent', 'link',
+        'list', 'indent', 'link',
     ]
 };
 
@@ -59,6 +59,61 @@ UPSERT_PAGE_MUTATION = gql`
         upsertSitePage(title: $title, pageKeys: $pageKeys, _id: $_id)
     }`;
 
+function PillListEditor({ list, updateList }:{ list:string[], updateList: (e:string[]) => void }){
+    const [newItem, setNewItem] = useState("");
+
+    const addToList = () => {
+        try {
+            if(newItem.length > 0){
+                let tmpList = (!list ? [] : _.cloneDeep(list));
+                tmpList.push(newItem);
+                updateList(tmpList);
+                setNewItem("");
+            }
+        }
+        catch(ex){
+            console.log(`Adding To List: ${ex}`)
+        }
+    }
+
+    const removeFromList = (idx: number) => {
+        try {
+            if(idx < list.length){
+                let tmpList = (!list ? [] : _.cloneDeep(list));
+                tmpList.splice(idx, 1);
+                updateList(tmpList);
+            }
+        }
+        catch(ex){
+            console.log(`Removing From List: ${ex}`)
+        }
+    }
+
+    return(
+        <div className="pill-list-editor-container">
+            <div className="ple-input-container">
+                <input className="ple-input" value={newItem} onChange={(e:any) => { setNewItem(e.target.value); }} />
+                <div className={`ple-btn ${newItem.length <= 0 ? "disabled":""}`} onClick={addToList}>
+                    <span className="material-symbols-outlined">add</span>
+                    <span className="ple-title">Add Item</span>
+                </div>
+            </div>
+
+            <div className="ple-list">
+                {list && list?.length > 0 ?
+                    <>
+                        {list?.map((item,i)=>
+                            <div className="ple-item" key={i}>
+                                <span className="material-symbols-outlined remove-ple" onClick={()=> removeFromList(i)}>close</span>
+                                <span className="ple-title">{item}</span>
+                            </div>
+                        )}
+                    </> : <></>
+                }
+            </div>
+        </div>
+    );
+}
 
 function KeyEditorTile({ pageKey, updatePageData }: KeyEditorTileType){
     const getTileIcon = () => {
@@ -110,10 +165,10 @@ function KeyEditorTile({ pageKey, updatePageData }: KeyEditorTileType){
                     return <textarea name={`${pageKey?.title}`} rows={3} value={pageKey?.value?.data} onChange={defaultHandleChange} />;
                 case "description":
                     return <ReactQuill theme="snow" value={pageKey?.value?.data} onChange={quillHandleChange} 
-                                modules={quillSetup.modules} formats={quillSetup.formats}
+                                modules={quillSetup.modules} formats={quillSetup.formats} className="admin-quill"
                             />;
                 case "list":
-                    return <></>;
+                    return <PillListEditor list={pageKey?.value?.data} updateList={quillHandleChange} />;
                 case "images":
                     return <></>;
                 default:
@@ -164,9 +219,7 @@ function SiteEditor(){
     const [retrievePage,{ loading: site_page_loading, data: site_page_data, refetch: site_page_refetch }] = useLazyQuery(GET_IND_SITE_PAGE_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
 
     // Mutations
-    const [upsertPage,{ loading: upsert_pg_loading, error: upsert_pg_error, data: upsert_pg_data }] = useMutation(UPSERT_PAGE_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
-
-    //console.log(JSON.stringify(upsert_pg_error, null, 2));
+    const [upsertPage,{ loading: upsert_pg_loading, data: upsert_pg_data }] = useMutation(UPSERT_PAGE_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
 
     /* Application Functions*/
     const controlSlider = (ref:any, dir:string) => {

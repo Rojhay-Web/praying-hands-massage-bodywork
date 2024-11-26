@@ -803,21 +803,95 @@ html {
   margin-top: 16px;
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 .admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container textarea {
   resize: none;
   border-radius: 8px;
   padding: 4px;
 }
-.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .quill {
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .admin-quill {
   background: #ffffff;
   border-radius: 8px;
 }
-.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .quill .ql-toolbar {
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .admin-quill .ql-toolbar {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
 }
-.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .quill .ql-container {
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .admin-quill .ql-container {
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
+  height: 126px;
+  overflow: auto;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container {
+  display: flex;
+  flex-direction: column;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background-color: #ffffff;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-input {
+  border: none;
+  font-family: 'Parkinsans', serif;
+  background: rgba(255, 255, 255, 0.1);
+  flex: 1;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background: #00295f;
+  color: #fff;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: 0.5s opacity ease-in-out;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn span {
+  font-size: 0.9rem;
+  margin: auto 0;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn span + span {
+  margin-left: 8px;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn.disabled {
+  opacity: 0.2;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn:hover:not(.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-input-container .ple-btn.disabled) {
+  opacity: 1;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list {
+  display: flex;
+  flex-direction: row;
+  padding: 8px 4px;
+  border-radius: 8px;
+  flex-wrap: wrap;
+  background: #fff;
+  overflow-y: auto;
+  height: 100px;
+  margin-top: 16px;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list .ple-item {
+  display: flex;
+  flex-direction: row;
+  padding: 4px 8px;
+  border-radius: 16px;
+  background: #00295f;
+  color: #fff;
+  margin: 8px 4px auto;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list .ple-item span {
+  font-size: 0.9rem;
+  margin: auto 0;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list .ple-item span + span {
+  margin-left: 8px;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list .ple-item .remove-ple {
+  cursor: pointer;
 }

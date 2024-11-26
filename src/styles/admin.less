@@ -552,17 +552,74 @@
 
             .tile-content-editor-container {
                 margin-top: 16px; display: flex; flex-direction: column;
+                flex: 1;
 
                 textarea {
                     resize: none; border-radius: 8px; padding: 4px;
                 }
 
-                .quill  { 
+                .admin-quill  { 
                     background: rgba(255,255,255,1); 
                     border-radius: 8px;
 
                     .ql-toolbar { border-top-left-radius: 8px; border-top-right-radius: 8px;}
-                    .ql-container  { border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;}
+                    .ql-container  { 
+                        border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;
+                        height: 126px; overflow: auto;
+                    }
+                }
+
+                .pill-list-editor-container {
+                    display: flex; flex-direction: column;
+
+                    .ple-input-container { 
+                        display: flex; flex-direction: row;
+                        padding: 4px 8px; border-radius: 16px;
+                        background-color: rgba(255,255,255,1);
+
+                        .ple-input { 
+                            border: none; font-family: 'Parkinsans', serif;
+                            background: rgba(255,255,255,0.1); flex: 1;
+                        }
+
+                        .ple-btn {
+                            display: flex; flex-direction: row;
+                            padding: 4px 8px; border-radius: 16px;
+                            background: @admin-color1; color: #fff;
+                            cursor: pointer; opacity: 0.5;
+                            transition: 0.5s opacity ease-in-out;
+
+                            span { 
+                                font-size: .9rem; margin: auto 0;
+                                &+span { margin-left: 8px; }
+                            }
+
+                            &.disabled { opacity: 0.2; }
+
+                            &:hover:not(&.disabled) { opacity: 1; }
+                        }
+                    }
+
+                    .ple-list {
+                        display: flex; flex-direction: row; padding: 8px 4px;
+                        border-radius: 8px; flex-wrap: wrap; 
+                        background: #fff; overflow-y: auto; height: 100px;
+                        margin-top: 16px;
+
+                        .ple-item { 
+                            display: flex; flex-direction: row;
+                            padding: 4px 8px; border-radius: 16px;
+                            background: @admin-color1; color: #fff;
+                            margin: 8px 4px auto;
+
+                            span { 
+                                font-size: .9rem; margin: auto 0;
+                                &+span { margin-left: 8px; }
+                            }
+
+                            .remove-ple { cursor: pointer; }
+                        }
+                    }
                 }
             }
         }
