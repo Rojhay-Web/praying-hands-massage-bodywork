@@ -1,8 +1,15 @@
 import { createContext, useEffect, useRef, useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 
-import { UserContextType, User } from '../datatypes';
+import { UserContextType, User, AdminPathType } from '../datatypes';
 import { appSessKey, parseToken, buildToken } from "../utils";
+
+// Admin Components
+// import AdminHome from '../admin/pages/adminHome';
+import CmsSiteEditor from '../admin/pages/cmsEditor';
+import UserManagement from '../admin/pages/userManagement';
+import SiteEditor from '../admin/pages/siteEditor';
+import ImageGallery from '../admin/pages/imageGallery';
 
 const GET_USER_QUERY = gql`
 query getUser($id: String!){
@@ -25,14 +32,39 @@ query getUserPermissions($_id: String!){
 
 const UserContext = createContext<UserContextType | null>(null);
 
+const adminComponents: AdminPathType[] = [
+    { title: "CMS Editor", scope:"cms_admin", icon:"engineering", path:"cms_editor", element: CmsSiteEditor },
+    { title: "User Management", scope:"users", icon:"group", path:"user_management", element: UserManagement },
+    { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail", path:"image_gallery", element: ImageGallery },
+    { title: "Site Editor", scope:"site_content", icon:"dvr", path:"site_editor", element: SiteEditor },
+]; 
+
 function Provider({ children }: { children: any }) {
     const [user, setUser] = useState<User|null>(null);
     const [userToken, setUserToken] = useState<any|null>(null);
+    const [activeComponents, setActiveComponents] = useState<any>([]);
 
     const refreshPermissions = useRef(false);
 
     const [retrieveUserData,{ loading, data }] = useLazyQuery(GET_USER_QUERY, {fetchPolicy: 'no-cache'});
     const [retrieveUserPermissions,{ loading: loading_permissions, data: data_permissions }] = useLazyQuery(GET_USER_PERMISSIONS_QUERY, {fetchPolicy: 'no-cache'});    
+
+    const filterActiveComponents = () => {
+        try {
+            let filterList = adminComponents.filter((comp) => {
+                const isInScope = user?.scopes 
+                    && (comp.scope in user.scopes)
+                    && user.scopes[comp.scope] === true;
+    
+                return isInScope;
+            });
+
+            setActiveComponents(filterList);
+        }
+        catch(ex){
+            console.log(`Filtering Active Components: ${ex}`);
+        }
+    }
 
     useEffect(()=>{
         if(userToken && userToken?.access_token){
@@ -44,6 +76,8 @@ function Provider({ children }: { children: any }) {
         if(user?._id && refreshPermissions.current){
             retrieveUserPermissions({ variables: { _id: user._id }});
         }
+
+        filterActiveComponents();
     },[user, refreshPermissions.current]);
 
     useEffect(()=> {
@@ -76,9 +110,7 @@ function Provider({ children }: { children: any }) {
         }
     },[]);
 
-    //console.log(JSON.stringify(error, null, 2));
-
-    return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading, loading_permissions }}>{children}</UserContext.Provider>;
+    return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading, loading_permissions, activeComponents }}>{children}</UserContext.Provider>;
 }
 
 export default { UserContext, Provider };

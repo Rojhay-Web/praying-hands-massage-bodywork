@@ -315,7 +315,7 @@ function SiteEditor(){
         }
     },[upsert_pg_loading]);
 
-    useEffect(()=> { retrievePages({}); },[])
+    useEffect(()=> { retrievePages({}); },[]);
 
     return(
         <div className="admin-component site-editor">

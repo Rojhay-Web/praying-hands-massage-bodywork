@@ -10,6 +10,10 @@ module.exports = gql`
         
         sitePages:[SitePage]
         sitePage(key: String!):SitePage
+
+        photos(page:Int, pageSize: Int):PagedPhotos
+        photosets:[Photosets]
+        photosetImages(id:String!, page:Int, pageSize: Int):PagedPhotos
     }
 
     type Mutation {
@@ -22,6 +26,12 @@ module.exports = gql`
 
         upsertPageKey(_id: String!, key_id: String, title: String, type: String, meta:JSONObj, value:JSONObj): String
         removePageKey(_id: String!, key_id: String!):Boolean
+
+        deletePhoto(id:String!):Boolean
+        createPhotoset(title:String!, primaryPhotoId: String!, description:String):String
+        deletePhotoset(id:String!):Boolean
+        addPhotosetPhoto(id:String!, photoId: String!):Boolean
+        removePhotosetPhotos(id:String!, photoIds: [String]!):Boolean
     }
 
     input PageKeyInput {
@@ -54,12 +64,27 @@ module.exports = gql`
         scopes: JSONObj
     }
 
-    
-
     type SitePage {
         _id: String!
         title: String
         key: String
         pageKeys: [PageKey]
+    }
+
+    type Photo {
+        id: String
+        url: String
+    }
+    
+    type Photosets {
+        id: String
+        title: String
+        description: String
+        photos: Int
+    }
+
+    type PagedPhotos {
+        pagesLeft: Boolean
+        results:[Photo]
     }
 `;

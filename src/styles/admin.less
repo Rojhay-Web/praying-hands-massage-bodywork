@@ -79,7 +79,8 @@
         .component-item {
             display: flex; flex-direction: row;
             padding: 4px 8px; cursor: pointer;
-            border-radius: 16px;
+            border-radius: 16px; text-decoration: initial;
+            color: initial;
 
             span {
                 font-size: .9rem;
@@ -210,9 +211,7 @@
     flex-direction: column; flex:1; 
     margin-top: 14px; overflow-y: auto;
     overflow-x: hidden;
-    &.user-management {
-    
-    }
+    &.user-management { }
 
     /* */
     .table-action-container {
@@ -264,6 +263,25 @@
         .pill-list-title {
             font-size: 1.2rem; padding-right: 8px;
             border-right: 2px solid #000;
+
+            .title-btn {
+                padding: 4px 8px; border-radius: 16px; font-size: 1rem;
+                cursor: pointer; transition: 0.5s all ease-in-out;
+
+                &.sel {
+                    -moz-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+                    -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+                    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+                }
+
+                &.default {
+                    -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                    -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                }
+
+                &:hover:not(&.sel) { .admin-color1(background, 0.2); }
+            }
         }
 
         .pill-add-btn {
@@ -312,6 +330,8 @@
                 }
             }
         }
+
+        &.padded-container { padding: 8px; }
     }
 
     .page-title-container {

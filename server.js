@@ -3,13 +3,20 @@ require('dotenv').config();
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const app = express();
+const fileUpload = require('express-fileupload');
 
 const auth = require('./server/services/auth.service'), 
-    log = require('./server/services/log.service'),
-    util = require('./server/utils/util.js');
+    log = require('./server/services/log.service');
 
-// Initiating Cache Store
-let localCacheStore = null;
+// init local cache store
+const CacheStore = require('./server/services/cache.store.js');
+let localStore = new CacheStore();
+localStore.init();
+
+// File Upload
+app.use(fileUpload({
+    limits: { fileSize: 50 * 1024 * 1024 },
+}));
 
 // parse application/json
 app.use(express.json());
@@ -25,7 +32,7 @@ app.use((req, res, next) => {
 // Graphql Declaration
 async function startGraphQLServer() {
     const typeDefs = require('./server/graphql/typeDef.js'),
-        resolvers = require('./server/graphql/resolvers.js')(localCacheStore);
+        resolvers = require('./server/graphql/resolvers.js')(localStore);
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers , context: async ({ req }) => { 
         return await auth.validateUser(req?.headers, req?.body);
@@ -38,6 +45,8 @@ async function startGraphQLServer() {
 // Start GraphQL Server
 startGraphQLServer();
 
+// API Declaration
+app.use('/v1/api', require('./server/controllers/routes.controller.js')(localStore));
 
 // Catch all other routes and return the index file
 const server = app.listen({ port: process.env.PORT || 8080 }, ()=> {

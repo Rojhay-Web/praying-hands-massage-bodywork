@@ -3,12 +3,14 @@ const { Kind } = require('graphql/language');
 const fns = require('date-fns');
 
 const db = require('../services/db.service.js'), 
+    gallery = require('../services/gallery.service.js'),
     log = require('../services/log.service.js'),
     util = require('../utils/util.js');
 
-module.exports = function (cacheStore) {
+module.exports = function (localStore) {
     const resolver = {
         Query:{
+            /* Users */
             users: async(_obj, _args, context, _info) => {
                 // Validate Active User
                 util.activeUserCheck(context);
@@ -33,7 +35,7 @@ module.exports = function (cacheStore) {
 
                 return ret?.results;
             },
-
+            /* Site Pages */
             sitePages: async(_obj, _args, context, _info) => {
                 // Validate Active User
                 util.activeUserCheck(context);
@@ -49,6 +51,33 @@ module.exports = function (cacheStore) {
                 util.checkGQLResults(ret);
 
                 return ret?.results;
+            },
+            /* Gallery */
+            photos: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                let ret = await gallery.photos.search(args?.page, args?.pageSize);
+                util.checkGQLResults(ret);
+
+                return ret;
+            },
+            photosets: async(_obj, _args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                let ret = await gallery.photosets.getAll();
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            photosetImages: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);                
+                util.validateGQLParams(["id"], args);
+
+                let ret = await gallery.photosets.getImages(args.id, args?.page, args?.pageSize);
+                util.checkGQLResults(ret);
+
+                return ret;
             },
         },
         Mutation:{
@@ -82,7 +111,7 @@ module.exports = function (cacheStore) {
 
                 return ret?.results;
             },
-
+            /* Site Page */
             upsertSitePage: async(_obj, args, context, _info) => {
                 // Validate Active User
                 util.activeUserCheck(context);
@@ -119,6 +148,57 @@ module.exports = function (cacheStore) {
                 util.validateGQLParams(["_id","key_id"], args);
 
                 let ret = await db.removePageKey(args._id, args.key_id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            /* Gallery */
+            deletePhoto: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["id"], args);
+
+                let ret = await gallery.photos.delete(localStore, args.id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            createPhotoset: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["title", "primaryPhotoId"], args);
+
+                let ret = await gallery.photosets.create(localStore,args.title, args.primaryPhotoId, args?.description);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            deletePhotoset: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["id"], args);
+
+                let ret = await gallery.photosets.delete(localStore, args.id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            addPhotosetPhoto: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["id", "photoId"], args);
+
+                let ret = await gallery.photosets.addPhoto(localStore, args.id, args.photoId);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            removePhotosetPhotos: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["id", "photoIds"], args);
+
+                let ret = await gallery.photosets.removePhotos(localStore, args.id, args.photoIds);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

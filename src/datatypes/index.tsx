@@ -18,6 +18,12 @@ export type UserContextType = {
     user: User | null; setUser: Dispatch<SetStateAction<User|null>>;
     userToken: any | null; setUserToken: Dispatch<SetStateAction<any|null>>;
     loading: Boolean | null; loading_permissions: Boolean | null;
+    activeComponents: any;
+}
+
+export type AdminPathType = {
+    title: string;  scope: string; icon: string;
+    path:string; element: ()=> JSX.Element;
 }
 
 export type AdminTableColType = {
@@ -44,4 +50,16 @@ export type SitePage = {
     title:string;
     key?:string;
     pageKeys: PageKey[];
+}
+
+export type Photosets = {
+    id: string;
+    title: string;
+    description: string;
+    photos: number;
+}
+
+export type Photo = {
+    id: string;
+    url: string;
 }

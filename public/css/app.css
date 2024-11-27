@@ -189,6 +189,8 @@ html {
   padding: 4px 8px;
   cursor: pointer;
   border-radius: 16px;
+  text-decoration: initial;
+  color: initial;
 }
 .ctrl-panel .component-list-container .component-item span {
   font-size: 0.9rem;
@@ -420,6 +422,26 @@ html {
   padding-right: 8px;
   border-right: 2px solid #000;
 }
+.admin-component .table-action-container .pill-list-title .title-btn {
+  padding: 4px 8px;
+  border-radius: 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .table-action-container .pill-list-title .title-btn.sel {
+  -moz-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.admin-component .table-action-container .pill-list-title .title-btn.default {
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.admin-component .table-action-container .pill-list-title .title-btn:hover:not(.admin-component .table-action-container .pill-list-title .title-btn.sel) {
+  background: rgba(0, 41, 95, 0.2) !important;
+}
 .admin-component .table-action-container .pill-add-btn {
   width: 1.5rem;
   height: 1.5rem;
@@ -497,6 +519,9 @@ html {
 }
 .admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item:hover:not(.admin-component .table-action-container .pill-list-container .scroll-pill-list .pill-item.sel) {
   opacity: 1;
+}
+.admin-component .table-action-container.padded-container {
+  padding: 8px;
 }
 .admin-component .page-title-container {
   display: flex;

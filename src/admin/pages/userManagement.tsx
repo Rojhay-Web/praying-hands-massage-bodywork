@@ -3,7 +3,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import * as _ from 'lodash';
 
-import AdminTable from "./adminTable";
+import AdminTable from "../components/adminTable";
 import { AdminTableColType, User, UserContextType } from "../../datatypes";
 import userContext from "../../context/user.context";
 
@@ -56,10 +56,10 @@ function UserManagement(){
     }
 
     // GQL Queries
-    const [retrieveUsers,{ loading: users_loading, data: users_data }] = useLazyQuery(GET_USER_QUERY, {fetchPolicy: 'no-cache'});
+    const authHeader = {context: { headers: { "Authorization": user?._id }}};
+    const [retrieveUsers,{ loading: users_loading, data: users_data }] = useLazyQuery(GET_USER_QUERY, {fetchPolicy: 'no-cache', ...authHeader});
     
     // Mutations
-    const authHeader = {context: { headers: { "Authorization": user?._id }}};
     const [addUser,{ loading: add_loading, error: add_error, data: add_data }] = useMutation(ADD_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
     const [updateUser,{ loading: update_loading, error: update_error, data: update_data }] = useMutation(UPDATE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
     const [removeUser,{ loading: remove_loading, error: remove_error, data: remove_data }] = useMutation(REMOVE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});

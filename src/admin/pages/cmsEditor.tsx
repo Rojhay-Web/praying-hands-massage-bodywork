@@ -2,12 +2,12 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import * as _ from 'lodash';
-import { spiral } from 'ldrs'
+import { spiral } from 'ldrs';
 
 import userContext from "../../context/user.context";
 
 import { AdminTableColType, SitePage, UserContextType } from "../../datatypes";
-import AdminTable from "./adminTable";
+import AdminTable from "../components/adminTable";
 
 const MAX_NEW_ROWS = 1, NEW_PAGE_KEY=".~.";
 const tableSetup: AdminTableColType[] = [
