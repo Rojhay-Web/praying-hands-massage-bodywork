@@ -29,6 +29,7 @@ module.exports = gql`
 
         deletePhoto(id:String!):Boolean
         createPhotoset(title:String!, primaryPhotoId: String!, description:String):String
+        editPhotoset(id:String!, title:String!, description:String):String
         deletePhotoset(id:String!):Boolean
         addPhotosetPhoto(id:String!, photoId: String!):Boolean
         removePhotosetPhotos(id:String!, photoIds: [String]!):Boolean

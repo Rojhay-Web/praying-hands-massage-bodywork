@@ -145,6 +145,25 @@ module.exports = {
                return { "error": `Creating Photoset`}; 
             }
         },
+        edit: async function(localStore, id, title, description=""){
+            try {
+                const { elevatedFlickr } = runElevatedFlickr(localStore);
+                if(!elevatedFlickr) {
+                    return { error: 'Authenticating For This Request' };
+                }
+
+                const res = await elevatedFlickr("flickr.photosets.editMeta", {
+                    title: title, description: description,
+                    photoset_id: id
+                });
+
+                return { results: res?.photoset?.id ?? null };
+            }
+            catch(ex){
+               log.error(`Editiing Photoset: ${ex}`);
+               return { "error": `Editiing Photoset`}; 
+            }
+        },
         delete: async function(localStore, id){
             try {
                 const { elevatedFlickr } = runElevatedFlickr(localStore);

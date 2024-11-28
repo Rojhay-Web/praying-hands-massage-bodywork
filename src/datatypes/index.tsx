@@ -53,10 +53,10 @@ export type SitePage = {
 }
 
 export type Photosets = {
-    id: string;
+    id?: string;
     title: string;
     description: string;
-    photos: number;
+    photos?: number;
 }
 
 export type Photo = {

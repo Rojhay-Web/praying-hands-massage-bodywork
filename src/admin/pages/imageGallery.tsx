@@ -4,8 +4,12 @@ import { toast } from 'react-toastify';
 import * as _ from 'lodash';
 import { spiral } from 'ldrs';
 
+import GalleryPagination from "../components/galleryPagination";
+
 import userContext from "../../context/user.context";
 import { Photosets, Photo, UserContextType } from "../../datatypes";
+
+const GALLERY_PAGE_SIZE = 15;
 
 const GET_PHOTOSETS_QUERY = gql`
     query getPhotosets {
@@ -38,10 +42,13 @@ GET_PHOTOSET_PHOTOS_QUERY = gql`
     }`;
 
 function ImageGallery(){
-    const [selPhotoset, setSelPhotoset] = useState("");
+    const [selPhotoset, setSelPhotoset] = useState<Photosets | null>(null);
     const [displayPhotos, setDisplayPhotos] = useState<Photo[]>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasPagesLeft, setHasPagesLeft] = useState(false);
 
     const pillScrollRef = useRef<HTMLDivElement>(null);
+    const pageRender = useRef(false);
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
 
@@ -87,27 +94,92 @@ function ImageGallery(){
         }
     }
 
+    const updatePage = (dir:number) => {
+        try {
+            if((dir < 0 && currentPage > 1) || (dir > 0 && hasPagesLeft)) {
+                setCurrentPage((d)=>{
+                    return d + dir;
+                });
+            }
+        }
+        catch(ex){
+            console.log(`Updating Page: ${ex}`);
+        }
+    }
+
+    const handleChange = (e:any) => {
+        try {
+            let { name, value } = e.target;
+
+            if(selPhotoset) {
+                setSelPhotoset((d: any)=> {
+                    let tmp = _.cloneDeep(d);
+                    return {...tmp, [name]:value };
+                });
+            }
+        }
+        catch(ex){
+            console.log(`Updating Page: ${ex}`);
+        }
+    }
+
+    const createPhotoset = () =>{
+        try {
+            setSelPhotoset({ title: "", description: "" });
+        }
+        catch(ex){
+            console.log(`Creating Photoset: ${ex}`);
+        }
+    }
+
+    const getImages = () => {
+        try {
+            if(selPhotoset === null){
+                retrieveAllImages({ variables: { page: currentPage, pageSize: GALLERY_PAGE_SIZE }});
+            }
+            else if(!selPhotoset?.id){
+                setDisplayPhotos([]);
+            }
+            else {
+                retrieveGalleryImages({ variables: { id: selPhotoset.id, page: currentPage, pageSize: GALLERY_PAGE_SIZE }});
+            }
+        }
+        catch(ex){
+            console.log(`Getting Photos: ${ex}`);
+        }
+    }
+
     /* Data Functions */
 
     useEffect(()=>{
-        if(selPhotoset?.length === 0){
-            retrieveAllImages({ variables: { page: 1, pageSize: 20 }});
+        if(currentPage > 1){
+            setCurrentPage(1);
         }
         else {
-            retrieveGalleryImages({ variables: { id:selPhotoset, page: 1, pageSize: 20 }});
+            getImages();
         }
     },[selPhotoset]);
+
+    useEffect(()=> {
+        if(pageRender?.current) {
+            getImages();
+        }
+
+        pageRender.current = true;
+    },[currentPage]);
 
     /* Data Based on Action */
     useEffect(()=>{
         if(photos_data?.photos) {
-            setDisplayPhotos(photos_data?.photos.results);
+            setDisplayPhotos(photos_data?.photos?.results);
+            setHasPagesLeft(photos_data?.photos?.pagesLeft);
         }
     },[photos_data]);
 
     useEffect(()=>{
-        if(photoset_photos_data?.photos) {
-            setDisplayPhotos(photoset_photos_data?.photosetImages.results);
+        if(photoset_photos_data?.photosetImages) {
+            setDisplayPhotos(photoset_photos_data?.photosetImages?.results);
+            setHasPagesLeft(photoset_photos_data?.photosetImages?.pagesLeft);
         }
     },[photoset_photos_data]);
 
@@ -117,29 +189,62 @@ function ImageGallery(){
         <div className="admin-component image-gallery">
             <div className="table-action-container padded-container">
                 <div className="pill-list-title">
-                    <div className={`title-btn ${selPhotoset === "" ? 'sel' : 'default'}`} onClick={()=> { setSelPhotoset(""); }}>All Images</div>
+                    <div className={`title-btn ${selPhotoset === null ? 'sel' : 'default'}`} onClick={()=> { setSelPhotoset(null); }}>All Images</div>
+                </div>
+
+                <div className={`pill-add-btn ${selPhotoset && !selPhotoset?.id ? "text" : ""}`} onClick={createPhotoset}>
+                    <span className="material-symbols-outlined">add</span>
+                    <span className="new-page-title">New Gallery</span>
                 </div>
 
                 <div className="pill-list-container">
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "prev")}>chevron_left</span>
                     <div className="scroll-pill-list" ref={pillScrollRef}>
                         {photosets_data?.photosets.map((pg: Photosets, i: number)=>
-                            <div className={`pill-item ${pg.id === selPhotoset ? 'sel' : ''}`} key={i} onClick={()=> { if(pg.id) setSelPhotoset(pg.id); }}>{pg.title}</div>
+                            <div className={`pill-item ${pg.id === selPhotoset?.id ? 'sel' : ''}`} key={i} onClick={()=> { if(pg.id) setSelPhotoset(pg); }}>{pg.title}</div>
                         )}
                     </div>
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "next")}>chevron_right</span>
                 </div>
             </div>
+            
+            <div className="page-title-container">
+                {selPhotoset != null ?
+                    <input className='title-input' type="text" name="title" placeholder="Enter Album Title..." value={selPhotoset?.title} onChange={handleChange} />
+                    : <></>
+                }
+
+                <div className="title-btn-container bookend">
+                    <div className={`add-key-btn ${selPhotoset ? '' : 'hide'}`} onClick={()=> { }}>
+                        <span className="material-symbols-outlined">save</span>
+                        <span>Save Album Info</span>
+                    </div>
+                    <div className={`add-key-btn remove ${selPhotoset ? '' : 'hide'}`} onClick={()=> { }}>
+                        <span className="material-symbols-outlined">delete</span>
+                        <span>Delete Album</span>
+                    </div>
+                </div>
+            </div>
 
             {(photos_loading || photoset_photos_loading) ?
-                <div><l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral></div> : 
+                <div className="admin-loading">
+                    <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral>
+                </div> : 
                 <>
-                    {displayPhotos?.length > 0 ?
-                        <div>
-                            
-                        </div> 
-                        : <></>
-                    }
+                    <div className="admin-gallery-container">
+                        <div className="photo-container add">
+                            <span className="material-symbols-outlined">cloud_upload</span>
+                            <span className="photo-text">Upload New Image</span>
+                        </div>
+
+                        {displayPhotos.map((photo,i)=>
+                            <div className="photo-container" key={i}>
+                                <img src={photo.url} alt="admin gallery item" />
+                            </div>
+                        )}      
+                    </div>
+
+                    <GalleryPagination page={currentPage} hasPagesLeft={hasPagesLeft} updatePage={updatePage} />
                 </>
             }
         </div>

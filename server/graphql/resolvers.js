@@ -173,6 +173,16 @@ module.exports = function (localStore) {
 
                 return ret?.results;
             },
+            editPhotoset: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["title", "id"], args);
+
+                let ret = await gallery.photosets.edit(localStore, args.id, args.title, args?.description);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
             deletePhotoset: async(_obj, args, context, _info) => {
                 // Validate Active User
                 //util.activeUserCheck(context);
