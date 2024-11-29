@@ -201,6 +201,169 @@ html {
 .gallery-page-container .page-icon-container .pg-icon + .pg-icon {
   margin-left: 16px;
 }
+.admin-image-mapper-container .rodal-dialog {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title {
+  display: flex;
+  flex-direction: column;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container .title-btn {
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 8px;
+  padding: 4px 16px;
+  font-weight: bold;
+  text-transform: capitalize;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container .title-btn + .title-btn {
+  margin-left: 16px;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container .title-btn.sel {
+  background-color: #00295f;
+  color: #fff;
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container .title-btn:hover:not(.admin-image-mapper-container .rodal-dialog .admin-image-mappery-title .title-btn-container .title-btn.sel) {
+  background-color: rgba(150, 150, 150, 0.3);
+}
+.admin-image-mapper-container .rodal-dialog .mapper-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin: 32px 0;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .ctrl {
+  font-size: 1.8rem;
+  opacity: 0.5;
+  margin: auto 0;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .ctrl:hover {
+  opacity: 1;
+  color: #00295f;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 16px;
+  transition: 0.5s all ease-in-out;
+  overflow: hidden;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.empty {
+  background-color: rgba(150, 150, 150, 0.5);
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active {
+  position: relative;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active img {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+  z-index: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span {
+  display: none;
+  margin: 0 auto;
+  font-size: 2rem;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.upload {
+  color: #eed201;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.delete {
+  color: #960000;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.success {
+  color: #960000;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.warning {
+  color: #009600;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover .photo-icon {
+  background: rgba(150, 0, 0, 0.2);
+  opacity: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover .photo-icon .delete {
+  display: block;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content {
+  flex: 1;
+  overflow: auto;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container {
+  width: calc(25% - 24px);
+  height: calc(50% - 24px);
+  margin: 8px;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 4px solid rgba(0, 0, 0, 0);
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container img {
+  object-fit: cover;
+  width: 100%;
+  min-height: 100%;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container:hover {
+  border-color: #640000;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container:hover img {
+  opacity: 0.5;
+}
 /* Admin Ctrl Section*/
 .ctrl-panel {
   font-family: 'Parkinsans', serif;

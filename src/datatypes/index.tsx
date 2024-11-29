@@ -63,3 +63,8 @@ export type Photo = {
     id: string;
     url: string;
 }
+
+export type FilePhoto = {
+    id: string; url: string;
+    type: string; file?: File;
+}

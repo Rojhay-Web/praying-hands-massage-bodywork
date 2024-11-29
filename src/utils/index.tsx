@@ -34,3 +34,9 @@ export function buildToken(user: User){
 
     return token;
 }
+
+export const emptyList = (length: number) => {
+    let ret: any[]  = [];
+    for(let i=0; i < length; i++){ ret.push(i); }
+    return ret;
+  }

@@ -8,6 +8,7 @@ import GalleryPagination from "../components/galleryPagination";
 
 import userContext from "../../context/user.context";
 import { Photosets, Photo, UserContextType } from "../../datatypes";
+import GalleryCtrlModal from "../components/galleryCtrlModal";
 
 const GALLERY_PAGE_SIZE = 15;
 
@@ -46,6 +47,7 @@ function ImageGallery(){
     const [displayPhotos, setDisplayPhotos] = useState<Photo[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasPagesLeft, setHasPagesLeft] = useState(false);
+    const [openModal, setOpenModal] = useState(false); 
 
     const pillScrollRef = useRef<HTMLDivElement>(null);
     const pageRender = useRef(false);
@@ -149,6 +151,37 @@ function ImageGallery(){
         }
     }
 
+    const getMapperTabs = () => {
+        return ["select image","upload"];
+        /*let ret: string[] = [];
+        try {
+            ret = (selPhotoset?.id ? ["select image","upload"] : ["upload"]);
+        }
+        catch(ex){
+            console.log(`Getting Mapper Tabls: ${ex}`);
+        }
+
+        return ret;*/
+    }
+
+    const closeModal = (photoset: Photo[]) => {
+        try {
+            setOpenModal(false);
+        }
+        catch(ex){
+            console.log(`Closing Modal: ${ex}`);
+        }
+    }
+
+    const modalSecondAction = (tab: string, ids: string[]) => {
+        try {
+
+        }
+        catch(ex){
+            console.log(`Performing modal second action: ${ex}`);
+        }
+    }
+
     /* Data Functions */
 
     useEffect(()=>{
@@ -232,7 +265,7 @@ function ImageGallery(){
                 </div> : 
                 <>
                     <div className="admin-gallery-container">
-                        <div className="photo-container add">
+                        <div className="photo-container add" onClick={()=> { setOpenModal(true); }}>
                             <span className="material-symbols-outlined">cloud_upload</span>
                             <span className="photo-text">Upload New Image</span>
                         </div>
@@ -247,6 +280,9 @@ function ImageGallery(){
                     <GalleryPagination page={currentPage} hasPagesLeft={hasPagesLeft} updatePage={updatePage} />
                 </>
             }
+
+            <GalleryCtrlModal visible={openModal} tabs={getMapperTabs()} maxSelect={7}
+                 secondAction={modalSecondAction} secondActionLoading={false} closeAction={closeModal} />
         </div>
     );
 }
