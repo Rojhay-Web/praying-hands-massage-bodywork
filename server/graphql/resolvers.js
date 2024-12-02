@@ -193,12 +193,12 @@ module.exports = function (localStore) {
 
                 return ret?.results;
             },
-            addPhotosetPhoto: async(_obj, args, context, _info) => {
+            addPhotosetPhotos: async(_obj, args, context, _info) => {
                 // Validate Active User
                 //util.activeUserCheck(context);
-                util.validateGQLParams(["id", "photoId"], args);
+                util.validateGQLParams(["id", "photoIds"], args);
 
-                let ret = await gallery.photosets.addPhoto(localStore, args.id, args.photoId);
+                let ret = await gallery.photosets.addPhotos(localStore, args.id, args.photoIds);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

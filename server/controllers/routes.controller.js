@@ -12,7 +12,6 @@ const storage = multer.diskStorage({
     destination: function (req, file, cb) { cb(null, './uploads'); },
     filename: function (req, file, cb) { cb(null, Date.now() + file.originalname); }
 });
-
 const acceptedFiles = { 'image/jpeg': true, 'image/png': true };
 const fileFilter = (_req, file, cb) => {
     cb(null, (file.mimetype in acceptedFiles));
@@ -25,9 +24,9 @@ const upload = multer({
 });
 
 module.exports = function(localStore) {
-    async function uploadImage(req, res, _next){
+    async function uploadImage(req, res){
         try {
-            const ret = await gallery.photos.upload(localStore, req.file.path, req?.body?.title);
+            const ret = await gallery.photos.upload(localStore, req.file.path, req?.body?.name);
             res.status(response.SUCCESS.OK).json(ret);
         }
         catch(ex){
@@ -36,7 +35,7 @@ module.exports = function(localStore) {
         }
     }
 
-    router.post("/image/upload", upload.single('imageData'), uploadImage);
+    router.post("/image", upload.single('image'), uploadImage);
 
     return router;
 }

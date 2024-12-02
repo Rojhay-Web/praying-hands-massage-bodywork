@@ -8,6 +8,7 @@ import 'react-quill-new/dist/quill.snow.css';
 import userContext from "../../context/user.context";
 
 import { PageKey, SitePage, UserContextType } from "../../datatypes";
+import { handleGQLError } from "../../utils";
 
 type KeyEditorTileType = {
     pageKey: PageKey, updatePageData: (data: any) => void
@@ -201,17 +202,6 @@ function SiteEditor(){
     const pillScrollRef = useRef<HTMLDivElement>(null);
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
-
-    const handleGQLError = (err:any) => {
-        try {
-            toast.error(`Sorry we encountered an error. [${err}]`, { position: "top-right",
-                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
-                draggable: true, progress: undefined, theme: "light" });
-        }
-        catch(ex){
-            console.log(`Handling Error: ${ex}`);
-        }
-    }
 
     // GQL Queries
     const authHeader = {context: { headers: { "Authorization": user?._id }}};

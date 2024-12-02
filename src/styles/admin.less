@@ -144,12 +144,31 @@
 
                                     &.upload { color: rgba(238,210,1,1); }
                                     &.delete { color: rgba(150,0,0,1); }
-                                    &.success { color: rgba(150,0,0,1); }
-                                    &.warning { color: rgba(0,150,0,1); }
+                                    &.success { color: rgba(0,150,0,1); }
+                                    &.warning { color: rgba(255,140,0,1); }
                                 }
                             }
 
-                            &:hover { 
+                            &.uploading { 
+                                .photo-icon { 
+                                    background: rgba(238,210,1,0.2); opacity: 1; cursor: default;
+                                    .upload { display: block; } 
+                                }
+                            }
+                            &.success { 
+                                .photo-icon { 
+                                    background: rgba(0,150,0,0.2); opacity: 1; cursor: default;
+                                    .success { display: block; } 
+                                }
+                            }
+                            &.warning { 
+                                .photo-icon { 
+                                    background: rgba(255,140,0,0.2); opacity: 1; cursor: default;
+                                    .warning { display: block; } 
+                                }
+                            }
+
+                            &:hover:not(&.uploading) { 
                                 .photo-icon { 
                                     background: rgba(150,0,0,0.2); opacity: 1;
                                     .delete { display: block; } 
@@ -177,7 +196,98 @@
                             transition: 0.5s all ease-in-out;
                         }
 
+                        &.sel { border-color: @admin-color1; img { filter: grayscale(100%); }}
+
                         &:hover { border-color: rgba(100,0,0,1); img { opacity: 0.5; }}
+                    }
+                }
+
+                &.upload-container {
+                    display: flex; flex-direction: column; justify-content: center;
+                    border: 2px dashed @admin-color1; border-radius: 8px; margin: 16px;
+                    cursor: pointer; transition: 0.5s all ease-in-out;
+
+                    .material-symbols-outlined { 
+                        font-size: 3rem; margin: 0 auto 16px;
+                        color: rgba(150,150,150,1); 
+                    }
+
+                    .title { 
+                        font-size: 1rem; text-align: center;
+
+                        &.sub { color: rgba(150,150,150,1); }
+                    }
+
+                    &:hover { background-color: rgba(150,150,150,0.2); }
+                }
+            }
+
+            .btn-container {
+                display: flex; flex-direction: row; justify-content: center;
+                margin: 16px 0;
+
+                .action-btn {
+                    padding: 4px 16px; border-radius: 8px; opacity: 0.5;
+                    font-size: .9rem; cursor: pointer; 
+                    transition: 0.5s all ease-in-out;
+
+                    &.default { color: #fff; background: @admin-color1;  }
+                    &.cancel { color: rgba(150,0,0,1); background: @admin-background; }
+                    &.disable { opacity: 0.1; cursor: default; }
+
+                    &:hover:not(&.disable) { opacity: 1; }
+                    &+.action-btn { margin-left: 16px; }
+                }
+            }
+
+            .action-panel {
+                display: flex; flex-direction: row; flex: 1;
+
+                .panel-steps {
+                    display: flex; flex-direction: column; justify-content: center;
+                    padding: 24px; .admin-color1(background, 0.1); border-radius: 8px;
+
+                    .step {
+                        display: flex; flex-direction: row; opacity: 0.7;
+
+                        .step-icon { 
+                            margin-right: 8px; width: 2rem; height: 2rem;
+                            border-radius: 50%; background-color: rgba(200,200,200,1);
+                            display: flex; flex-direction: column; justify-content: center;
+
+                            span { color: rgba(100,100,100,1); margin: 0 auto; opacity: 0; }
+                            &.complete { span { opacity: 1; }}
+                        }
+
+                        .title { align-content: center; color: rgba(0,0,0,1); }
+
+                        &+.step { margin-top: 16px; }
+                        &.active { opacity: 1; .title { color: rgba(200,200,200,1); }}
+                    }
+                }
+
+                .panel-content {
+                    flex: 1; display: flex; flex-direction: column; justify-content: center;
+
+                    .panel-content-text {
+                        font-size: 1rem; text-align: center;
+                        &.title { font-weight: bold; margin-bottom: 16px; }
+                    }
+
+                    .loading-animation { 
+                        color: rgba(150,150,150,1); text-align: center;
+                        margin: 0 auto; display: flex; flex-direction: column;
+
+                        .panel-content-text { margin-top: 8px; }
+                    }
+
+                    .action-link {
+                        background: rgba(150,150,150,0.3); margin: 16px auto 0;
+                        padding: 4px 16px; border-radius: 8px; opacity: 0.5;
+                        font-size: .9rem; cursor: pointer; 
+                        transition: 0.5s all ease-in-out;
+
+                        &:hover { opacity: 1; }
                     }
                 }
             }
@@ -803,6 +913,7 @@
 
             img { 
                 height: 100%; object-fit: cover; position: relative;
+                transition: 0.5s all ease-in-out; 
             }
 
             &.add { 
@@ -815,7 +926,10 @@
                 &:hover { opacity: 1; }
             }
 
-            &:hover:not(&.add) { .admin-color1(border-color, 0.7); }
+            &:hover:not(&.add) { 
+                border-color:rgba(100,0,0,1); 
+                img { filter: grayscale(75%); }
+            }
         }
     }
 }

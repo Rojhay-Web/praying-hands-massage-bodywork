@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 import AdminTable from "../components/adminTable";
 import { AdminTableColType, User, UserContextType } from "../../datatypes";
 import userContext from "../../context/user.context";
+import { handleGQLError } from "../../utils";
 
 const MAX_NEW_USERS = 1;
 const tableSetup: AdminTableColType[] = [
@@ -43,17 +44,6 @@ function UserManagement(){
     const [newUsers, setNewUsers] = useState<any>([]);
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
-
-    const handleGQLError = (err:any) => {
-        try {
-            toast.error(`Sorry we encountered an error. [${err}]`, { position: "top-right",
-                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
-                draggable: true, progress: undefined, theme: "light" });
-        }
-        catch(ex){
-            console.log(`Handling Error: ${ex}`);
-        }
-    }
 
     // GQL Queries
     const authHeader = {context: { headers: { "Authorization": user?._id }}};

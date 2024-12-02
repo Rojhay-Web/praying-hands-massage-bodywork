@@ -321,16 +321,40 @@ html {
   color: #960000;
 }
 .admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.success {
-  color: #960000;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.warning {
   color: #009600;
 }
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover .photo-icon {
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.warning {
+  color: #ff8c00;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon {
+  background: rgba(238, 210, 1, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon .upload {
+  display: block;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon {
+  background: rgba(0, 150, 0, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon .success {
+  display: block;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon {
+  background: rgba(255, 140, 0, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon .warning {
+  display: block;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon {
   background: rgba(150, 0, 0, 0.2);
   opacity: 1;
 }
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover .photo-icon .delete {
+.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon .delete {
   display: block;
 }
 .admin-image-mapper-container .rodal-dialog .gallery-section .section-content {
@@ -358,11 +382,160 @@ html {
   min-height: 100%;
   transition: 0.5s all ease-in-out;
 }
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container.sel {
+  border-color: #00295f;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container.sel img {
+  filter: grayscale(100%);
+}
 .admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container:hover {
   border-color: #640000;
 }
 .admin-image-mapper-container .rodal-dialog .gallery-section .section-content.image-container .photo-container:hover img {
   opacity: 0.5;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.upload-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px dashed #00295f;
+  border-radius: 8px;
+  margin: 16px;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.upload-container .material-symbols-outlined {
+  font-size: 3rem;
+  margin: 0 auto 16px;
+  color: #969696;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.upload-container .title {
+  font-size: 1rem;
+  text-align: center;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.upload-container .title.sub {
+  color: #969696;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .section-content.upload-container:hover {
+  background-color: rgba(150, 150, 150, 0.2);
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 16px 0;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn {
+  padding: 4px 16px;
+  border-radius: 8px;
+  opacity: 0.5;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn.default {
+  color: #fff;
+  background: #00295f;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn.cancel {
+  color: #960000;
+  background: #aaaaaa;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn.disable {
+  opacity: 0.1;
+  cursor: default;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn:hover:not(.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn.disable) {
+  opacity: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .btn-container .action-btn + .action-btn {
+  margin-left: 16px;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  background: rgba(0, 41, 95, 0.1) !important;
+  border-radius: 8px;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step {
+  display: flex;
+  flex-direction: row;
+  opacity: 0.7;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step .step-icon {
+  margin-right: 8px;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: #c8c8c8;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step .step-icon span {
+  color: #646464;
+  margin: 0 auto;
+  opacity: 0;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step .step-icon.complete span {
+  opacity: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step .title {
+  align-content: center;
+  color: #000000;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step + .step {
+  margin-top: 16px;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step.active {
+  opacity: 1;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-steps .step.active .title {
+  color: #c8c8c8;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .panel-content-text {
+  font-size: 1rem;
+  text-align: center;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .panel-content-text.title {
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .loading-animation {
+  color: #969696;
+  text-align: center;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .loading-animation .panel-content-text {
+  margin-top: 8px;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .action-link {
+  background: rgba(150, 150, 150, 0.3);
+  margin: 16px auto 0;
+  padding: 4px 16px;
+  border-radius: 8px;
+  opacity: 0.5;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .action-link:hover {
+  opacity: 1;
 }
 /* Admin Ctrl Section*/
 .ctrl-panel {
@@ -1178,6 +1351,7 @@ html {
   height: 100%;
   object-fit: cover;
   position: relative;
+  transition: 0.5s all ease-in-out;
 }
 .admin-component .admin-gallery-container .photo-container.add {
   background-color: #aaaaaa;
@@ -1195,5 +1369,8 @@ html {
   opacity: 1;
 }
 .admin-component .admin-gallery-container .photo-container:hover:not(.admin-component .admin-gallery-container .photo-container.add) {
-  border-color: rgba(0, 41, 95, 0.7) !important;
+  border-color: #640000;
+}
+.admin-component .admin-gallery-container .photo-container:hover:not(.admin-component .admin-gallery-container .photo-container.add) img {
+  filter: grayscale(75%);
 }

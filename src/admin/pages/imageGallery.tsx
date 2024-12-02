@@ -1,14 +1,14 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { toast } from 'react-toastify';
 import * as _ from 'lodash';
 import { spiral } from 'ldrs';
 
+import userContext from "../../context/user.context";
+import GalleryCtrlModal from "../components/galleryCtrlModal";
 import GalleryPagination from "../components/galleryPagination";
 
-import userContext from "../../context/user.context";
-import { Photosets, Photo, UserContextType } from "../../datatypes";
-import GalleryCtrlModal from "../components/galleryCtrlModal";
+import { Photosets, Photo, UserContextType, FilePhoto } from "../../datatypes";
+import { handleGQLError } from "../../utils";
 
 const GALLERY_PAGE_SIZE = 15;
 
@@ -40,6 +40,26 @@ GET_PHOTOSET_PHOTOS_QUERY = gql`
                 url
             }
         }
+    }`,
+ADD_TO_PHOTOSET = gql`
+     mutation addPhotosToPhotoset($id: String!, $photoIds:[String]!){
+	    addPhotosetPhotos(id: $id, photoIds: $photoIds)
+    }`,
+REMOVE_FROM_PHOTOSET = gql`
+     mutation removePhotosFromPhotoset($id: String!, $photoIds:[String]!){
+	    removePhotosetPhotos(id: $id, photoIds: $photoIds)
+    }`,
+EDIT_PHOTOSET = gql`
+    mutation editPhotosetInfo($id:String!, $title:String!, $description:String){
+       editPhotoset(id: $id, title: $title, description: $description)
+    }`,
+DELETE_PHOTOSET = gql`
+    mutation deletePhotoset($id:String!){
+       deletePhotoset(id: $id)
+    }`,
+DELETE_PHOTO = gql`
+    mutation removePhoto($id: String!){
+       deletePhoto(id: $id)
     }`;
 
 function ImageGallery(){
@@ -54,23 +74,19 @@ function ImageGallery(){
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
 
-    const handleGQLError = (err:any) => {
-        try {
-            toast.error(`Sorry we encountered an error. [${err}]`, { position: "top-right",
-                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
-                draggable: true, progress: undefined, theme: "light" });
-        }
-        catch(ex){
-            console.log(`Handling Error: ${ex}`);
-        }
-    }
-
     // GQL Queries
     const authHeader = {context: { headers: { "Authorization": user?._id }}};
     const [retrievePhotosets,{ loading: photosets_loading, data: photosets_data }] = useLazyQuery(GET_PHOTOSETS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
     const [retrieveAllImages,{ loading: photos_loading, data: photos_data, refetch: photos_refetch }] = useLazyQuery(SEARCH_PHOTOS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
     const [retrieveGalleryImages,{ loading: photoset_photos_loading, data: photoset_photos_data, refetch: photoset_photos_refetch }] = useLazyQuery(GET_PHOTOSET_PHOTOS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
 
+    // Mutations
+    const [addPhotosToSet,{ loading: add_photos_loading, data: add_photos_data }] = useMutation(ADD_TO_PHOTOSET, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [removePhotosFromSet,{ loading: remove_photos_loading, data: remove_photos_data }] = useMutation(REMOVE_FROM_PHOTOSET, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [editPhotoset,{ loading: edit_photoset_loading, data: edit_photoset_data }] = useMutation(EDIT_PHOTOSET, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [deletePhotoset,{ loading: delete_photoset_loading, data: delete_photoset_data }] = useMutation(DELETE_PHOTOSET, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [removePhoto,{ loading: delete_photo_loading, data: delete_photo_data }] = useMutation(DELETE_PHOTO, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    
     /* Application Functions*/
     const controlSlider = (ref:any, dir:string) => {
         try {
@@ -152,20 +168,37 @@ function ImageGallery(){
     }
 
     const getMapperTabs = () => {
-        return ["select image","upload"];
-        /*let ret: string[] = [];
+        let ret: string[] = [];
         try {
             ret = (selPhotoset?.id ? ["select image","upload"] : ["upload"]);
         }
         catch(ex){
-            console.log(`Getting Mapper Tabls: ${ex}`);
+            console.log(`Getting Mapper Tabs: ${ex}`);
         }
 
-        return ret;*/
+        return ret;
     }
 
-    const closeModal = (photoset: Photo[]) => {
+    const getSecondActionTitle = () => {
+        let ret: string | undefined = undefined;
         try {
+            ret = (selPhotoset?.id ? "Add To Set" : undefined);
+        }
+        catch(ex){
+            console.log(`Getting Second Action Title: ${ex}`);
+        }
+
+        return ret;
+    }
+
+    const closeModal = (photoset: FilePhoto[]) => {
+        try {
+            if(selPhotoset?.id){
+                photoset_photos_refetch();
+            }
+            else {
+                photos_refetch();
+            }
             setOpenModal(false);
         }
         catch(ex){
@@ -175,15 +208,37 @@ function ImageGallery(){
 
     const modalSecondAction = (tab: string, ids: string[]) => {
         try {
-
+            if(selPhotoset?.id){
+                addPhotosToSet({ variables: { id: selPhotoset.id, photoIds: ids }});
+            }
         }
         catch(ex){
             console.log(`Performing modal second action: ${ex}`);
         }
     }
 
-    /* Data Functions */
+    const deletePhoto = (id:String) => {
+        if(window.confirm(`Are you sure you want to ${selPhotoset?.id ? 'REMOVE this photo from the set':'DELETE this photo perminantly'}?`)){
+            if(selPhotoset?.id){
+                removePhotosFromSet({ variables: { id:selPhotoset?.id, photoIds: [id] }});
+            }
+            else {
+                removePhoto({ variables: { id:id }});
+            }
+        }
+    }
 
+    const updatePhotoset = () =>{
+        editPhotoset({ variables: { id:selPhotoset?.id, title:selPhotoset?.title, description:selPhotoset?.description }});
+    }
+
+    const removePhotoset = () =>{
+        if(window.confirm('Are you sure you want to DELETE this album PERMANENTLY?')){
+            deletePhotoset({ variables: { id:selPhotoset?.id }});
+        }
+    }
+
+    /* Data Functions */
     useEffect(()=>{
         if(currentPage > 1){
             setCurrentPage(1);
@@ -191,7 +246,7 @@ function ImageGallery(){
         else {
             getImages();
         }
-    },[selPhotoset]);
+    },[selPhotoset?.id]);
 
     useEffect(()=> {
         if(pageRender?.current) {
@@ -215,6 +270,27 @@ function ImageGallery(){
             setHasPagesLeft(photoset_photos_data?.photosetImages?.pagesLeft);
         }
     },[photoset_photos_data]);
+
+    /* Remove Photos */
+    useEffect(()=>{
+        if(!delete_photo_loading && delete_photo_data?.deletePhoto){
+            photos_refetch();
+        }
+    },[delete_photo_loading]);
+
+    useEffect(()=>{
+        if(!remove_photos_loading && remove_photos_data?.removePhotosetPhotos){
+            photoset_photos_refetch();
+        }
+    },[remove_photos_loading]);
+
+    /* Update Photosets */
+    useEffect(()=>{
+        if((!delete_photoset_loading && delete_photoset_data?.deletePhotoset) ||
+        (!edit_photoset_loading && edit_photoset_data?.editPhotoset)){
+            retrievePhotosets({}); setSelPhotoset(null);
+        }
+    },[delete_photoset_loading, edit_photoset_loading]);
 
     useEffect(()=> { retrievePhotosets({}); spiral.register(); },[]);
 
@@ -248,18 +324,18 @@ function ImageGallery(){
                 }
 
                 <div className="title-btn-container bookend">
-                    <div className={`add-key-btn ${selPhotoset ? '' : 'hide'}`} onClick={()=> { }}>
+                    <div className={`add-key-btn ${selPhotoset ? '' : 'hide'}`} onClick={updatePhotoset}>
                         <span className="material-symbols-outlined">save</span>
                         <span>Save Album Info</span>
                     </div>
-                    <div className={`add-key-btn remove ${selPhotoset ? '' : 'hide'}`} onClick={()=> { }}>
+                    <div className={`add-key-btn remove ${selPhotoset ? '' : 'hide'}`} onClick={removePhotoset}>
                         <span className="material-symbols-outlined">delete</span>
                         <span>Delete Album</span>
                     </div>
                 </div>
             </div>
 
-            {(photos_loading || photoset_photos_loading) ?
+            {(photos_loading || photoset_photos_loading || delete_photo_loading || remove_photos_loading) ?
                 <div className="admin-loading">
                     <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral>
                 </div> : 
@@ -271,7 +347,7 @@ function ImageGallery(){
                         </div>
 
                         {displayPhotos.map((photo,i)=>
-                            <div className="photo-container" key={i}>
+                            <div className="photo-container" key={i} onClick={()=> { deletePhoto(photo.id); }}>
                                 <img src={photo.url} alt="admin gallery item" />
                             </div>
                         )}      
@@ -281,8 +357,9 @@ function ImageGallery(){
                 </>
             }
 
-            <GalleryCtrlModal visible={openModal} tabs={getMapperTabs()} maxSelect={7}
-                 secondAction={modalSecondAction} secondActionLoading={false} closeAction={closeModal} />
+            <GalleryCtrlModal visible={openModal} tabs={getMapperTabs()} maxSelect={7} secondActionTitle={getSecondActionTitle()}
+                 secondAction={modalSecondAction} secondActionLoading={add_photos_loading} hasSecondAction={!!selPhotoset?.id} 
+                 secondActionStatus={add_photos_data?.addPhotosetPhotos} closeAction={closeModal} />
         </div>
     );
 }

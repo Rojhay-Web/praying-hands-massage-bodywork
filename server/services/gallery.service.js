@@ -45,14 +45,14 @@ module.exports = {
                 }
 
                 const imgFullPath = path.resolve(imagePath);
-                const id = await upload(imgFullPath, {
+                const data = await upload(imgFullPath, {
                     ...(title ? { title: title } : {})
                 });
 
                 // Remove Temp File From Server
                 fs.unlinkSync(imgFullPath);
 
-                return { results: id ?? null };
+                return { results: data?.id ?? null };
             }
             catch(ex){
                 log.error(`Uploading Photo: ${ex}`);
@@ -73,8 +73,8 @@ module.exports = {
                 return { results: res?.stat === "ok" };
             }
             catch(ex){
-               log.error(`Deleting Photoset: ${ex}`);
-               return { "error": `Deleting Photoset`}; 
+               log.error(`Deleting Photo: ${ex}`);
+               return { "error": `Deleting Photo`}; 
             }
         },
     },
@@ -182,22 +182,35 @@ module.exports = {
                return { "error": `Deleting Photoset`}; 
             }
         },
-        addPhoto: async function(localStore, id, photo_id){
+        addPhotos: async function(localStore, id, photo_ids){
             try {
+                // Get Photoset current images 
+                const all_res = await flickr("flickr.photosets.getPhotos", {
+                    user_id: process.env.FLICKR_USERID, photoset_id: id
+                });
+
+                let idPhotos = (all_res?.photoset?.photo ? 
+                    all_res.photoset?.photo.map((p)=>{ return p?.id; }) : []);
+
+                let fullList = idPhotos.concat(photo_ids);
+                let uniqueList = [...new Set(fullList)].join(",");
+
+                // Add Updated Set
                 const { elevatedFlickr } = runElevatedFlickr(localStore);
                 if(!elevatedFlickr) {
                     return { error: 'Authenticating For This Request' };
                 }
 
-                const res = await elevatedFlickr("flickr.photosets.addPhoto", {
-                    photoset_id: id, photo_id: photo_id
+                const res = await elevatedFlickr("flickr.photosets.editPhotos", {
+                    photoset_id: id, photo_ids: uniqueList, 
+                    primary_photo_id: fullList[0]
                 });
 
                 return { results: res?.stat === "ok" };
             }
             catch(ex){
-               log.error(`Adding Photo To Photoset: ${ex}`);
-               return { "error": `Adding Photo To Photoset`}; 
+               log.error(`Adding Photos To Photoset: ${ex}`);
+               return { "error": `Adding Photos To Photoset`}; 
             }
         },
         removePhotos: async function(localStore, id, photo_ids){
@@ -208,7 +221,7 @@ module.exports = {
                 }
 
                 const res = await elevatedFlickr("flickr.photosets.removePhotos", {
-                    photoset_id: id, photo_ids: photo_ids
+                    photoset_id: id, photo_ids: photo_ids.join(",")
                 });
 
                 return { results: res?.stat === "ok" };

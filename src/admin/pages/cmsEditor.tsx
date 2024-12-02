@@ -6,8 +6,10 @@ import { spiral } from 'ldrs';
 
 import userContext from "../../context/user.context";
 
-import { AdminTableColType, SitePage, UserContextType } from "../../datatypes";
 import AdminTable from "../components/adminTable";
+
+import { AdminTableColType, SitePage, UserContextType } from "../../datatypes";
+import { handleGQLError } from "../../utils";
 
 const MAX_NEW_ROWS = 1, NEW_PAGE_KEY=".~.";
 const tableSetup: AdminTableColType[] = [
@@ -74,17 +76,6 @@ function CmsSiteEditor(){
     const localNewPage = useRef<SitePage | null>(null);
 
     const { user } = useContext(userContext.UserContext) as UserContextType;
-
-    const handleGQLError = (err:any) => {
-        try {
-            toast.error(`Sorry we encountered an error. [${err}]`, { position: "top-right",
-                autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
-                draggable: true, progress: undefined, theme: "light" });
-        }
-        catch(ex){
-            console.log(`Handling Error: ${ex}`);
-        }
-    }
 
     // GQL Queries
     const authHeader = {context: { headers: { "Authorization": user?._id }}};

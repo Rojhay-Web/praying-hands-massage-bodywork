@@ -67,4 +67,9 @@ export type Photo = {
 export type FilePhoto = {
     id: string; url: string;
     type: string; file?: File;
+    fileId?: string;
+}
+
+export type FileUploadStatus = {
+    id:string | null, uploadId: string | undefined, success:boolean
 }

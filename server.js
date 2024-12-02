@@ -3,7 +3,6 @@ require('dotenv').config();
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
 const app = express();
-const fileUpload = require('express-fileupload');
 
 const auth = require('./server/services/auth.service'), 
     log = require('./server/services/log.service');
@@ -12,11 +11,6 @@ const auth = require('./server/services/auth.service'),
 const CacheStore = require('./server/services/cache.store.js');
 let localStore = new CacheStore();
 localStore.init();
-
-// File Upload
-app.use(fileUpload({
-    limits: { fileSize: 50 * 1024 * 1024 },
-}));
 
 // parse application/json
 app.use(express.json());
@@ -39,7 +33,7 @@ async function startGraphQLServer() {
     } });
 
     await apolloServer.start();
-    apolloServer.applyMiddleware({ app, path: '/app/v1/gql' });
+    apolloServer.applyMiddleware({ app, path: '/v1/gql' });
 }
 
 // Start GraphQL Server
