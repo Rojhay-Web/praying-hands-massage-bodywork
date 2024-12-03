@@ -216,8 +216,6 @@ module.exports = {
                 return { error: "Invalid Page or Key Id" };
             }
 
-            console.log(" >", page_id, "|", key_id, "|", title, "|", type);
-
             // Update Page
             if(key_id){
                 const result = await collection.updateOne(

@@ -1,6 +1,8 @@
 import { useState, useEffect, useContext, useRef } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { toast } from 'react-toastify';
+import * as _ from 'lodash';
+
 import { spiral, quantum } from 'ldrs';
 import { v4 as uuidv4 } from 'uuid';
 import Rodal from 'rodal';
@@ -32,7 +34,7 @@ type GalleryCtrlModalType = {
 
     secondActionLoading: boolean, hasSecondAction?:boolean,
     secondActionTitle?:string, secondActionStatus?:boolean, 
-    secondAction: (tab: string, ids: string[]) => void
+    secondAction: (tab: string, ids: string[], photoset: FilePhoto[]) => void
 };
 
 type GallerySectionType = {
@@ -40,7 +42,7 @@ type GallerySectionType = {
 
     secondActionLoading: boolean, hasSecondAction?:boolean,
     secondActionTitle?:string, secondActionStatus?:boolean, 
-    secondAction: (ids: string[]) => void,
+    secondAction: (ids: string[], photoset: FilePhoto[]) => void,
 };
 
 type PanelActionPageType = {
@@ -180,7 +182,7 @@ function GalleryUpload({ maxSelect, hasSecondAction = false, secondActionStatus,
             setPanelPage((hasSecondAction ? "step_2" : "complete"));
             if(hasSecondAction){
                 let idList = completed.filter((c)=> { return c.success === true && c.id != null }).map((c1) => { return c1.id ?? ""; });
-                secondAction(idList);
+                secondAction(idList, selected);
             }
         }
     },[completed]);
@@ -267,11 +269,13 @@ function GallerySelect({ maxSelect, hasSecondAction = false, secondActionStatus,
     }
 
     const checkCloseAction = () => {
+        let tmpSel = _.cloneDeep(selected);
+
         setSelecting(false); setCurrentPage(1); 
         setSelected([]); setPanelPage("");
         selectedDict.current = {};
-        
-        checkClose([]);
+
+        checkClose(tmpSel);
     }
 
     const beginSecondAction = () => {
@@ -280,7 +284,7 @@ function GallerySelect({ maxSelect, hasSecondAction = false, secondActionStatus,
 
             if(hasSecondAction){
                 let idList = selected.filter((c)=> { return c.id != null }).map((c1) => { return c1.id ?? ""; });
-                secondAction(idList);
+                secondAction(idList, selected);
             }
         }
         catch(ex){
@@ -340,7 +344,7 @@ function GallerySelect({ maxSelect, hasSecondAction = false, secondActionStatus,
 }
 
 function GalleryCtrlModal({ 
-    visible, tabs, maxSelect, closeAction,
+    visible, tabs, maxSelect, closeAction, 
 
     secondActionLoading, hasSecondAction,
     secondActionTitle, secondActionStatus, secondAction
@@ -362,8 +366,8 @@ function GalleryCtrlModal({
 
     const selectTabSection = () =>{
         try {
-            const tabSecondAction = (ids: string[]) => {
-                secondAction(selectedTab, ids);
+            const tabSecondAction = (ids: string[], photoset: FilePhoto[]) => {
+                secondAction(selectedTab, ids, photoset);
             }
 
             switch(selectedTab){

@@ -5,13 +5,22 @@ import * as _ from 'lodash';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
+
+import SelectedPhotosCtrl from "../components/selectedPhotoCtrl";
+import GalleryCtrlModal from "../components/galleryCtrlModal";
+
 import userContext from "../../context/user.context";
 
-import { PageKey, SitePage, UserContextType } from "../../datatypes";
+import { FilePhoto, PageKey, Photo, SitePage, UserContextType } from "../../datatypes";
 import { handleGQLError } from "../../utils";
 
 type KeyEditorTileType = {
     pageKey: PageKey, updatePageData: (data: any) => void
+}
+
+type ImageEditorType = {
+    maxSelect?: number, selected: FilePhoto[],
+    updateList:(images:Photo[]) => void
 }
 
 const quillSetup = {
@@ -58,7 +67,16 @@ GET_IND_SITE_PAGE_QUERY = gql`
 UPSERT_PAGE_MUTATION = gql`
     mutation UpsertSitePage($title: String!, $pageKeys:[PageKeyInput], $_id:String){
         upsertSitePage(title: $title, pageKeys: $pageKeys, _id: $_id)
-    }`;
+    }`,
+SEARCH_PHOTOS_QUERY = gql`
+    query searchPhotos($page: Int, $pageSize:Int){
+       photos(page:$page, pageSize:$pageSize){
+           pagesLeft
+           results {
+               url
+           }
+       }
+   }`
 
 function PillListEditor({ list, updateList }:{ list:string[], updateList: (e:string[]) => void }){
     const [newItem, setNewItem] = useState("");
@@ -116,6 +134,103 @@ function PillListEditor({ list, updateList }:{ list:string[], updateList: (e:str
     );
 }
 
+function ImageEditor({ maxSelect=1, selected, updateList }: ImageEditorType){
+    const [openModal, setOpenModal] = useState(false);
+    const [localSelect, setLocalSelect] = useState<FilePhoto[]>([]);
+    const [manualAdd, setManualAdd] = useState(false); 
+
+    const { user } = useContext(userContext.UserContext) as UserContextType;
+    const authHeader = {context: { headers: { "Authorization": user?._id }}};
+    const [searchImages,{ loading: search_loading, data: search_data }] = useLazyQuery(SEARCH_PHOTOS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
+
+    const toggleImage = (photo: FilePhoto) => {
+        try {
+            let toggleIdx = localSelect.map((u:any)=> u.url).indexOf(photo.url);
+            
+            if(toggleIdx >= 0){
+                localSelect.splice(toggleIdx,1);
+                updateList(localSelect);
+            }
+        }
+        catch(ex){
+            console.log(`Toggling SE Image: ${ex}`);
+        }
+    }
+
+    const closeModal = (photoset: FilePhoto[]) => {
+        try {
+            // TODO: Add photos to selected
+
+            setOpenModal(false);
+        }
+        catch(ex){
+            console.log(`Closing Modal: ${ex}`);
+        }
+    }
+
+    const modalSecondAction = (tab: string, ids: string[], photoset: FilePhoto[]) => {
+        try {
+            if(tab === "upload") {
+                searchImages({ variables: { page: 1, pageSize: ids?.length }});                
+            }
+            else {
+                let tmpList = localSelect.concat(photoset);
+                updateList(tmpList); setManualAdd(true);
+            }
+        }
+        catch(ex){
+            console.log(`Performing modal second action: ${ex}`);
+        }
+    }
+
+    const checkOpenModal = () => {
+        try {
+            if((maxSelect - localSelect?.length) <= 0){
+                toast.warning(`You have reached the limit for images for this field.`, { position: "top-right",
+                    autoClose: 5000, hideProgressBar: false, closeOnClick: true, pauseOnHover: true,
+                    draggable: true, progress: undefined, theme: "light" });
+            }
+            else {
+                setManualAdd(false);
+                setOpenModal(true);
+            }
+        }
+        catch(ex){
+            console.log(`Checking Open Modal: ${ex}`);
+        }
+    }
+
+    useEffect(()=>{
+        if(!search_loading && search_data?.photos?.results?.length > 0){
+            let tmpList = localSelect.concat(search_data.photos.results);
+            updateList(tmpList);
+        }
+    },[search_loading]);
+
+    useEffect(()=>{
+        if(selected && _.isArray(selected)){
+            setLocalSelect(selected);
+        }
+        else {
+            setLocalSelect([]);
+        }
+    },[selected]);
+
+    return(
+        <div className="image-editor-container">
+            <SelectedPhotosCtrl maxSelect={maxSelect} selected={localSelect} uploadFlag={false} selecting={false} setCompleted={(d)=>{}} toggleImage={toggleImage} />
+            <div className='image-editor-upload-container' onClick={checkOpenModal}>
+                <span className="material-symbols-outlined">gallery_thumbnail</span>
+                <span className='title'>Add/Select image(s) to use</span>
+            </div>
+
+            <GalleryCtrlModal visible={openModal} tabs={["select image","upload"]} maxSelect={(maxSelect - localSelect?.length)} secondActionTitle={"Add Images"}
+                 secondAction={modalSecondAction} secondActionLoading={search_loading} hasSecondAction={true} 
+                 secondActionStatus={(search_data?.photos?.results?.length > 0 || manualAdd)} closeAction={closeModal} />
+        </div>
+    );
+}
+
 function KeyEditorTile({ pageKey, updatePageData }: KeyEditorTileType){
     const getTileIcon = () => {
         try {
@@ -155,7 +270,7 @@ function KeyEditorTile({ pageKey, updatePageData }: KeyEditorTileType){
             }
         }
         catch(ex){
-            console.log(`Handle Default Change: ${ex}`);
+            console.log(`Handle Quill Change: ${ex}`);
         }
     }
 
@@ -171,7 +286,7 @@ function KeyEditorTile({ pageKey, updatePageData }: KeyEditorTileType){
                 case "list":
                     return <PillListEditor list={pageKey?.value?.data} updateList={quillHandleChange} />;
                 case "images":
-                    return <></>;
+                    return <ImageEditor selected={pageKey?.value?.data} maxSelect={pageKey?.metaData?.max} updateList={quillHandleChange}/>;
                 default:
                     return <></>;
             }

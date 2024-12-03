@@ -250,7 +250,7 @@ function ImageGallery(){
         return ret;
     }
 
-    const modalSecondAction = (tab: string, ids: string[]) => {
+    const modalSecondAction = (tab: string, ids: string[], _photoset: FilePhoto[]) => {
         try {
             if(selPhotoset?.id){
                 addPhotosToSet({ variables: { id: selPhotoset.id, photoIds: ids }});

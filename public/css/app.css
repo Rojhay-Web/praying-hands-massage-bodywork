@@ -247,116 +247,6 @@ html {
   flex: 1;
   overflow: hidden;
 }
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container {
-  display: flex;
-  flex-direction: row;
-  overflow: hidden;
-  margin: 32px 0;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .ctrl {
-  font-size: 1.8rem;
-  opacity: 0.5;
-  margin: auto 0;
-  cursor: pointer;
-  transition: 0.5s all ease-in-out;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .ctrl:hover {
-  opacity: 1;
-  color: #00295f;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list {
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  white-space: nowrap;
-  overflow: hidden;
-  scroll-behavior: smooth;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container {
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-left: 16px;
-  transition: 0.5s all ease-in-out;
-  overflow: hidden;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.empty {
-  background-color: rgba(150, 150, 150, 0.5);
-  cursor: default;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active {
-  position: relative;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active img {
-  position: relative;
-  z-index: 0;
-  width: 100%;
-  min-height: 100%;
-  object-fit: cover;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  transition: 0.5s all ease-in-out;
-  cursor: pointer;
-  z-index: 1;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span {
-  display: none;
-  margin: 0 auto;
-  font-size: 2rem;
-  transition: 0.5s all ease-in-out;
-  cursor: pointer;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.upload {
-  color: #eed201;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.delete {
-  color: #960000;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.success {
-  color: #009600;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.warning {
-  color: #ff8c00;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon {
-  background: rgba(238, 210, 1, 0.2);
-  opacity: 1;
-  cursor: default;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon .upload {
-  display: block;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon {
-  background: rgba(0, 150, 0, 0.2);
-  opacity: 1;
-  cursor: default;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon .success {
-  display: block;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon {
-  background: rgba(255, 140, 0, 0.2);
-  opacity: 1;
-  cursor: default;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon .warning {
-  display: block;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon {
-  background: rgba(150, 0, 0, 0.2);
-  opacity: 1;
-}
-.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.admin-image-mapper-container .rodal-dialog .gallery-section .selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon .delete {
-  display: block;
-}
 .admin-image-mapper-container .rodal-dialog .gallery-section .section-content {
   flex: 1;
   overflow: auto;
@@ -701,7 +591,7 @@ html {
 }
 .admin-home-page .base-section h1 .material-symbols-outlined {
   font-size: 1.7rem;
-  margin: auto 4px auto 0;
+  margin: auto 8px auto 0;
 }
 .admin-home-page .base-section .base-header {
   display: flex;
@@ -1207,6 +1097,7 @@ html {
   flex-direction: row;
   flex-wrap: wrap;
   justify-content: space-between;
+  overflow: auto;
 }
 .admin-component .admin-editor-tile-container .key-editor-tile-container {
   margin: 16px 0;
@@ -1337,6 +1228,35 @@ html {
 .admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .pill-list-editor-container .ple-list .ple-item .remove-ple {
   cursor: pointer;
 }
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container {
+  display: flex;
+  flex-direction: column;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container .image-editor-upload-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border: 2px dashed #00295f;
+  border-radius: 8px;
+  margin: 16px;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container .image-editor-upload-container .material-symbols-outlined {
+  font-size: 3rem;
+  margin: 0 auto 16px;
+  color: #969696;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container .image-editor-upload-container .title {
+  font-size: 1rem;
+  text-align: center;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container .image-editor-upload-container .title.sub {
+  color: #969696;
+}
+.admin-component .admin-editor-tile-container .key-editor-tile-container .tile-content-editor-container .image-editor-container .image-editor-upload-container:hover {
+  background-color: rgba(150, 150, 150, 0.2);
+}
 .admin-component .admin-gallery-container {
   display: flex;
   flex-direction: row;
@@ -1404,4 +1324,114 @@ html {
 }
 .admin-component .admin-gallery-container .photo-btn-container .photo-btn:hover {
   opacity: 1;
+}
+.selected-photos-container {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin: 32px 0;
+}
+.selected-photos-container .ctrl {
+  font-size: 1.8rem;
+  opacity: 0.5;
+  margin: auto 0;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.selected-photos-container .ctrl:hover {
+  opacity: 1;
+  color: #00295f;
+}
+.selected-photos-container .scroll-list {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.selected-photos-container .scroll-list .smart-photo-container {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 16px;
+  transition: 0.5s all ease-in-out;
+  overflow: hidden;
+}
+.selected-photos-container .scroll-list .smart-photo-container.empty {
+  background-color: rgba(150, 150, 150, 0.5);
+  cursor: default;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active {
+  position: relative;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active img {
+  position: relative;
+  z-index: 0;
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+  z-index: 1;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span {
+  display: none;
+  margin: 0 auto;
+  font-size: 2rem;
+  transition: 0.5s all ease-in-out;
+  cursor: pointer;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.upload {
+  color: #eed201;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.delete {
+  color: #960000;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.success {
+  color: #009600;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active .photo-icon span.warning {
+  color: #ff8c00;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon {
+  background: rgba(238, 210, 1, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.uploading .photo-icon .upload {
+  display: block;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon {
+  background: rgba(0, 150, 0, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.success .photo-icon .success {
+  display: block;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon {
+  background: rgba(255, 140, 0, 0.2);
+  opacity: 1;
+  cursor: default;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active.warning .photo-icon .warning {
+  display: block;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon {
+  background: rgba(150, 0, 0, 0.2);
+  opacity: 1;
+}
+.selected-photos-container .scroll-list .smart-photo-container.active:hover:not(.selected-photos-container .scroll-list .smart-photo-container.active.uploading) .photo-icon .delete {
+  display: block;
 }

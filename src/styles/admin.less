@@ -112,72 +112,6 @@
     
         .gallery-section { 
             display: flex; flex-direction: column; flex: 1; overflow: hidden;
-            .selected-photos-container {
-                display: flex; flex-direction: row;
-                overflow: hidden; margin: 32px 0;
-                .ctrl {
-                    font-size: 1.8rem; opacity: 0.5; margin: auto 0;
-                    cursor: pointer; transition: 0.5s all ease-in-out;
-                    &:hover { opacity: 1; color: @admin-color1; }
-                }
-    
-                .scroll-list { 
-                    flex: 1; display: flex; flex-direction: row; 
-                    white-space: nowrap; overflow: hidden;
-                    scroll-behavior: smooth;
-    
-                    .smart-photo-container {
-                        width: 70px; height: 70px; border-radius: 8px; cursor: pointer;
-                        margin-left: 16px; transition: 0.5s all ease-in-out; overflow: hidden;
-    
-                        &.empty { background-color: rgba(150,150,150,0.5); cursor: default;}
-                        &.active {
-                            position: relative;
-                            img { position: relative; z-index: 0; width: 100%; min-height: 100%; object-fit: cover;}
-                            .photo-icon { 
-                                position: absolute; width: 100%; height: 100%; opacity: 0;
-                                display: flex; flex-direction: column; justify-content: center;
-                                transition: 0.5s all ease-in-out; cursor: pointer; z-index: 1;
-                                span { 
-                                    display: none; margin: 0 auto; font-size: 2rem; 
-                                    transition: 0.5s all ease-in-out; cursor: pointer; 
-
-                                    &.upload { color: rgba(238,210,1,1); }
-                                    &.delete { color: rgba(150,0,0,1); }
-                                    &.success { color: rgba(0,150,0,1); }
-                                    &.warning { color: rgba(255,140,0,1); }
-                                }
-                            }
-
-                            &.uploading { 
-                                .photo-icon { 
-                                    background: rgba(238,210,1,0.2); opacity: 1; cursor: default;
-                                    .upload { display: block; } 
-                                }
-                            }
-                            &.success { 
-                                .photo-icon { 
-                                    background: rgba(0,150,0,0.2); opacity: 1; cursor: default;
-                                    .success { display: block; } 
-                                }
-                            }
-                            &.warning { 
-                                .photo-icon { 
-                                    background: rgba(255,140,0,0.2); opacity: 1; cursor: default;
-                                    .warning { display: block; } 
-                                }
-                            }
-
-                            &:hover:not(&.uploading) { 
-                                .photo-icon { 
-                                    background: rgba(150,0,0,0.2); opacity: 1;
-                                    .delete { display: block; } 
-                                }
-                            }
-                        }
-                    }
-                }
-            }
     
             .section-content {
                 flex: 1; overflow: auto;
@@ -409,7 +343,7 @@
         h1 { 
             color: @admin-color1; font-size: 1.3rem; 
             display: flex; flex-direction: row; margin: 0;
-            .material-symbols-outlined { font-size: 1.7rem; margin: auto 4px auto 0;}
+            .material-symbols-outlined { font-size: 1.7rem; margin: auto 8px auto 0;}
         }
 
         .base-header { 
@@ -806,7 +740,7 @@
 
     .admin-editor-tile-container {
         display: flex; flex-direction: row; flex-wrap: wrap; 
-        justify-content: space-between;
+        justify-content: space-between; overflow: auto;
 
         .key-editor-tile-container { 
             margin: 16px 0; width: calc(50% - 32px); 
@@ -901,6 +835,29 @@
                         }
                     }
                 }
+
+                .image-editor-container {
+                    display: flex; flex-direction: column;
+
+                    .image-editor-upload-container { 
+                        display: flex; flex-direction: column; justify-content: center;
+                        border: 2px dashed @admin-color1; border-radius: 8px; margin: 16px;
+                        cursor: pointer; transition: 0.5s all ease-in-out;
+
+                        .material-symbols-outlined { 
+                            font-size: 3rem; margin: 0 auto 16px;
+                            color: rgba(150,150,150,1); 
+                        }
+
+                        .title { 
+                            font-size: 1rem; text-align: center;
+
+                            &.sub { color: rgba(150,150,150,1); }
+                        }
+
+                        &:hover { background-color: rgba(150,150,150,0.2); }
+                    }
+                }
             }
         }
     }
@@ -951,6 +908,73 @@
                 transition: 0.5s all ease-in-out;
 
                 &:hover { opacity: 1; }
+            }
+        }
+    }
+}
+
+.selected-photos-container {
+    display: flex; flex-direction: row;
+    overflow: hidden; margin: 32px 0;
+    .ctrl {
+        font-size: 1.8rem; opacity: 0.5; margin: auto 0;
+        cursor: pointer; transition: 0.5s all ease-in-out;
+        &:hover { opacity: 1; color: @admin-color1; }
+    }
+
+    .scroll-list { 
+        flex: 1; display: flex; flex-direction: row; 
+        white-space: nowrap; overflow: hidden;
+        scroll-behavior: smooth;
+
+        .smart-photo-container {
+            width: 70px; height: 70px; border-radius: 8px; cursor: pointer;
+            margin-left: 16px; transition: 0.5s all ease-in-out; overflow: hidden;
+
+            &.empty { background-color: rgba(150,150,150,0.5); cursor: default;}
+            &.active {
+                position: relative;
+                img { position: relative; z-index: 0; width: 100%; min-height: 100%; object-fit: cover;}
+                .photo-icon { 
+                    position: absolute; width: 100%; height: 100%; opacity: 0;
+                    display: flex; flex-direction: column; justify-content: center;
+                    transition: 0.5s all ease-in-out; cursor: pointer; z-index: 1;
+                    span { 
+                        display: none; margin: 0 auto; font-size: 2rem; 
+                        transition: 0.5s all ease-in-out; cursor: pointer; 
+
+                        &.upload { color: rgba(238,210,1,1); }
+                        &.delete { color: rgba(150,0,0,1); }
+                        &.success { color: rgba(0,150,0,1); }
+                        &.warning { color: rgba(255,140,0,1); }
+                    }
+                }
+
+                &.uploading { 
+                    .photo-icon { 
+                        background: rgba(238,210,1,0.2); opacity: 1; cursor: default;
+                        .upload { display: block; } 
+                    }
+                }
+                &.success { 
+                    .photo-icon { 
+                        background: rgba(0,150,0,0.2); opacity: 1; cursor: default;
+                        .success { display: block; } 
+                    }
+                }
+                &.warning { 
+                    .photo-icon { 
+                        background: rgba(255,140,0,0.2); opacity: 1; cursor: default;
+                        .warning { display: block; } 
+                    }
+                }
+
+                &:hover:not(&.uploading) { 
+                    .photo-icon { 
+                        background: rgba(150,0,0,0.2); opacity: 1;
+                        .delete { display: block; } 
+                    }
+                }
             }
         }
     }

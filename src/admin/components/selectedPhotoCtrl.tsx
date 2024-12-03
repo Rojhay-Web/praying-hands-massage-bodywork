@@ -120,7 +120,7 @@ function SelectedPhotosCtrl({ maxSelect, selected, uploadFlag, selecting, setCom
     }
 
     const toggleCtrl = (photo: FilePhoto) => {
-        if(!selected && !uploadFlag){
+        if(!selecting && !uploadFlag){
             toggleImage(photo);
         }
     }
