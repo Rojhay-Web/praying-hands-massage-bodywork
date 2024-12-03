@@ -620,7 +620,16 @@
                 }
 
                 &.remove { background: rgba(150,0,0,1); }
-                &.hide { opacity: 0; cursor: default; }
+                &.text { 
+                    cursor: default; background: initial; 
+                    span { 
+                        color: rgba(100,100,100,1); 
+                        &:not(.material-symbols-outlined) {
+                            font-size: .8rem;
+                        }
+                    }
+                }
+                &.hide { opacity: 0; cursor: default; display: none; }
 
                 &:hover { opacity: 1; }
             }
@@ -929,6 +938,19 @@
             &:hover:not(&.add) { 
                 border-color:rgba(100,0,0,1); 
                 img { filter: grayscale(75%); }
+            }
+        }
+
+        .photo-btn-container {
+            margin: 16px 8px; flex: 1; display: flex; flex-direction: row; justify-content: center;
+
+            .photo-btn {
+                padding: 4px 8px; border-radius: 16px;
+                background: @admin-color1; color: #fff;
+                opacity: 0.5; cursor: pointer; font-size: 1rem;
+                transition: 0.5s all ease-in-out;
+
+                &:hover { opacity: 1; }
             }
         }
     }
