@@ -2,6 +2,7 @@ require('dotenv').config();
 
 const { ApolloServer } = require('apollo-server-express');
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 const auth = require('./server/services/auth.service'), 
@@ -14,6 +15,12 @@ localStore.init();
 
 // parse application/json
 app.use(express.json());
+
+// Apply the rate limiting middleware to all requests.
+app.use(rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200 // limit each IP to 100 requests per windowMs
+}));
 
 // Set CORS Headers & Run Request Auth
 app.use((req, res, next) => { 
