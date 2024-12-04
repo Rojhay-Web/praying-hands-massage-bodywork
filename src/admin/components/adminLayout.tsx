@@ -142,7 +142,7 @@ function AdminLayout(){
         setDisplayComponents(filterList);
     },[activeComponents]);
 
-    useEffect(()=>{ getHeaderTitle(); },[selComponent]);
+    useEffect(()=>{ getHeaderTitle(); },[selComponent, activeComponents]);
 
     // TODO: Change selComponent on route change
     useEffect(()=>{

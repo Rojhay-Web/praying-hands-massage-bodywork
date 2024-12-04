@@ -335,14 +335,14 @@ function CmsSiteEditor(){
         <div className="admin-component cms-site-editor">
             <div className="table-action-container">
                 <div className="pill-list-title">Website Pages</div>
-                <div className={`pill-add-btn ${!selPageData || selPageData?._id ? "" : "text"}`} onClick={toggleNewPage}>
-                    <span className="material-symbols-outlined">add</span>
-                    <span className="new-page-title">New Page</span>
-                </div>
 
                 <div className="pill-list-container">
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "prev")}>chevron_left</span>
                     <div className="scroll-pill-list" ref={pillScrollRef}>
+                        <div className={`pill-add-btn ${!selPageData || selPageData?._id ? "" : "text"}`} onClick={toggleNewPage}>
+                            <span className="material-symbols-outlined">add</span>
+                            <span className="new-page-title">New Page</span>
+                        </div>
                         {site_pages_data?.sitePages.map((pg: SitePage, i: number)=>
                             <div className={`pill-item ${pg.key === selPage ? 'sel' : ''}`} key={i} onClick={()=> { if(pg.key) setSelPage(pg.key); }}>{pg.title}</div>
                         )}
@@ -356,7 +356,9 @@ function CmsSiteEditor(){
                 <div><l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral></div> :
                 <>
                     {!selPageData ?
-                        <></>: 
+                        <div className="admin-loading">
+                            <p>Please select a site page to begin making changes</p>
+                        </div>: 
                         <>
                             <div className="page-title-container">
                                 <input className='title-input' type="text" name="title" placeholder="Enter Page Title..." value={selPageData?.title} onChange={handlePageChange} />

@@ -233,7 +233,7 @@
 .ctrl-panel {
     font-family: 'Parkinsans', serif;
     font-size: @admin-font-size; 
-    display: flex; flex-direction: column; padding: 8px 8px 8px 0;
+    display: flex; flex-direction: column; padding: 8px 16px 8px 0;
 
     .side-title {
         display: flex; flex-direction: row; 
@@ -319,9 +319,9 @@
 
 /* Admin Home Page */
 .admin-home-page {
-    background-color: @admin-background; padding: 8px;
+    background-color: @admin-background; padding: 16px;
     display: flex; flex-direction: row;
-    height: calc(100vh - 16px);
+    height: calc(100vh - 32px);
     font-family: 'Parkinsans', serif;
     font-size: @admin-font-size; 
 
@@ -360,11 +360,13 @@
                 transition: 0.5s all ease-in-out;
 
                 span { 
-                    display: flex; flex-direction: column; justify-content: center; 
+                    display: flex; flex-direction: column; 
+                    justify-content: center; color: rgba(100, 100, 100,1);
+                    transition: 0.5s all ease-in-out;
                     &+span { margin-left: 4px; }
                 }
 
-                &:hover { color: #fff; background-color: @admin-color1; }
+                &:hover { background-color: @admin-color1; span { color: #fff; } }
 
                 @media @mobile-device { font-size: .7rem;}
             }
@@ -379,7 +381,11 @@
     /* Components Styles */
     .mobile-btn { 
         display: none; flex-direction: column; justify-content: center;
-        margin-right: 8px;
+        margin: auto 8px auto 0; width: 1.7rem; height: 1.7rem;
+        background: @admin-background; 
+        text-align: center; border-radius: 50%;
+        font-size: 1.3rem; color: rgba(100, 100, 100,1);
+
         @media @mobile-device { display:flex; }
     }
 }
@@ -401,11 +407,12 @@
     .admin-loading { 
         flex: 1; display: flex; flex-direction: column;
         justify-content: center; align-items: center;
+        text-align: center;
     }
 
     .table-action-container {
         display: flex; flex-direction: row;
-        justify-content: space-between; padding: 0 8px;
+        justify-content: space-between; padding: 8px;
 
         .action-input-container {  
             .admin-color1(background, 0.3);
@@ -450,7 +457,7 @@
         }
 
         .pill-list-title {
-            font-size: 1.2rem; padding-right: 8px;
+            font-size: 1rem; padding-right: 8px;
             border-right: 2px solid #000;
 
             .title-btn {
@@ -477,8 +484,8 @@
             width: 1.5rem; height: 1.5rem; background: @admin-color1;
             border-radius: 50%; display: flex; opacity: 0.5;
             flex-direction: column; justify-content: center;
-            margin: auto 8px; transition: 0.5s opacity ease-in-out;
-            cursor: pointer;
+            margin: auto 0px auto 8px; transition: 0.5s opacity ease-in-out;
+            cursor: pointer; min-width: 1.5rem; min-height: 1.5rem;
 
             span { margin: 0 auto; color: #fff; font-size: 1rem; }
             .new-page-title { display: none; }
@@ -520,7 +527,7 @@
             }
         }
 
-        &.padded-container { padding: 8px; }
+        &.padded-container { padding: 4px 8px; }
     }
 
     .page-title-container {
@@ -912,6 +919,8 @@
                 span { color: rgba(70,70,70,1); }
 
                 &:hover { opacity: 1; }
+
+                @media @mobile-device { width: 100%; }
             }
 
             &:hover:not(&.add), &:focus:not(&.add) { 

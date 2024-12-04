@@ -11,7 +11,7 @@ import GalleryPagination from "../components/galleryPagination";
 import { Photosets, Photo, UserContextType, FilePhoto } from "../../datatypes";
 import { handleGQLError } from "../../utils";
 
-const GALLERY_PAGE_SIZE = 15;
+const GALLERY_PAGE_SIZE = 10;
 
 const GET_PHOTOSETS_QUERY = gql`
     query getPhotosets {
@@ -72,7 +72,8 @@ function ImageGallery(){
     const [displayPhotos, setDisplayPhotos] = useState<Photo[]>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasPagesLeft, setHasPagesLeft] = useState(false);
-    const [openModal, setOpenModal] = useState(false); 
+    const [openModal, setOpenModal] = useState(false);
+    const [tabs, setTabs] = useState<string[]>([]); 
 
     const pillScrollRef = useRef<HTMLDivElement>(null);
     const pageRender = useRef(false);
@@ -174,15 +175,12 @@ function ImageGallery(){
     }
 
     const getMapperTabs = () => {
-        let ret: string[] = [];
         try {
-            ret = (selPhotoset ? ["select image","upload"] : ["upload"]);
+            setTabs((selPhotoset ? ["select image","upload"] : ["upload"]));
         }
         catch(ex){
             console.log(`Getting Mapper Tabs: ${ex}`);
         }
-
-        return ret;
     }
 
     const closeModal = (_photoset: FilePhoto[]) => {
@@ -326,6 +324,8 @@ function ImageGallery(){
     }
 
     /* Data Functions */
+    useEffect(()=>{ getMapperTabs(); },[selPhotoset]);
+
     useEffect(()=>{
         if(currentPage > 1){
             setCurrentPage(1);
@@ -388,14 +388,13 @@ function ImageGallery(){
                     <div className={`title-btn ${selPhotoset === null ? 'sel' : 'default'}`} onClick={()=> { setSelPhotoset(null); }}>All Images</div>
                 </div>
 
-                <div className={`pill-add-btn ${selPhotoset && !selPhotoset?.id ? "text" : ""}`} onClick={createPhotoset}>
-                    <span className="material-symbols-outlined">add</span>
-                    <span className="new-page-title">New Gallery</span>
-                </div>
-
                 <div className="pill-list-container">
                     <span className="material-symbols-outlined ctrl" onClick={()=> controlSlider(pillScrollRef, "prev")}>chevron_left</span>
                     <div className="scroll-pill-list" ref={pillScrollRef}>
+                        <div className={`pill-add-btn ${selPhotoset && !selPhotoset?.id ? "text" : ""}`} onClick={createPhotoset}>
+                            <span className="material-symbols-outlined">add</span>
+                            <span className="new-page-title">New Gallery</span>
+                        </div>
                         {photosets_data?.photosets.map((pg: Photosets, i: number)=>
                             <div className={`pill-item ${pg.id === selPhotoset?.id ? 'sel' : ''}`} key={i} onClick={()=> { if(pg.id) setSelPhotoset(pg); }}>{pg.title}</div>
                         )}
@@ -455,7 +454,7 @@ function ImageGallery(){
                 </>
             }
 
-            <GalleryCtrlModal visible={openModal} tabs={getMapperTabs()} maxSelect={(selPhotoset?.id ? 7 : 1)} secondActionTitle={getSecondActionTitle()}
+            <GalleryCtrlModal visible={openModal} tabs={tabs} maxSelect={(!selPhotoset || selPhotoset?.id ? 7 : 1)} secondActionTitle={getSecondActionTitle()}
                  secondAction={modalSecondAction} secondActionLoading={secondActionLoading()} hasSecondAction={!!selPhotoset} 
                  secondActionStatus={secondActionStatus()} closeAction={closeModal} />
         </div>

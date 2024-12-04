@@ -433,7 +433,7 @@ html {
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  padding: 8px 8px 8px 0;
+  padding: 8px 16px 8px 0;
 }
 .ctrl-panel .side-title {
   display: flex;
@@ -550,10 +550,10 @@ html {
 /* Admin Home Page */
 .admin-home-page {
   background-color: #aaaaaa;
-  padding: 8px;
+  padding: 16px;
   display: flex;
   flex-direction: row;
-  height: calc(100vh - 16px);
+  height: calc(100vh - 32px);
   font-family: 'Parkinsans', serif;
   font-size: 16px;
   /* Components Styles */
@@ -620,13 +620,17 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: #646464;
+  transition: 0.5s all ease-in-out;
 }
 .admin-home-page .base-section .base-header .header-btn span + span {
   margin-left: 4px;
 }
 .admin-home-page .base-section .base-header .header-btn:hover {
-  color: #fff;
   background-color: #00295f;
+}
+.admin-home-page .base-section .base-header .header-btn:hover span {
+  color: #fff;
 }
 @media (max-width: 770px) {
   .admin-home-page .base-section .base-header .header-btn {
@@ -637,7 +641,14 @@ html {
   display: none;
   flex-direction: column;
   justify-content: center;
-  margin-right: 8px;
+  margin: auto 8px auto 0;
+  width: 1.7rem;
+  height: 1.7rem;
+  background: #aaaaaa;
+  text-align: center;
+  border-radius: 50%;
+  font-size: 1.3rem;
+  color: #646464;
 }
 @media (max-width: 770px) {
   .admin-home-page .mobile-btn {
@@ -670,12 +681,13 @@ html {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 .admin-component .table-action-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  padding: 0 8px;
+  padding: 8px;
 }
 .admin-component .table-action-container .action-input-container {
   background: rgba(0, 41, 95, 0.3) !important;
@@ -724,7 +736,7 @@ html {
   color: #969696;
 }
 .admin-component .table-action-container .pill-list-title {
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding-right: 8px;
   border-right: 2px solid #000;
 }
@@ -757,9 +769,11 @@ html {
   opacity: 0.5;
   flex-direction: column;
   justify-content: center;
-  margin: auto 8px;
+  margin: auto 0px auto 8px;
   transition: 0.5s opacity ease-in-out;
   cursor: pointer;
+  min-width: 1.5rem;
+  min-height: 1.5rem;
 }
 .admin-component .table-action-container .pill-add-btn span {
   margin: 0 auto;
@@ -827,7 +841,7 @@ html {
   opacity: 1;
 }
 .admin-component .table-action-container.padded-container {
-  padding: 8px;
+  padding: 4px 8px;
 }
 .admin-component .page-title-container {
   display: flex;
@@ -1344,6 +1358,11 @@ html {
 }
 .admin-component .admin-gallery-container .photo-container.add:hover {
   opacity: 1;
+}
+@media (max-width: 770px) {
+  .admin-component .admin-gallery-container .photo-container.add {
+    width: 100%;
+  }
 }
 .admin-component .admin-gallery-container .photo-container:hover:not(.admin-component .admin-gallery-container .photo-container.add),
 .admin-component .admin-gallery-container .photo-container:focus:not(.admin-component .admin-gallery-container .photo-container.add) {

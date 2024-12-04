@@ -143,6 +143,8 @@ function ImageEditor({ maxSelect=1, selected, updateList }: ImageEditorType){
     const authHeader = {context: { headers: { "Authorization": user?._id }}};
     const [searchImages,{ loading: search_loading, data: search_data }] = useLazyQuery(SEARCH_PHOTOS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
 
+    const tabs = ["select image","upload"];
+
     const toggleImage = (photo: FilePhoto) => {
         try {
             let toggleIdx = localSelect.map((u:any)=> u.url).indexOf(photo.url);
@@ -224,7 +226,7 @@ function ImageEditor({ maxSelect=1, selected, updateList }: ImageEditorType){
                 <span className='title'>Add/Select image(s) to use</span>
             </div>
 
-            <GalleryCtrlModal visible={openModal} tabs={["select image","upload"]} maxSelect={(maxSelect - localSelect?.length)} secondActionTitle={"Add Images"}
+            <GalleryCtrlModal visible={openModal} tabs={tabs} maxSelect={(maxSelect - localSelect?.length)} secondActionTitle={"Add Images"}
                  secondAction={modalSecondAction} secondActionLoading={search_loading} hasSecondAction={true} 
                  secondActionStatus={(search_data?.photos?.results?.length > 0 || manualAdd)} closeAction={closeModal} />
         </div>
@@ -443,7 +445,10 @@ function SiteEditor(){
                     <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)" />
                 </div> :
                 <>
-                    {!selPageData ? <></> :
+                    {!selPageData ? 
+                        <div className="admin-loading">
+                            <p>Please select a site page to begin making changes</p>
+                        </div> :
                         <>
                             <div className="page-title-container">
                                 <h2>{selPageData?.title}</h2>
