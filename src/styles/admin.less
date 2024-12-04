@@ -268,6 +268,8 @@
                 -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
                 -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
                 box-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+
+                @media @mobile-device { background-color: @admin-color1; color: #fff;  }
             }
 
             &:hover:not(.sel) { 
@@ -363,6 +365,8 @@
                 }
 
                 &:hover { color: #fff; background-color: @admin-color1; }
+
+                @media @mobile-device { font-size: .7rem;}
             }
         }
         
@@ -386,7 +390,12 @@
     flex-direction: column; flex:1; 
     margin-top: 14px; overflow-y: auto;
     overflow-x: hidden;
-    &.user-management { }
+    &.admin-home { 
+        display: flex; flex-direction: column; justify-content: center;
+        text-align: center;
+
+        h1,p { justify-content: center; }
+    }
 
     /* */
     .admin-loading { 
@@ -568,8 +577,19 @@
                 &:hover { opacity: 1; }
             }
 
-            &.bookend { justify-content: flex-end; flex: 1; }
+            &.bookend { 
+                justify-content: flex-end; flex: 1; 
+                @media @mobile-device { 
+                    flex-direction: column-reverse; 
+
+                    .add-key-btn { &+.add-key-btn { margin-top: 8px; }}
+                } 
+            }
+
+            @media @mobile-device { margin: 8px 0; justify-content: center; }
         }
+
+        @media @mobile-device { flex-direction: column; text-align: center; }
     }
 
     .admin-table-container {
@@ -859,6 +879,8 @@
                     }
                 }
             }
+
+            @media @mobile-device { width: calc(100% - 32px); }
         }
     }
 
@@ -892,9 +914,14 @@
                 &:hover { opacity: 1; }
             }
 
-            &:hover:not(&.add) { 
+            &:hover:not(&.add), &:focus:not(&.add) { 
                 border-color:rgba(100,0,0,1); 
                 img { filter: grayscale(75%); }
+            }
+
+            @media @mobile-device {
+                height: inherit; width: calc(50% - 24px);
+                img { width: 100%; height: initial; }
             }
         }
 

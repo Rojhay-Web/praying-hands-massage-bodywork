@@ -14,7 +14,8 @@ import { appSessKey } from "../../utils";
 /* Component Types */
 type CtrlContainerType = {
     displayComponents: any, selComponent: string,
-    query: string, searchQuery: (e: any)=> void
+    query: string, searchQuery: (e: any)=> void,
+    pressEvent?: () => void
 }
 
 type MobileNavType = {
@@ -23,19 +24,23 @@ type MobileNavType = {
     isOpen: boolean, setOpen:(a:any) => void
 };
 
-function CtrlContainer({ displayComponents, selComponent, query, searchQuery }: CtrlContainerType){
+function CtrlContainer({ displayComponents, selComponent, query, pressEvent, searchQuery }: CtrlContainerType){
     const { user, setUser } = useContext(userContext.UserContext) as UserContextType;
 
     const signOff = () => {
         try {
             if(window.confirm('Are you sure you want to Sign out?')){
-                setUser(null);
+                linkOnPress(); setUser(null);
                 localStorage.removeItem(appSessKey);
             }
         }
         catch(ex){
             console.log(`Unable to signOff: ${ex}`);
         }
+    }
+
+    const linkOnPress = () => {
+        if(pressEvent) pressEvent();
     }
 
     return(
@@ -54,7 +59,7 @@ function CtrlContainer({ displayComponents, selComponent, query, searchQuery }: 
 
             <div className="component-list-container">
                 {displayComponents.map((item: AdminPathType, i:number)=>
-                    <Link to={`/allaccess/${item.path}`} className={`component-item ${selComponent === `/allaccess/${item.path}` ? 'sel':''}`} key={i}>
+                    <Link to={`/allaccess/${item.path}`} className={`component-item ${selComponent === `/allaccess/${item.path}` ? 'sel':''}`} onClick={linkOnPress} key={i}>
                         <span className="material-symbols-outlined">{item.icon}</span>
                         <span className="item-title">{item.title}</span>
                     </Link>
@@ -82,11 +87,11 @@ function MobileNav({ isOpen, displayComponents, selComponent, query, searchQuery
                     <Sheet.Content>
                         <div className="ctrl-panel">
                             <CtrlContainer displayComponents={displayComponents} selComponent={selComponent} 
-                                query={query} searchQuery={searchQuery}  />
+                                query={query} searchQuery={searchQuery} pressEvent={()=> setOpen(false)}  />
                         </div>
                     </Sheet.Content>
                 </Sheet.Container>
-                <Sheet.Backdrop />
+                <Sheet.Backdrop onTap={()=> setOpen(false) }/>
             </Sheet>
         </div>
     );
