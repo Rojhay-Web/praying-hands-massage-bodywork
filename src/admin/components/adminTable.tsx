@@ -254,7 +254,7 @@ function AdminTable({ data, cols, loading, saveRow, deleteRow }: AdminTableType)
                             <tr>
                                 <td colSpan={(cols?.length + 1)}>
                                     <div className='admin-table-loading'>
-                                        <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral>
+                                        <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)" />
                                     </div>
                                 </td>
                             </tr>

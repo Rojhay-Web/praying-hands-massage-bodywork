@@ -428,7 +428,7 @@ function ImageGallery(){
 
             {(photos_loading || photoset_photos_loading || delete_photo_loading || remove_photos_loading) ?
                 <div className="admin-loading">
-                    <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral>
+                    <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"/>
                 </div> : 
                 <>
                     <div className="admin-gallery-container">

@@ -12,7 +12,7 @@ function NoMatch(){
     return (
         <div className="no-match-page">              
             <div className="loading-container">
-                <l-spiral size="150" speed="0.9" color="black"></l-spiral>
+                <l-spiral size="150" speed="0.9" color="black" />
                 {(loading || loading_permissions) ? <></> : 
                     <div className="no-page-txt">
                         <h1>404</h1>

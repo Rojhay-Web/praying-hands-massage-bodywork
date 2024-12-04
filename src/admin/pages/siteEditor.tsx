@@ -439,7 +439,9 @@ function SiteEditor(){
             </div>
 
             {site_page_loading ?
-                <div><l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)"></l-spiral></div> :
+                <div className="admin-loading">
+                    <l-spiral size="150" speed="0.9" color="rgba(0,41,95,1)" />
+                </div> :
                 <>
                     {!selPageData ? <></> :
                         <>
