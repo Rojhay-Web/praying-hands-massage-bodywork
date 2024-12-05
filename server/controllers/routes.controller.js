@@ -3,7 +3,8 @@ const express = require('express');
 const multer = require('multer');
 const router = express.Router();
 
-const gallery = require('../services/gallery.service'),
+const auth = require('../services/auth.service'), 
+    gallery = require('../services/gallery.service'),
     log = require('../services/log.service'),
     response = require('../utils/responseCode');
 
@@ -26,8 +27,14 @@ const upload = multer({
 module.exports = function(localStore) {
     async function uploadImage(req, res){
         try {
-            const ret = await gallery.photos.upload(localStore, req.file.path, req?.body?.name);
-            res.status(response.SUCCESS.OK).json(ret);
+            const auth_ret = await auth.validateUser(req?.headers);
+            if(auth_ret?.results){
+                const ret = await gallery.photos.upload(localStore, req.file.path, req?.body?.name);
+                res.status(response.SUCCESS.OK).json(ret);
+            }
+            else {
+                res.status(response.ERROR.UNAUTHORIZED).json({ "error":"Unauthorized User" });
+            }
         }
         catch(ex){
             log.error(`Uploading Image: ${ex}`);

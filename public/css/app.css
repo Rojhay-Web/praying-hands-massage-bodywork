@@ -117,6 +117,26 @@ html {
 .admin-btn-container.non-user:hover {
   opacity: 1;
 }
+/* Admin Button Container */
+.admin-user-btn-container .rodal-dialog {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+.admin-user-btn-container .rodal-dialog .sign-out-link {
+  text-align: center;
+  margin: auto 0;
+  padding: 8px 0;
+  color: #00295f;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: 0.5s all ease-in-out;
+  font-weight: bold;
+}
+.admin-user-btn-container .rodal-dialog .sign-out-link:hover {
+  opacity: 1;
+}
 /* Components Styles */
 .admin-input-container {
   display: flex;

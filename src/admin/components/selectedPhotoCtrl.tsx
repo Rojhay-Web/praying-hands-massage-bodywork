@@ -2,7 +2,7 @@ import { useContext, useEffect, useRef, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as _ from 'lodash';
 
-import { FilePhoto, FileUploadStatus, UserContextType } from '../../datatypes';
+import { FilePhoto, UserContextType } from '../../datatypes';
 import { API_URL, emptyList } from '../../utils';
 
 import userContext from "../../context/user.context";

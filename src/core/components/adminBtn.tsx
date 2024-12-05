@@ -1,15 +1,20 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Rodal from "rodal";
 
 import userContext from "../../context/user.context";
 import { UserContextType } from "../../datatypes";
-
+import { appSessKey } from "../../utils";
 
 function AdminBtn(){
-    const { user, setUserToken } = useContext(userContext.UserContext) as UserContextType;
+    const [userModal, setUserModal] = useState(false);
+    const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
+    const { user, setUser, setUserToken } = useContext(userContext.UserContext) as UserContextType;
+    const navigate = useNavigate();
+    
     const gLogin = useGoogleLogin({
         onSuccess: (tokenResponse) => { setUserToken(tokenResponse); },
         onError:(error) => { 
@@ -27,12 +32,46 @@ function AdminBtn(){
             }
             else {
                 // Open Logged in Modal
+                setUserModal((d) => { return !d; });
             }
         }
         catch(ex){
             console.log(`Admin Button Action: ${ex}`);
         }
     }
+
+    const calcModalSize = () => {
+        let ret = { width: 400, height: 300 };
+        try {
+            ret.width = (windowSize.width > 832 ? 500 : .25 * windowSize.width);
+            ret.height = (windowSize.height < 250 ? 250 : .25 * windowSize.height);
+        }
+        catch(ex){
+            console.log(`Calculating Modal Size: ${ex}`);
+        }
+        return ret;
+    }
+
+    const signOff = () => {
+        try {
+            if(window.confirm('Are you sure you want to Sign out?')){
+                setUser(null); setUserModal(false);
+                localStorage.removeItem(appSessKey);
+            }
+        }
+        catch(ex){
+            console.log(`Unable to signOff: ${ex}`);
+        }
+    }
+
+    useEffect(()=> {
+        function handleResize() {
+            setWindowSize({ width: window.innerWidth, height: window.innerHeight });
+        }
+      
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize); 
+    },[]);
 
     return (
         <>
@@ -52,6 +91,11 @@ function AdminBtn(){
                     </>
                 }
             </div> 
+
+            <Rodal className="admin-user-btn-container" visible={userModal} onClose={() => { setUserModal(false); }} 
+                width={calcModalSize().width} height={calcModalSize().height}>
+                    <div className="sign-out-link" onClick={signOff}>{user?.email} Sign-out</div>
+            </Rodal>
         </>
     );
 }

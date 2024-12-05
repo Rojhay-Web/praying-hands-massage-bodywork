@@ -36,7 +36,7 @@ async function startGraphQLServer() {
         resolvers = require('./server/graphql/resolvers.js')(localStore);
 
     const apolloServer = new ApolloServer({ typeDefs, resolvers , context: async ({ req }) => { 
-        return await auth.validateUser(req?.headers, req?.body);
+        return await auth.validateUser(req?.headers);
     } });
 
     await apolloServer.start();

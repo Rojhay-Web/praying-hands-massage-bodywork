@@ -5,7 +5,7 @@ const db = require('./db.service'),
     log = require('./log.service');
 
 module.exports = {
-    validateUser: async function(headers, body){
+    validateUser: async function(headers){
         try {
             const { authorization: token } = headers;
 

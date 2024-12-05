@@ -55,7 +55,7 @@ module.exports = function (localStore) {
             /* Gallery */
             photos: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 let ret = await gallery.photos.search(args?.page, args?.pageSize);
                 util.checkGQLResults(ret);
 
@@ -63,7 +63,7 @@ module.exports = function (localStore) {
             },
             photosets: async(_obj, _args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 let ret = await gallery.photosets.getAll();
                 util.checkGQLResults(ret);
 
@@ -71,7 +71,7 @@ module.exports = function (localStore) {
             },
             photosetImages: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);                
+                util.activeUserCheck(context);                
                 util.validateGQLParams(["id"], args);
 
                 let ret = await gallery.photosets.getImages(args.id, args?.page, args?.pageSize);
@@ -155,7 +155,7 @@ module.exports = function (localStore) {
             /* Gallery */
             deletePhoto: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["id"], args);
 
                 let ret = await gallery.photos.delete(localStore, args.id);
@@ -165,7 +165,7 @@ module.exports = function (localStore) {
             },
             createPhotoset: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["title", "primaryPhotoId"], args);
 
                 let ret = await gallery.photosets.create(localStore,args.title, args.primaryPhotoId, args?.description);
@@ -175,7 +175,7 @@ module.exports = function (localStore) {
             },
             editPhotoset: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["title", "id"], args);
 
                 let ret = await gallery.photosets.edit(localStore, args.id, args.title, args?.description);
@@ -185,7 +185,7 @@ module.exports = function (localStore) {
             },
             deletePhotoset: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["id"], args);
 
                 let ret = await gallery.photosets.delete(localStore, args.id);
@@ -195,7 +195,7 @@ module.exports = function (localStore) {
             },
             addPhotosetPhotos: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["id", "photoIds"], args);
 
                 let ret = await gallery.photosets.addPhotos(localStore, args.id, args.photoIds);
@@ -205,7 +205,7 @@ module.exports = function (localStore) {
             },
             removePhotosetPhotos: async(_obj, args, context, _info) => {
                 // Validate Active User
-                //util.activeUserCheck(context);
+                util.activeUserCheck(context);
                 util.validateGQLParams(["id", "photoIds"], args);
 
                 let ret = await gallery.photosets.removePhotos(localStore, args.id, args.photoIds);

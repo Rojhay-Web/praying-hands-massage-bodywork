@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Sheet } from 'react-modal-sheet';
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate  } from "react-router-dom";
 
 import { Outlet } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
@@ -26,12 +26,14 @@ type MobileNavType = {
 
 function CtrlContainer({ displayComponents, selComponent, query, pressEvent, searchQuery }: CtrlContainerType){
     const { user, setUser } = useContext(userContext.UserContext) as UserContextType;
+    const navigate = useNavigate();
 
     const signOff = () => {
         try {
             if(window.confirm('Are you sure you want to Sign out?')){
                 linkOnPress(); setUser(null);
                 localStorage.removeItem(appSessKey);
+                navigate('/');
             }
         }
         catch(ex){

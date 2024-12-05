@@ -28,6 +28,21 @@
     }
 }
 
+/* Admin Button Container */
+.admin-user-btn-container {
+    .rodal-dialog {
+        display: flex; flex-direction: column; 
+        justify-content: center; text-align: center;
+        .sign-out-link {
+            text-align: center; margin: auto 0; padding: 8px 0;
+            color: @admin-color1; cursor: pointer; opacity: 0.7;
+            transition: 0.5s all ease-in-out; font-weight: bold;
+
+            &:hover { opacity: 1; }
+        }
+    }
+}
+
 /* Components Styles */
 .admin-input-container { 
     display: flex; flex-direction: row; 
