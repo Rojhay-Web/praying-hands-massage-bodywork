@@ -1,6 +1,7 @@
 require('dotenv').config();
 
 const { ApolloServer } = require('apollo-server-express');
+const path = require('path');
 const express = require('express');
 const rateLimit = require('express-rate-limit');
 const app = express();
@@ -49,7 +50,15 @@ startGraphQLServer();
 // API Declaration
 app.use('/v1/api', require('./server/controllers/routes.controller.js')(localStore));
 
+// set the static files location
+app.use(express.static(path.join(__dirname, 'build')));
+
 // Catch all other routes and return the index file
-const server = app.listen({ port: process.env.PORT || 8080 }, ()=> {
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build','index.html'));
+});
+
+// Start App
+app.listen({ port: process.env.PORT || 8080 }, ()=> {
     log.info(`PHW-BP is open on port ${process.env.PORT || 8080}`);
 });
