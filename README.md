@@ -14,3 +14,7 @@ Set up MongoDB Database, Create User, Add connection string
 ## Google Sheets Set Up (optional)
 [Tutorial](https://hackernoon.com/how-to-use-google-sheets-api-with-nodejs-cz3v316f)
 [Create Service Key](https://cloud.google.com/iam/docs/keys-create-delete#iam-service-account-keys-create-console)
+
+
+## Render Custom Domain
+[Tutorial Video](https://www.youtube.com/watch?v=uHl3aGFeK6o)

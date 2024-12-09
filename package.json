@@ -8,6 +8,7 @@
     "watch-css": "npm run build-css && less-watch-compiler --main-file=app.less src/styles/ public/css/",
     "build": "npm run build-css && react-scripts build",
     "heroku-postbuild": "npm run build",
+    "render-build":"npm install && npm run build",
     "script-run": "react-scripts start",
     "script-dev": "concurrently \"npm run watch-css\" \"npm run script-run\" \"wait-on http://localhost:3001\"",
     "test": "react-scripts test",
