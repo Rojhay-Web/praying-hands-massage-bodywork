@@ -6,7 +6,7 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import App from "./App";
 import "./styles/app.less";
 
-const GCID = "1032314402946-fi5o7qll5qej4u6r5onch4fejkaskiq4.apps.googleusercontent.com";
+const GCID = "54510890763-1t27ss88njg5eb676b5rjiumn6o0ijc1.apps.googleusercontent.com";
 
 const appRoot = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement

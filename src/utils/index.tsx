@@ -5,7 +5,7 @@ import { User } from "../datatypes";
 
 const rootPath = (window.location.href.indexOf("localhost") > -1  ? "http://localhost:8080" : "");
 
-export const appSessKey = "roj_bprint|usr";
+export const appSessKey = "phw_bprint|usr";
 export const GQL_URL = `${rootPath}/v1/gql`;
 export const API_URL = `${rootPath}/v1/api`;
 

@@ -51,5 +51,5 @@ app.use('/v1/api', require('./server/controllers/routes.controller.js')(localSto
 
 // Catch all other routes and return the index file
 const server = app.listen({ port: process.env.PORT || 8080 }, ()=> {
-    log.info(`Rojhay-BP is open on port ${process.env.PORT || 8080}`);
+    log.info(`PHW-BP is open on port ${process.env.PORT || 8080}`);
 });

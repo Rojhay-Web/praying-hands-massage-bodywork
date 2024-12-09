@@ -1,4 +1,4 @@
-# Rojhay Blue Print
+# Praying Hands & Wellness Blue Print
 
 ## Google Auth Set up guide
 [Tutorial](https://blog.logrocket.com/guide-adding-google-login-react-app/)
