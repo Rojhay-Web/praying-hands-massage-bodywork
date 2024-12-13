@@ -10,32 +10,25 @@ import { AdminPathType, UserContextType } from "./datatypes";
 import userContext from "./context/user.context";
 
 /* Layouts */
-import LayoutUC from "./core/components/layoutuc";
-//import Layout from "./core/components/layout";
-//import AdminLayout from "./admin/components/adminLayout";
+import Layout from "./core/components/layout";
+import AdminLayout from "./admin/components/adminLayout";
 
 /* Admin Pages */
-//import AdminHome from "./admin/pages/adminHome";
+import AdminHome from "./admin/pages/adminHome";
 
 /* Core Pages */
 import NoMatch from "./core/pages/nomatch";
-//import Home from "./core/pages/home";
-import UC from "./core/pages/uc";
+import Home from "./core/pages/home";
 
 const paths = [
     { path: "*", element: NoMatch }
 ];
 
 function SiteRoutes(){
-    //const { user, activeComponents } = useContext(userContext.UserContext) as UserContextType;
+    const { user, activeComponents } = useContext(userContext.UserContext) as UserContextType;
 
     return(
         <Routes>
-            <Route path="/" element={<LayoutUC />}>
-                <Route index element={<UC />} />
-                <Route path="*" element={<UC />} />
-            </Route>
-            {/*
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 {paths.map((rt, i) => 
@@ -50,7 +43,6 @@ function SiteRoutes(){
                 )}
                 <Route path="*" element={<NoMatch />} />
             </Route>
-            */}
         </Routes>
     )
 }
