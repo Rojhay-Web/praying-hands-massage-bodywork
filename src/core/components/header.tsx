@@ -12,14 +12,18 @@ function Header({ }){
     
     useEffect(()=> {
         function handleScroll() {
-            const height = 500;
+            const height = 100;
 
-            if(window.scrollY <= height && navChange) { 
-                setNavChange(false);                    
-            }
-            else if(window.scrollY > height && !navChange){
-                setNavChange(true);
-            }
+            setNavChange((d)=>{
+                if(window.scrollY <= height && d) { 
+                    return false;                  
+                }
+                else if(window.scrollY > height && !d){
+                    return true; 
+                }
+
+                return d;
+            });
         }
       
         window.addEventListener('scroll', handleScroll);
