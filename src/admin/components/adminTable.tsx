@@ -33,6 +33,11 @@ type ImageCellType = {
     updateCellKey: (key: string, value:string | null) => void
 };
 
+type DescriptionCellType = { 
+    text: string,
+    updateCellKey: (key: string, value:string | null) => void
+};
+
 type SelectMetaDataType = {
     dictionary?: {[key:string]:any }, 
     metaMap: { [key: string]: any },
@@ -123,8 +128,7 @@ function ImageCell({ image, updateCellKey }: ImageCellType){
     
     const checkOpenModal = () => {
         try {
-            setManualAdd(false);
-            setOpenModal(true);
+            setManualAdd(false); setOpenModal(true);
         }
         catch(ex){
             console.log(`Checking Open Modal: ${ex}`);
@@ -167,8 +171,33 @@ function ImageCell({ image, updateCellKey }: ImageCellType){
             </div>
 
             <GalleryCtrlModal visible={openModal} tabs={tabs} maxSelect={MAX_IMAGE_SEL} secondActionTitle={"Select Images"}
-                 secondAction={modalSecondAction} secondActionLoading={search_loading} hasSecondAction={true} 
-                 secondActionStatus={(search_data?.photos?.results?.length > 0 || manualAdd)} closeAction={closeModal} />
+                secondAction={modalSecondAction} secondActionLoading={search_loading} hasSecondAction={true} 
+                secondActionStatus={(search_data?.photos?.results?.length > 0 || manualAdd)} closeAction={closeModal} />
+        </>
+    )
+}
+
+function DescriptionCell({ text, updateCellKey }: DescriptionCellType){
+    const [openModal, setOpenModal] = useState(false);
+    
+    const checkOpenModal = () => {
+        try {
+            setOpenModal(true);
+        }
+        catch(ex){
+            console.log(`Checking Open Modal: ${ex}`);
+        }
+    }
+   
+
+    return(
+        <>
+            <div className='text-btn' onClick={checkOpenModal}>
+                <span className="edit_icon material-symbols-outlined">edit_note</span>
+                <span className='text'>Edit Description</span>
+            </div>
+
+            {/* MODAL*/}
         </>
     )
 }
@@ -183,6 +212,7 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                 let tmp = _.cloneDeep(d);
 
                 switch(col.type){
+                    case "richText":
                     case "image":
                     case "number":
                     case "text":
@@ -246,6 +276,10 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                                 }}/>;
                 case "image":
                     return <ImageCell image={cellRow[col.key]} updateCellKey={(key: string, value:string | null) => { 
+                                updateCell(col, cellRow, { target: { key, value }}); 
+                            }} />;
+                case "richText":
+                    return <DescriptionCell text={cellRow[col.key]} updateCellKey={(key: string, value:string | null) => { 
                                 updateCell(col, cellRow, { target: { key, value }}); 
                             }} />;
                 default:

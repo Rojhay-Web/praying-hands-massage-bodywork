@@ -1866,6 +1866,29 @@ html {
   height: 100%;
   background-color: #969696;
 }
+.admin-component .admin-table-container .admin-table .text-btn {
+  text-align: center;
+  padding: 4px 16px;
+  border: 2px solid #00295f;
+  color: #00295f;
+  display: inline-flex;
+  flex-direction: row;
+  cursor: pointer;
+  opacity: 0.5;
+  border-radius: 32px;
+  font-size: 0.8rem;
+  transition: 0.5s all ease-in-out;
+}
+.admin-component .admin-table-container .admin-table .text-btn .edit_icon {
+  margin: auto 0;
+  font-size: 1rem;
+}
+.admin-component .admin-table-container .admin-table .text-btn .text {
+  margin: auto 0 auto 8px;
+}
+.admin-component .admin-table-container .admin-table .text-btn:hover {
+  opacity: 1;
+}
 .admin-component .admin-table-container .admin-table .table-btns {
   display: flex;
   flex-direction: row;
