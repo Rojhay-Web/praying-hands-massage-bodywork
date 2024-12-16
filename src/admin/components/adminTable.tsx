@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
+
+import { useContext, useEffect, useState } from 'react';
 import { spiral } from 'ldrs'
 import * as _ from 'lodash';
 
-import { AdminTableColType } from "../../datatypes";
+import { AdminTableColType, FilePhoto, UserContextType } from "../../datatypes";
+import { handleGQLError } from "../../utils";
+
+import userContext from "../../context/user.context";
+
+import GalleryCtrlModal from "./galleryCtrlModal";
 
 type AdminTableType = {
     data: any[], loading: boolean | undefined,
@@ -21,6 +28,11 @@ type ScopeCellType = {
     updateCellKey: (key: string, value:boolean) => void
 };
 
+type ImageCellType = { 
+    image: string,
+    updateCellKey: (key: string, value:string | null) => void
+};
+
 type SelectMetaDataType = {
     dictionary?: {[key:string]:any }, 
     metaMap: { [key: string]: any },
@@ -33,6 +45,16 @@ const scopesList = [
     { title: "Gallery", key:"gallery" },
     { title: "Site Editor", key:"site_content" }
 ];
+
+const SEARCH_PHOTOS_QUERY = gql`
+query searchPhotos($page: Int, $pageSize:Int){
+   photos(page:$page, pageSize:$pageSize){
+       pagesLeft
+       results {
+           url
+       }
+   }
+}`;
 
 function ScopeCell({ scopeMap, updateCellKey }: ScopeCellType){
     const isActive = (key:string) => {
@@ -87,6 +109,70 @@ function SelectMetaData({ dictionary, metaMap, selectVal, updateCellKey }:Select
     );
 }
 
+function ImageCell({ image, updateCellKey }: ImageCellType){
+    const [openModal, setOpenModal] = useState(false);
+    const [localSelect, setLocalSelect] = useState<FilePhoto[]>([]);
+    const [manualAdd, setManualAdd] = useState(false); 
+
+    const tabs = ["select image","upload"], MAX_IMAGE_SEL = 1;
+
+    const { user } = useContext(userContext.UserContext) as UserContextType;
+    const authHeader = {context: { headers: { "Authorization": user?._id }}};
+    const [searchImages,{ loading: search_loading, data: search_data }] = useLazyQuery(SEARCH_PHOTOS_QUERY, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
+
+    
+    const checkOpenModal = () => {
+        try {
+            setManualAdd(false);
+            setOpenModal(true);
+        }
+        catch(ex){
+            console.log(`Checking Open Modal: ${ex}`);
+        }
+    }
+
+    const closeModal = (photoset: FilePhoto[]) => {
+        try {
+            // TODO: Add photos to selected
+            setOpenModal(false);
+        }
+        catch(ex){
+            console.log(`Closing Modal: ${ex}`);
+        }
+    }
+
+    const modalSecondAction = (tab: string, ids: string[], photoset: FilePhoto[]) => {
+        try {
+            if(tab === "upload") {
+                searchImages({ variables: { page: 1, pageSize: ids?.length }});                
+            }
+            else {
+                let tmpList = photoset.length > 0 ? photoset[0].url : null;
+                // updateList(photoset); 
+                updateCellKey("", tmpList);
+                setManualAdd(true);
+            }
+        }
+        catch(ex){
+            console.log(`Performing modal second action: ${ex}`);
+        }
+    }
+
+    return(
+        <>
+            <div className='img-container' onClick={checkOpenModal}>
+                {image ? 
+                    <img src={image} /> : <div className='empty-img' />
+                }
+            </div>
+
+            <GalleryCtrlModal visible={openModal} tabs={tabs} maxSelect={MAX_IMAGE_SEL} secondActionTitle={"Select Images"}
+                 secondAction={modalSecondAction} secondActionLoading={search_loading} hasSecondAction={true} 
+                 secondActionStatus={(search_data?.photos?.results?.length > 0 || manualAdd)} closeAction={closeModal} />
+        </>
+    )
+}
+
 function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
     const [localRow, setLocalRow] = useState<any>(null);
     const [rowTag, setRowTag] = useState("");
@@ -97,6 +183,8 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                 let tmp = _.cloneDeep(d);
 
                 switch(col.type){
+                    case "image":
+                    case "number":
                     case "text":
                     case "select":
                         tmp[col.key] = e.target.value;
@@ -131,6 +219,8 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
             switch(col.type){
                 case "text":
                     return <input className='admin-input' type="text" name={col.key} placeholder={`Enter ${col.title}`} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }} />
+                case "number":
+                    return <input className='admin-input' type="number" name={col.key} placeholder={`Enter ${col.title}`} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }} />    
                 case "toggle":
                     return <div className={`admin-toggle ${(cellRow[col.key] ? 'active' : '')}`} onClick={()=>{
                         updateCell(col, cellRow, {});
@@ -154,6 +244,10 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                                 updateCellKey={(key: string, value:boolean) => { 
                                     updateCell(col, cellRow, { target: { key, value }}); 
                                 }}/>;
+                case "image":
+                    return <ImageCell image={cellRow[col.key]} updateCellKey={(key: string, value:string | null) => { 
+                                updateCell(col, cellRow, { target: { key, value }}); 
+                            }} />;
                 default:
                     return <></>;
                     

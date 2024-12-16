@@ -18,3 +18,6 @@ Set up MongoDB Database, Create User, Add connection string
 
 ## Render Custom Domain
 [Tutorial Video](https://www.youtube.com/watch?v=uHl3aGFeK6o)
+
+## Google Calendar Set up
+[Tutorial](https://www.geeksforgeeks.org/how-to-integrate-google-calendar-in-node-js/)

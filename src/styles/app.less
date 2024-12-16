@@ -26,13 +26,17 @@ body, html {
     margin: 0px !important;
     color: rgba(0,0,0,1);
     height: 100%; 
-    font-size: @font-size; 
-    font-family: "Raleway", sans-serif; 
 }
 
 *:focus { outline: none;}
 
-.app-body { min-height: 100vh; }
+.app-body { 
+    min-height: 100vh; 
+    &.core {
+        font-size: @font-size; 
+        font-family: "Raleway", sans-serif; 
+    }
+}
 
 /* Main Nav Menu */
 .navbar {

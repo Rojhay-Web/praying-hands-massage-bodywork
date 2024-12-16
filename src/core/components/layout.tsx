@@ -7,7 +7,7 @@ import Header from './header';
 
 function Layout(){
     return (
-        <div className='app-body'>
+        <div className='app-body core'>
             <ToastContainer />
             <Header />
             <div className={`page-body`}>

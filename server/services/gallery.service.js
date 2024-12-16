@@ -240,6 +240,8 @@ function runElevatedFlickr(localStore){
         const oauthToken = localStore.searchCacheStore("flickr_keys", "oauthToken"),
             oauthTokenSecret = localStore.searchCacheStore("flickr_keys", "oauthTokenSecret");
 
+        console.log(`${process.env.FLICKR_KEY} | ${process.env.FLICKR_SECRET} | ${oauthToken} | ${oauthTokenSecret}`)
+
         if(!oauthToken || !oauthToken){
             return { elevatedFlickr: null, upload: null };
         }

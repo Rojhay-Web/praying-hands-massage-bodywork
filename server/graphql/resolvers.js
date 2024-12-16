@@ -4,6 +4,8 @@ const fns = require('date-fns');
 
 const db = require('../services/db.service.js'), 
     gallery = require('../services/gallery.service.js'),
+    event = require('../services/events.service.js'),
+    review = require('../services/reviews.service.js'),
     log = require('../services/log.service.js'),
     util = require('../utils/util.js');
 
@@ -78,6 +80,45 @@ module.exports = function (localStore) {
                 util.checkGQLResults(ret);
 
                 return ret;
+            },
+
+            /* Services */
+            services: async(_obj, args, context, _info) => {
+                let ret = await db.getServices(args?.type, args?.page, args?.pageSize);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            /* Event */
+            events: async(_obj, args, _context, _info) => {
+                util.validateGQLParams(["startDt", "endDt"], args);
+                let ret = await event.event.getRange(args.startDt, args.endDt);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            event: async(_obj, args, _context, _info) => {
+                util.validateGQLParams(["id"], args);
+                let ret = await event.event.get(args.id);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            eventAvailability: async(_obj, args, _context, _info) => {
+                util.validateGQLParams(["startDt", "endDt"], args);
+                let ret = await event.avalibility(args.startDt, args.endDt, args?.time);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            /* Reviews */
+            reviews: async(_obj, _args, _context, _info) => {
+                let ret = await review.getReviews();
+                util.checkGQLResults(ret);
+
+                return ret?.results;
             },
         },
         Mutation:{
@@ -209,6 +250,30 @@ module.exports = function (localStore) {
                 util.validateGQLParams(["id", "photoIds"], args);
 
                 let ret = await gallery.photosets.removePhotos(localStore, args.id, args.photoIds);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            /* Service */
+            upsertService: async(_obj, args, context, _info) => {
+                // Validate Active User
+                util.activeUserCheck(context);
+                util.validateGQLParams(["title", "type"], args);
+
+                let ret = await db.upsertService(args.title, args.type, args?._id, args?.time, args?.price, args?.bookingSite, args?.image, args?.description);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+
+            /* Event */
+            createEvent: async(_obj, args, context, _info) => {
+                // Validate Active User
+                //util.activeUserCheck(context);
+                util.validateGQLParams(["service", "name", "email", "phone" ], args);
+
+                let ret = await event.event.create(args.service, args.name, args.email, args.phone, args?.startTime, args?.endTime);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

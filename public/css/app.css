@@ -218,14 +218,16 @@ html {
   margin: 0px !important;
   color: #000000;
   height: 100%;
-  font-size: 14px;
-  font-family: "Raleway", sans-serif;
 }
 *:focus {
   outline: none;
 }
 .app-body {
   min-height: 100vh;
+}
+.app-body.core {
+  font-size: 14px;
+  font-family: "Raleway", sans-serif;
 }
 /* Main Nav Menu */
 .navbar {
@@ -1847,6 +1849,22 @@ html {
 }
 .admin-component .admin-table-container .admin-table .scope-container .scope-pill + .scope-pill {
   margin-left: 8px;
+}
+.admin-component .admin-table-container .admin-table .img-container {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.admin-component .admin-table-container .admin-table .img-container img {
+  width: 100%;
+  object-fit: cover;
+}
+.admin-component .admin-table-container .admin-table .img-container .empty-img {
+  width: 100%;
+  height: 100%;
+  background-color: #969696;
 }
 .admin-component .admin-table-container .admin-table .table-btns {
   display: flex;

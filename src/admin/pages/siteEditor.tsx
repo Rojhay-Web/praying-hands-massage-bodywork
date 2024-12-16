@@ -75,7 +75,7 @@ SEARCH_PHOTOS_QUERY = gql`
                url
            }
        }
-   }`
+   }`;
 
 function PillListEditor({ list, updateList }:{ list:string[], updateList: (e:string[]) => void }){
     const [newItem, setNewItem] = useState("");
