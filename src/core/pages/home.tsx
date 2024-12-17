@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { gql, useLazyQuery } from '@apollo/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { Service } from '../../datatypes';
+import { handleGQLError } from '../../utils';
 
 import ServiceItem from '../components/serviceItem';
 import PagerCtrl from '../components/pageCtrl';
@@ -55,12 +57,29 @@ const fullServiceList: Service[] = [
     }
 ];
 
+const GET_SERVICES_QUERY = gql`
+query getServices($type: String, $page:Int, $pageSize: Int){
+	services(type: $type, page:$page, pageSize:$pageSize){
+      _id
+      title
+      type
+      time
+      price
+      bookingSite
+      image
+      description
+    }
+}`
+
 const TOTAL_SERVICE_SIZE = 3;
 
 function Home(){
     // Services Paging
     const [services, setServices] = useState<Service[]>([]);
     const [pages, setPages] = useState({ page: 0, total: 0 });
+
+    const [retrieveServices,{ loading: services_loading, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
+
 
     const setPage = (pg:number) => {
         try {
@@ -78,19 +97,23 @@ function Home(){
     useEffect(()=> { 
         if(pages?.page > 0 && pages?.page <= pages?.total){
             let start = ((pages.page - 1) * TOTAL_SERVICE_SIZE);
-            let tmpServices = fullServiceList.slice(start, (start + TOTAL_SERVICE_SIZE));
+            let tmpServices = services_data?.services?.slice(start, (start + TOTAL_SERVICE_SIZE));
 
             setServices(tmpServices);
         }
     },[pages]);
 
     useEffect(()=>{ 
-        if(fullServiceList?.length > 0){ 
+        if(services_data?.services?.length > 0){ 
             setPages({ 
-                page:1, total: Math.ceil(fullServiceList?.length / TOTAL_SERVICE_SIZE)
+                page:1, total: Math.ceil(services_data.services.length / TOTAL_SERVICE_SIZE)
             });
         }
-    },[fullServiceList]);
+    },[services_data]);
+
+    useEffect(()=>{
+        retrieveServices({ variables: { type: '' }});
+    },[]);
     
     return (
         <div className="core-page home">              

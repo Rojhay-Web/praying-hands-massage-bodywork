@@ -42,7 +42,8 @@ module.exports = gql`
         addPhotosetPhotos(id:String!, photoIds: [String]!):Boolean
         removePhotosetPhotos(id:String!, photoIds: [String]!):Boolean
 
-        upsertService(title:String!, type:String!, _id:String, time:Int, price:Int, bookingSite:String, image:String, description:String): String
+        upsertService(title:String!, type:String, _id:String, time:Int, price:Int, bookingSite:String, image:String, description:String): String
+        removeService(_id:String!): Boolean
 
         createEvent(service: String!, name: String!, email:String!, phone:String!, startTime: String, endTime: String):String
     }

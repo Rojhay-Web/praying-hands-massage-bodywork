@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import ReactQuill from "react-quill-new";
+import 'react-quill-new/dist/quill.snow.css';
 
 import Rodal from 'rodal';
 import 'rodal/lib/rodal.css';
@@ -6,10 +8,30 @@ import 'rodal/lib/rodal.css';
 type QuillModalType = {
     visible: boolean,
     title?: string,
+    data: string,
+    updateData: (d:string) => void,
     closeAction: () => void,
 }
 
-function QuillModal({ visible, title='Quill Text Editor', closeAction }: QuillModalType){
+const quillSetup = {
+    modules: {
+        toolbar:[
+            [{ 'header': '1'}, {'header': '2'}, {size: []}],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, 
+                {'indent': '-1'}, {'indent': '+1'}],
+            ['link', 'clean'],
+        ],
+        clipboard: {matchVisual: false }
+    },
+    formats: [
+        'header', 'font', 'size',
+        'bold', 'italic', 'underline', 'strike',
+        'list', 'indent', 'link',
+    ]
+};
+
+function QuillModal({ visible, data, title='Quill Text Editor', updateData, closeAction }: QuillModalType){
     const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
     
     const calcModalSize = () => {
@@ -38,7 +60,12 @@ function QuillModal({ visible, title='Quill Text Editor', closeAction }: QuillMo
             width={calcModalSize().width} height={calcModalSize().height}>
             <h2 className="quill-title">{title}</h2>
             <div className="text-editor-container">
-                
+                <ReactQuill theme="snow" value={data} onChange={updateData} 
+                    modules={quillSetup.modules} formats={quillSetup.formats} className="admin-quill"
+                />
+            </div>
+            <div className="btn-row">
+                <div className="close-btn" onClick={closeAction}>Close Modal</div>
             </div>
         </Rodal>
     );

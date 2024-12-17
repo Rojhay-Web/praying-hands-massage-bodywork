@@ -298,7 +298,7 @@ module.exports = {
             return { 'error': 'Getting All By Table [E00]'};
         }
     },
-    upsertService: async function(title, type, _id=null, time=null, price=null, bookingSite=null, image=null, description=null){
+    upsertService: async function(title, type="", _id=null, time=null, price=null, bookingSite=null, image=null, description=null){
         try {
             const collection = await dbCollection("services");
             if(collection == null){
@@ -381,7 +381,7 @@ function validatingService(service){
             ret.push(`Title`);
         }
 
-        if(!("type" in service) || service.type.length <= 0){
+        if(!("type" in service)){
             ret.push(`Type`);
         }
 

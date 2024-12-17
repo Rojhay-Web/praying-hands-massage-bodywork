@@ -1,4 +1,6 @@
 import { useState } from "react";
+import parse from 'html-react-parser';
+
 import { Service } from "../../datatypes"
 
 import logo from '../../assets/logos/logo_color.png';
@@ -71,7 +73,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                 </div>
 
                 <div className="description-container">
-                    <p style={formatDesc()}>{service?.description ?? "Please contact us for more information on this service."}</p>
+                    <div className="description-content" style={formatDesc()}>{parse(service?.description ?? "Please contact us for more information on this service.")}</div>
 
                     {show_more_toggle ?
                         <div className="more-toggle" onClick={toggleShow}>

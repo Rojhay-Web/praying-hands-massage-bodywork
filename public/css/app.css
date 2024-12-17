@@ -414,6 +414,11 @@ html {
   color: #000;
   text-decoration: none;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.footer-container .footer-content .footer-item:hover {
+  color: #cd853f;
 }
 .footer-container .footer-content .footer-item + .footer-item {
   margin-top: 12px;
@@ -512,7 +517,7 @@ html {
   flex-direction: column;
   padding: 0 8px;
 }
-.services-container .service-info .service-info-container .description-container p {
+.services-container .service-info .service-info-container .description-container .description-content {
   line-height: 1.5rem;
   font-size: 1.1rem;
   overflow: hidden;
@@ -1152,6 +1157,44 @@ html {
 .admin-image-mapper-container .rodal-dialog .gallery-section .action-panel .panel-content .action-link:hover {
   opacity: 1;
 }
+.quill-editor-container .rodal-dialog {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
+}
+.quill-editor-container .rodal-dialog .quill-title {
+  margin-top: 0;
+}
+.quill-editor-container .rodal-dialog .text-editor-container {
+  flex: 1;
+  display: flex ;
+  flex-direction: column;
+}
+.quill-editor-container .rodal-dialog .text-editor-container .quill {
+  flex: 1;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.quill-editor-container .rodal-dialog .btn-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 8px 0;
+}
+.quill-editor-container .rodal-dialog .btn-row .close-btn {
+  padding: 4px 16px;
+  border-radius: 32px;
+  cursor: pointer;
+  color: #00295f;
+  border: 1px solid #00295f;
+  opacity: 0.7;
+  transition: 0.5s all ease-in-out;
+}
+.quill-editor-container .rodal-dialog .btn-row .close-btn:hover {
+  opacity: 1;
+}
 /* Admin Ctrl Section*/
 .ctrl-panel {
   font-family: 'Parkinsans', serif;
@@ -1752,6 +1795,9 @@ html {
 }
 .admin-component .admin-table-container .admin-table .admin-input:placeholder {
   font-size: 0.8rem;
+}
+.admin-component .admin-table-container .admin-table .admin-input.number {
+  width: 50px;
 }
 .admin-component .admin-table-container .admin-table .admin-select {
   border: none;

@@ -10,6 +10,7 @@ import { handleGQLError } from "../../utils";
 import userContext from "../../context/user.context";
 
 import GalleryCtrlModal from "./galleryCtrlModal";
+import QuillModal from './quillModal';
 
 type AdminTableType = {
     data: any[], loading: boolean | undefined,
@@ -30,12 +31,12 @@ type ScopeCellType = {
 
 type ImageCellType = { 
     image: string,
-    updateCellKey: (key: string, value:string | null) => void
+    updateCellKey: (value:string | null) => void
 };
 
 type DescriptionCellType = { 
     text: string,
-    updateCellKey: (key: string, value:string | null) => void
+    updateCellKey: (value:string | null) => void
 };
 
 type SelectMetaDataType = {
@@ -48,7 +49,8 @@ type SelectMetaDataType = {
 const scopesList = [
     { title: "Users", key:"users" },
     { title: "Gallery", key:"gallery" },
-    { title: "Site Editor", key:"site_content" }
+    { title: "Site Editor", key:"site_content" },
+    { title: "Services", key:"services" }
 ];
 
 const SEARCH_PHOTOS_QUERY = gql`
@@ -116,7 +118,6 @@ function SelectMetaData({ dictionary, metaMap, selectVal, updateCellKey }:Select
 
 function ImageCell({ image, updateCellKey }: ImageCellType){
     const [openModal, setOpenModal] = useState(false);
-    const [localSelect, setLocalSelect] = useState<FilePhoto[]>([]);
     const [manualAdd, setManualAdd] = useState(false); 
 
     const tabs = ["select image","upload"], MAX_IMAGE_SEL = 1;
@@ -153,7 +154,7 @@ function ImageCell({ image, updateCellKey }: ImageCellType){
             else {
                 let tmpList = photoset.length > 0 ? photoset[0].url : null;
                 // updateList(photoset); 
-                updateCellKey("", tmpList);
+                updateCellKey(tmpList);
                 setManualAdd(true);
             }
         }
@@ -166,7 +167,7 @@ function ImageCell({ image, updateCellKey }: ImageCellType){
         <>
             <div className='img-container' onClick={checkOpenModal}>
                 {image ? 
-                    <img src={image} /> : <div className='empty-img' />
+                    <img src={image} alt="admin table display" /> : <div className='empty-img' />
                 }
             </div>
 
@@ -187,17 +188,18 @@ function DescriptionCell({ text, updateCellKey }: DescriptionCellType){
         catch(ex){
             console.log(`Checking Open Modal: ${ex}`);
         }
-    }
-   
+    }   
 
     return(
         <>
             <div className='text-btn' onClick={checkOpenModal}>
                 <span className="edit_icon material-symbols-outlined">edit_note</span>
-                <span className='text'>Edit Description</span>
+                <span className='text'>View Description</span>
             </div>
 
-            {/* MODAL*/}
+            <QuillModal visible={openModal} data={text} updateData={updateCellKey} 
+                title="Description Editor" closeAction={()=> { setOpenModal(false); }}
+            />
         </>
     )
 }
@@ -250,7 +252,7 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                 case "text":
                     return <input className='admin-input' type="text" name={col.key} placeholder={`Enter ${col.title}`} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }} />
                 case "number":
-                    return <input className='admin-input' type="number" name={col.key} placeholder={`Enter ${col.title}`} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }} />    
+                    return <input className='admin-input number' type="number" name={col.key} placeholder={`Enter ${col.title}`} value={cellRow[col.key]} onChange={(e)=>{ updateCell(col, cellRow, e); }} />    
                 case "toggle":
                     return <div className={`admin-toggle ${(cellRow[col.key] ? 'active' : '')}`} onClick={()=>{
                         updateCell(col, cellRow, {});
@@ -275,12 +277,12 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
                                     updateCell(col, cellRow, { target: { key, value }}); 
                                 }}/>;
                 case "image":
-                    return <ImageCell image={cellRow[col.key]} updateCellKey={(key: string, value:string | null) => { 
-                                updateCell(col, cellRow, { target: { key, value }}); 
+                    return <ImageCell image={cellRow[col.key]} updateCellKey={(value:string | null) => { 
+                                updateCell(col, cellRow, { target: { key: col.key, value }}); 
                             }} />;
                 case "richText":
-                    return <DescriptionCell text={cellRow[col.key]} updateCellKey={(key: string, value:string | null) => { 
-                                updateCell(col, cellRow, { target: { key, value }}); 
+                    return <DescriptionCell text={cellRow[col.key]} updateCellKey={(value:string | null) => { 
+                                updateCell(col, cellRow, { target: { key: col.key, value }}); 
                             }} />;
                 default:
                     return <></>;
@@ -353,7 +355,7 @@ function AdminRow({ row, cols, rowIdx, saveRow, deleteRow }: AdminRowType){
 
                     <td>
                         <div className="table-btns">
-                            <span className={`material-symbols-outlined ${(rowTag != "") ? "":"hide"}`} onClick={saveChanges}>save</span>
+                            <span className={`material-symbols-outlined ${(rowTag !== "") ? "":"hide"}`} onClick={saveChanges}>save</span>
                             <span className="material-symbols-outlined remove" onClick={deleteCurRow}>remove_selection</span>
                         </div>
                     </td>

@@ -165,7 +165,10 @@ body, html {
 
         .footer-item {
             color: #000; text-decoration: none;
-            font-weight: bold;
+            font-weight: bold; cursor: pointer;
+            transition: 0.5s all ease-in-out;
+
+            &:hover { color: @color2; }
 
             &+.footer-item { margin-top: 12px; }
         }
@@ -245,7 +248,7 @@ body, html {
                 display: flex; flex-direction: column;
                 padding: 0 8px;
 
-                p { 
+                .description-content { 
                     line-height: 1.5rem; font-size: 1.1rem; 
                     overflow: hidden; text-overflow: ellipsis;
                     display: -webkit-box; -webkit-box-orient: vertical;

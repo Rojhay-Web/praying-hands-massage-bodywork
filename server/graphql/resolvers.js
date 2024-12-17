@@ -259,9 +259,19 @@ module.exports = function (localStore) {
             upsertService: async(_obj, args, context, _info) => {
                 // Validate Active User
                 util.activeUserCheck(context);
-                util.validateGQLParams(["title", "type"], args);
+                util.validateGQLParams(["title"], args);
 
-                let ret = await db.upsertService(args.title, args.type, args?._id, args?.time, args?.price, args?.bookingSite, args?.image, args?.description);
+                let ret = await db.upsertService(args.title, args?.type, args?._id, args?.time, args?.price, args?.bookingSite, args?.image, args?.description);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            removeService: async(_obj, args, context, _info) => {
+                // Validate Active User
+                util.activeUserCheck(context);
+                util.validateGQLParams(["_id"], args);
+
+                let ret = await db.removeAppTableData("services",args._id);
                 util.checkGQLResults(ret);
 
                 return ret?.results;

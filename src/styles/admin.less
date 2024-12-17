@@ -244,6 +244,36 @@
     }
 }
 
+.quill-editor-container {
+    .rodal-dialog {
+        display: flex; flex-direction: column; position: relative;
+        overflow: hidden;
+    
+        .quill-title { margin-top: 0;}
+        .text-editor-container {
+            flex: 1; display: flex ;
+            flex-direction: column;
+
+            .quill {
+                flex: 1; overflow: hidden;
+                display: flex; flex-direction: column;
+            }
+        }
+
+        .btn-row {
+            display: flex; flex-direction: row; justify-content: center;
+            margin: 8px 0;
+            .close-btn { 
+                padding: 4px 16px; border-radius: 32px; cursor: pointer;
+                color: @admin-color1; border: 1px solid @admin-color1;
+                opacity: 0.7; transition: 0.5s all ease-in-out;
+
+                &:hover { opacity: 1; }
+            }
+        }
+    }
+}
+
 /* Admin Ctrl Section*/
 .ctrl-panel {
     font-family: 'Parkinsans', serif;
@@ -687,6 +717,8 @@
                 .admin-background(background-color, 0.2);
 
                 &:placeholder { font-size: .8rem; }
+
+                &.number { width: 50px; }
             }
 
             .admin-select {
