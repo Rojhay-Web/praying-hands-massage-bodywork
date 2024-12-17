@@ -5,7 +5,7 @@ import trish1 from '../../assets/stock/trish1.jpg';
 import trish2 from '../../assets/stock/trish2.jpg';
 import trish3 from '../../assets/stock/trish3.jpg';
 import about1 from '../../assets/stock/about1.jpg';
-import about2 from '../../assets/stock/about2.jpg';
+import AreaMap from '../components/areaMap';
 
 function AboutUs(){
     const story_text = `
@@ -16,7 +16,7 @@ function AboutUs(){
 
     return(
         <div className="core-page aboutus">
-            <section className="internal-landing">
+            <section className="internal-landing back">
                 <h1>About Us</h1>
             </section>
             <section className='core-section contained'>
@@ -47,6 +47,11 @@ function AboutUs(){
                 <h1 className='section-title'>Our Story</h1>
 
                 <div className='story-content'>{parse(story_text)}</div>
+            </section>
+
+            <section className='core-section'>
+                <h1 className='section-title'>Areas Served</h1>
+                <AreaMap />
             </section>
         </div>
     );

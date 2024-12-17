@@ -4,6 +4,9 @@ import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from "./App";
+
+// Custom Styles
+import 'leaflet/dist/leaflet.css';
 import "./styles/app.less";
 
 const GCID = "54510890763-1t27ss88njg5eb676b5rjiumn6o0ijc1.apps.googleusercontent.com";
