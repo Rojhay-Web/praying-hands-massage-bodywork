@@ -6,6 +6,24 @@ import logoB from '../../assets/logos/logo_b.png';
 import logoC from '../../assets/logos/logo_color.png';
 import AdminBtn from "./adminBtn";
 
+function MobileNav({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (s:boolean) => void }) {
+    return (
+        <div className={`m-sidenav-container ${(isOpen ? "active": "")}`}>
+            <div className="m-nav-close" onClick={() => setIsOpen(false)}><span className="close-nav" /></div>
+            <div className="m-sidenav-section">
+                <NavLink className="m-sidenav-link" to="/" onClick={() => setIsOpen(false)}>Home</NavLink>
+                <NavLink className="m-sidenav-link" to="/" onClick={() => setIsOpen(false)}>About Us</NavLink>
+                <NavLink className="m-sidenav-link" to="/" onClick={() => setIsOpen(false)}>Bookings + Services</NavLink>
+                <NavLink className="m-sidenav-link" to="/" onClick={() => setIsOpen(false)}>Gallery</NavLink>
+                <NavLink className="m-sidenav-link mini-link" to="/" onClick={() => setIsOpen(false)}>Contact Us</NavLink>
+                <div className="m-sidenav-admin-access-container">
+                    <AdminBtn />
+                </div>
+            </div>
+        </div>
+    );
+}
+
 function Header({ }){
     const [navChange, setNavChange] = useState(false);
     const [sideNav, setSideNav] = useState(false);
@@ -32,7 +50,7 @@ function Header({ }){
 
     return (
         <>
-            {/* TODO: Mobile Nav*/}
+            <MobileNav isOpen={sideNav} setIsOpen={setSideNav}/>
             <nav className={`navbar navbar-expand-lg ${navChange ? 'back' : ''}`}>
                 <Link className="navbar-brand" to="/">
                     <div className="initial-wrapper">
@@ -45,7 +63,7 @@ function Header({ }){
                 </Link>
 
                 <button className="navbar-toggler" type="button" aria-label="Toggle navigation" onClick={() => setSideNav(true) }>
-                    <span className="material-symbols-outlined navbar-toggler-icon">menu</span>
+                    <span className="material-symbols-outlined navbar-toggler-icon">menu_open</span>
                 </button>
 
                 <div className="collapse navbar-collapse">

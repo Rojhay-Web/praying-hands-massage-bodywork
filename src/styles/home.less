@@ -21,6 +21,8 @@
                     margin: 0; font-size: 2.5rem;
                     font-family: "Fraunces", serif;
                     &+h1 { margin-bottom: 16px; }
+
+                    @media @mobile-device { font-size: 2rem; }
                 }
     
                 span { font-size: 1.2rem; }
@@ -31,6 +33,8 @@
             .landing-img { 
                 width: 400px; height: 400px;
                 margin: auto 0 auto 24px; z-index: 1;
+
+                @media @mobile-nav { display: none; }
             }
         }   
 
@@ -91,6 +95,8 @@
                     &.sz-1 { width: calc(50% - 8px); }
                     &.sz-2 { width: 100%; }
                 }
+
+                @media @mobile-device { width: 100%; margin: 0 0 40px; }
             }
 
             .text-content { 
@@ -105,11 +111,15 @@
                     background: -webkit-linear-gradient(0deg, @color2 20%, @color1);
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
+
+                    @media @mobile-device { width: 85%;  font-size: 1.8rem; line-height: 2.5rem;}
                 }
                 p { margin-top: 0; font-size: 1.3rem; }
 
                 .btn-container { margin-top: 8px; }
             }
+
+            @media @mobile-device { flex-direction: column; }
         }
 
         .section-title {
@@ -140,6 +150,8 @@
 
         &.contained {
             padding: 80px 10%; overflow: hidden;
+
+            @media @mobile-device { padding: 80px 5%; }
         }
 
         &.alt-color {

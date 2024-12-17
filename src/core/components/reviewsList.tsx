@@ -34,13 +34,22 @@ const reviews = [
 
 
 export default function ReviewsList(){
-    const settings = {
+    const review_settings = {
         className: "center",
         centerMode: true,
         infinite: true,
         centerPadding: "60px",
         slidesToShow: 3,
-        speed: 500
+        speed: 500,
+        responsive: [
+            {
+                breakpoint: 770,
+                settings: {
+                    slidesToShow: 1,
+                    infinite: true
+                }
+            }
+        ]
     },
     ratingDict: { [key:string]:number } = {
         "ONE":1, "TWO":2, "THREE":3, "FOUR":4,"FIVE":5
@@ -62,7 +71,7 @@ export default function ReviewsList(){
 
     return(
         <div className="slider-container">
-            <Slider {...settings}>
+            <Slider {...review_settings}>
                 {reviews?.map((review, i)=>
                     <div className="review-container" key={i}>
                         <div className="review-content">

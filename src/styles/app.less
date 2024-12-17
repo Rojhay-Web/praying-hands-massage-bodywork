@@ -2,6 +2,8 @@
 @mid-sized-device: ~"(max-width: 1000px)";
 @mobile-nav: ~"(max-width: 992px)";
 
+@mobileNavHeight: 97px;
+
 /* Colors */
 @color1: rgba(160, 82, 45,1);
 .color1(@prop,@val){ @{prop}: rgba(160, 82, 45,@val) !important; }
@@ -47,8 +49,12 @@ body, html {
     a { text-decoration: none; color: initial; }
 
     .navbar-toggler { 
-        border: none; font-size: 25px;  
-        display: none; color: rgba(255,255,255,1);
+        border: none; display: none; justify-content: center;
+        background: none; flex-direction: column;
+        margin-left: auto; color: rgba(50,50,50,1);
+        
+
+        span { font-size: 32px; }
 
         @media @mobile-nav { display: inline-flex; }
     }
@@ -94,6 +100,8 @@ body, html {
                 .admin-btn-container { margin-left: 8px; }
             }
         }
+
+        @media @mobile-nav { display: none; }
     }
 
     &.back { 
@@ -101,9 +109,73 @@ body, html {
         backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
         border-bottom-left-radius: 24px;
         border-bottom-right-radius: 24px;
-        .title { color: rgba(255,255,255,1) !important; }
-        .nav-item:hover { color: rgba(255,255,255,1) !important; }
+        .title { color: @color1 !important; }
+        .nav-item:hover { color: @color1 !important; }
+
+        .navbar-toggler { color: @color1; }
     }
+}
+
+/* Mobile Nav Menu */
+.noscroll { overflow: hidden; }
+.m-sidenav-container {
+    display: none; position: fixed;
+    top:0; left:100vw;
+    z-index: 1001; width: 100vw;
+    height: calc(100vh - @mobileNavHeight); 
+    .color1(background, 0.95);
+    transition: 0.5s all ease-in-out;
+    padding: @mobileNavHeight 0 0;
+    color: rgba(255,255,255,1);
+
+    .m-nav-close { 
+        position: absolute; top: 40px; right: 60px; color: rgba(255,255,255,1);         
+    }
+
+    .m-sidenav-section { 
+        display: flex; flex-direction: column; padding: 0 @page-padding;
+        overflow-y: auto; height: 100%;
+
+        .m-user-link {
+            height: 20px; text-decoration: none;
+            display: flex; flex-direction: row; cursor: pointer;             
+
+            span { 
+                color: #ccc; display: flex; flex-direction: column; justify-content: center;
+                font-size: 1.3rem; transition: 0.2s all ease-in-out;
+                &.material-symbols-outlined { font-size: 1.3rem; }
+                &+span { margin-left: 5px; }
+            }
+        }
+
+        .m-sidenav-link {
+            font-size: 2rem; text-align: left; color: #fff; text-decoration: none;
+            color:  rgba(255,255,255,1); padding: 10px 0;
+
+            .m-header {
+                display: flex; flex-direction: row; justify-content: space-between;
+
+                a { 
+                    color: #fff; text-decoration: none;
+                }
+                .material-symbols-outlined { 
+                    display: flex; flex-direction: column; justify-content: center;
+                    cursor: pointer;
+                }
+            }
+
+            &.mini-link { font-size: 1.4rem; color: rgba(200,200,200,1); }
+        }
+
+        .m-sidenav-admin-access-container {
+            margin-top: auto; display: flex;
+            flex-direction: row; justify-content: center;
+            padding: 16px 0;
+        }
+    }
+
+    &.active {  left:0; }
+    @media @mobile-device { display: block; }
 }
 
 /* App Body */
@@ -117,6 +189,8 @@ body, html {
     .footer-section {
         display: flex; flex-direction: row; padding: 24px 8px 0;
         justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.1);
+
+        @media @mobile-device { flex-direction: column; }
     }
 
     .footer-content {
@@ -136,6 +210,8 @@ body, html {
                     flex-direction: column; justify-content: center; 
                     color: rgba(0,0,0,1);
                 }
+
+                @media @mobile-device { margin: 0; justify-content: center; }
             }
         }
 
@@ -161,6 +237,8 @@ body, html {
 
                 &+.icon-container { margin-left: 8px; }
             }
+
+            @media @mobile-device { justify-content: center;}
         }
 
         .footer-item {
@@ -171,11 +249,30 @@ body, html {
             &:hover { color: @color2; }
 
             &+.footer-item { margin-top: 12px; }
+
+            @media @mobile-device { text-align: center; }
+        }
+
+        &+.footer-content {
+            @media @mobile-device { margin-top: 16px; }
         }
     }
 }
 
 /* Components */
+/* Icons */
+.close-nav { 
+    width: 27px; height: 27px; position: relative;
+    &:before, &:after {
+        position: absolute;
+        left: 14px; content: ' ';
+        height: 28px; width: 2px;
+        background-color: rgba(50,50,50,1);
+    }
+    &:before { transform: rotate(45deg); }
+    &:after { transform: rotate(-45deg); }
+}
+
 .app-link { text-decoration: none; color: initial; }
 
 .btn-container {
@@ -186,16 +283,23 @@ body, html {
         transition: 0.5s all ease-in-out;
         font-weight: bold; cursor: pointer;
 
-        &+.btn { margin-left: 8px; }
+        &+.btn { 
+            margin-left: 8px; 
+            @media @mobile-device { margin: 8px 0 0; }
+        }
         &.main { 
             .color2(background, 0.7); color: #fff;
             &:hover { .color1(background, 1); } 
         }
         
         &:hover:not(.main) { color: @color2; }
+
+        @media @mobile-device { text-align: center; }
     }
 
     &.ctr { justify-content: center; }
+
+    @media @mobile-device { flex-direction: column; }
 }
 
 .services-container {
