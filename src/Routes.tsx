@@ -18,9 +18,11 @@ import AdminHome from "./admin/pages/adminHome";
 
 /* Core Pages */
 import NoMatch from "./core/pages/nomatch";
+import AboutUs from "./core/pages/aboutus";
 import Home from "./core/pages/home";
 
 const paths = [
+    { path: "aboutUs", element: AboutUs },
     { path: "*", element: NoMatch }
 ];
 
