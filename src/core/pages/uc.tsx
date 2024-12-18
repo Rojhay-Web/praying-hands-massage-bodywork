@@ -2,6 +2,7 @@
 import logoB from '../../assets/logos/logo_b.png';
 import hands1 from '../../assets/stock/hands1.jpg';
 import background from '../../assets/background.png';
+import prayer1 from '../../assets/stock/prayer1.jpg';
 
 function UC(){
 
@@ -26,7 +27,7 @@ function UC(){
                     <img src={background} className="uc-background" />
                     <div className='uc-container'>
                         <div className='img-container'>
-                            <img src={hands1} alt="Simple massage sketch" />
+                            <img src={prayer1} alt="Simple massage sketch" />
                         </div>
 
                         <div className='content-container'>
