@@ -9,6 +9,10 @@ export const appSessKey = "phw_bprint|usr";
 export const GQL_URL = `${rootPath}/v1/gql`;
 export const API_URL = `${rootPath}/v1/api`;
 
+export const GOOGLE_LINK = "https://www.google.com/maps/place/Praying+Hands+Massage+and+Bodywork/@39.5146624,-75.7139167,17z/data=!3m1!4b1!4m6!3m5!1s0x89c7a16c990b9bc3:0xa72cb1cda5affc10!8m2!3d39.5146583!4d-75.7113418!16s%2Fg%2F11tfktb4z6?entry=ttu&g_ep=EgoyMDI0MTExOC4wIKXMDSoASAFQAw%3D%3D";
+export const FACEBOOK_LINK = "https://www.facebook.com/sparklewithtrish";
+export const INSTAGRAM_LINK = "https://www.instagram.com/praying_handsmassage/";
+
 export function parseToken(token: string){
     var localUser: { user: User | null, expDt: Date | null } | null = null, 
         isExpired: Boolean | null = true; 
@@ -54,4 +58,8 @@ export const handleGQLError = (err:any) => {
     catch(ex){
         console.log(`Handling Error: ${ex}`);
     }
+}
+
+export const externalSiteConfirm = () => {
+    return window.confirm('We are now navigating you to an external site via a new tab. To return to our website please switch via your browsers tabs bar.');
 }

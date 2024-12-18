@@ -589,6 +589,8 @@ html {
 .btn-container .btn {
   padding: 8px 24px;
   border-radius: 16px;
+  text-decoration: none;
+  color: #000;
   transition: 0.5s all ease-in-out;
   font-weight: bold;
   cursor: pointer;
@@ -606,6 +608,13 @@ html {
   color: #fff;
 }
 .btn-container .btn.main:hover {
+  background: #a0522d !important;
+}
+.btn-container .btn.main.c1 {
+  background: rgba(160, 82, 45, 0.7) !important;
+  color: #fff;
+}
+.btn-container .btn.main.c1:hover {
   background: #a0522d !important;
 }
 .btn-container .btn:hover:not(.main) {
@@ -700,6 +709,8 @@ html {
   justify-content: center;
   color: #a0522d;
   cursor: pointer;
+  margin: 8px 0;
+  font-weight: bold;
 }
 .services-container .service-info .service-info-container .description-container .more-toggle span {
   display: flex;
@@ -713,14 +724,44 @@ html {
   margin-top: 8px;
   justify-content: center;
 }
+.services-container .service-info .service-info-container.empty {
+  background: linear-gradient(-45deg, #eee 40%, #fafafa 50%, #eee 60%);
+  background-size: 300%;
+  height: 200px;
+  background-position-x: 100%;
+  padding: 0;
+  animation: shimmer 1s infinite linear;
+}
 .services-container .service-info.sz-2 {
   width: calc(50% - 16px);
+}
+@media (max-width: 770px) {
+  .services-container .service-info.sz-2 {
+    width: calc(90% - 16px);
+    min-width: calc(90% - 16px);
+  }
 }
 .services-container .service-info.sz-3 {
   width: calc(33% - 16px);
 }
+@media (max-width: 770px) {
+  .services-container .service-info.sz-3 {
+    width: calc(80% - 16px);
+    min-width: calc(80% - 16px);
+  }
+}
 .services-container.paged {
   flex-wrap: nowrap;
+}
+@media (max-width: 770px) {
+  .services-container.paged {
+    overflow-x: auto;
+  }
+}
+@media (max-width: 770px) {
+  .services-container {
+    padding: 0 5%;
+  }
 }
 .pager-container {
   display: flex;
@@ -900,6 +941,20 @@ html {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.core-page .core-section .section-title.mini {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: -webkit-linear-gradient(0deg, #323232 40%, #a0522d);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media (max-width: 770px) {
+  .core-page .core-section .section-title.mini {
+    white-space: nowrap;
+  }
+}
 .core-page .core-section.contained {
   padding: 80px 10%;
   overflow: hidden;
@@ -907,6 +962,15 @@ html {
 @media (max-width: 770px) {
   .core-page .core-section.contained {
     padding: 80px 5%;
+  }
+}
+.core-page .core-section.mini {
+  padding: 8px 5%;
+  background: rgba(255, 255, 255, 0.5);
+}
+@media (max-width: 770px) {
+  .core-page .core-section.mini {
+    padding: 8px 0;
   }
 }
 /* No Match & Loading */
@@ -1021,6 +1085,12 @@ html {
     flex-direction: column;
     top: 93px;
     transform: translate(-50%, 0);
+  }
+}
+/* Animations */
+@keyframes shimmer {
+  to {
+    background-position-x: 0%;
   }
 }
 /* Additional Page styles */
@@ -2600,6 +2670,7 @@ html {
 }
 .home .home-landing .landing-content-container .landing-content .btn-container {
   margin-top: 24px;
+  text-decoration: none;
 }
 .home .home-landing .landing-content-container .landing-img {
   width: 400px;
@@ -2779,6 +2850,15 @@ html {
     padding: 80px 5%;
   }
 }
+@media (max-width: 770px) {
+  .home .home-section.mobile-full {
+    padding: 80px 0 !important;
+  }
+  .home .home-section.mobile-full .section-title,
+  .home .home-section.mobile-full .section-subtitle {
+    padding: 0 5%;
+  }
+}
 .home .home-section.alt-color {
   background: linear-gradient(to left, #a0522d, #000000);
 }
@@ -2864,8 +2944,8 @@ html {
   .aboutus .location-list {
     flex-wrap: nowrap;
     overflow-x: auto;
-    padding-left: calc((10 * 16px) + 32px);
-    padding-right: 16px;
+    padding: 0 5%;
+    justify-content: start;
   }
 }
 .aboutus .area-map {
@@ -2888,4 +2968,116 @@ html {
 .aboutus .area-map .leaflet-container {
   z-index: 0;
   filter: grayscale(90%);
+}
+.services .booking-cards {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 16px 0;
+}
+.services .booking-cards .mini {
+  margin-right: 24px;
+}
+.services .booking-cards .card-container {
+  border-radius: 4px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  background: #ffffff;
+  padding: 8px 16px;
+  margin: 0 24px;
+  position: relative;
+  transition: 0.5s all ease-in-out;
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.services .booking-cards .card-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: rgba(205, 133, 63, 0.1) !important;
+  width: 100%;
+  height: 100%;
+}
+.services .booking-cards .card-container img {
+  margin: 0 auto;
+  height: 100%;
+  position: relative;
+  z-index: 0;
+  filter: grayscale(0.7);
+}
+.services .booking-cards .card-container:hover {
+  transform: scale(1.1);
+}
+@media (max-width: 770px) {
+  .services .booking-cards {
+    overflow-x: auto;
+    justify-content: start;
+    padding: 16px 5%;
+    margin: 0;
+  }
+}
+.services .service-type-outer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.services .service-type-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 32px;
+  margin: 8px auto;
+  -moz-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.services .service-type-container .type-sel {
+  padding: 4px 16px;
+  border-radius: 32px;
+  text-transform: capitalize;
+  font-family: "Fraunces", serif;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.services .service-type-container .type-sel.sel {
+  background: #cd853f;
+  cursor: default;
+}
+.services .service-type-container .type-sel:hover:not(.sel) {
+  background: rgba(50, 50, 50, 0.2);
+}
+.services .service-type-container .type-sel + .type-sel {
+  margin-left: 16px;
+}
+@media (max-width: 770px) {
+  .services .service-type-container {
+    overflow-x: auto;
+  }
+}
+.services .services-container {
+  margin-top: 24px;
+}
+.services .services-container .loading-container {
+  margin: 0 auto;
+}
+.services .services-container .empty-message {
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  font-family: "Fraunces", serif;
+  margin: 8px auto;
+  background: -webkit-linear-gradient(0deg, rgba(50, 50, 50, 0.7) 40%, rgba(100, 100, 100, 0.7));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.services .services-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 24px;
 }

@@ -27,7 +27,7 @@
     
                 span { font-size: 1.2rem; }
     
-                .btn-container { margin-top: 24px; }
+                .btn-container { margin-top: 24px; text-decoration: none; }
             }
     
             .landing-img { 
@@ -152,6 +152,13 @@
             padding: 80px 10%; overflow: hidden;
 
             @media @mobile-device { padding: 80px 5%; }
+        }
+
+        &.mobile-full {
+            @media @mobile-device { 
+                padding: 80px 0 !important;
+                .section-title, .section-subtitle { padding: 0 5%; } 
+            }
         }
 
         &.alt-color {

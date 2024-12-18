@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import parse from 'html-react-parser';
 
 // Images
@@ -13,6 +14,8 @@ function AboutUs(){
     <p>With a history of chronic pain and a servants heart she has always been passionate abut helping others. Having lost several family members and friends to cancer.  She is dedicated to seeing results and brings awareness to prevention of illness to everyone around her. "I have seen prayer work, says owner Trish Blakey ..our minds are an asset we can't afford to loose, keeping our thoughts on the positive and our hearts with God.  May you stay full of faith and the grace of the Lord be upon you always. " Now offering life coaching and sound healing in private and group settings. Call to schedule and check heallist for upcoming events.</p>
     <p>At Praying Hands you'll experience relaxation and personalization with every massage. Are you feeling the need to hit the reset button and feel refreshed?  With a desire to see results and help with overall health, your wellness needs are taken seriously...  Oh and Snoring is a compliment...Treat yourself or loved one to a massage today, why wait.  Ask about our Loving Touch workshops where couples rekindle the flames with a touch workshop, perfect for a memorable and romantic date.</p> 
     <p>Praying Hands Massage and Bodywork only uses non toxic cleaners, laundry detergents,  paraben-free creams, vegan massage cream, and/or organic oils with your best health in mind.</p>`;
+
+    useEffect(()=> { document.title = "About Us"; },[]);
 
     return(
         <div className="core-page aboutus">

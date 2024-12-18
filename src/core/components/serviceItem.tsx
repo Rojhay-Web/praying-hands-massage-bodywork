@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import parse from 'html-react-parser';
 
 import { Service } from "../../datatypes"
 
 import logo from '../../assets/logos/logo_color.png';
+import { externalSiteConfirm } from "../../utils";
 
 type ServiceItemType = {
     service: Service, size?: number, max_lines?:number,
@@ -43,13 +45,30 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
         let ret= {};
         try {
             if(!showMore) {
-                ret = { "-webkit-line-clamp": `${max_lines}` };
+                // -webkit-line-clamp
+                ret = { "WebkitLineClamp": `${max_lines}` };
             }
         }
         catch(ex){
             console.log(`Error Formating Desc: ${ex}`);
         }
 
+        return ret;
+    }
+
+    const getBookingLink = () => {
+        let ret = "";
+        try {
+            if(service.bookingSite === "massagebook") {
+                ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+            }
+            else if(service.bookingSite === "heallist") {
+                ret = "https://app.heallist.com/p/patricia-blakey";
+            }
+        }
+        catch(ex){
+            console.log(`Get Booking Link: ${ex}`);
+        }
         return ret;
     }
 
@@ -86,9 +105,12 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
 
                 <div className="btn-container">
                     {show_learn_more ?
-                        <div className="btn">Learn More</div> : <></>
+                        <Link to="/services" className="btn">Learn More</Link> : <></>
                     }
-                    <div className="btn main">Book</div>
+                    {service.bookingSite ?
+                        <a href={getBookingLink()} target="_blank" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                        <div className="btn main c1">Reserve</div>
+                    }
                 </div>
             </div>
         </div>

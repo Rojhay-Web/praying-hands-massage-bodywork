@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import App from "./App";
+import ScrollToTop from "./scrollToTop";
 
 // Custom Styles
 import 'leaflet/dist/leaflet.css';
@@ -19,8 +20,10 @@ appRoot.render(
     <GoogleOAuthProvider clientId={GCID}>
         <React.StrictMode>
             <BrowserRouter>
+                <ScrollToTop />
                 <App />
             </BrowserRouter>
         </React.StrictMode>
     </GoogleOAuthProvider>
 );
+

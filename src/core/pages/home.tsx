@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { Service } from '../../datatypes';
-import { handleGQLError } from '../../utils';
+import { emptyList, FACEBOOK_LINK, GOOGLE_LINK, handleGQLError, INSTAGRAM_LINK } from '../../utils';
 
 import ServiceItem from '../components/serviceItem';
 import PagerCtrl from '../components/pageCtrl';
@@ -17,6 +17,7 @@ import massuese_logo from '../../assets/logo3.png';
 import massage_1 from '../../assets/stock/massage_1.jpg';
 import massage_2 from '../../assets/stock/massage_2.jpg';
 import massage_chair from '../../assets/stock/massage_chair.jpg';
+import { Link } from 'react-router-dom';
 
 const GET_SERVICES_QUERY = gql`
 query getServices($type: String, $page:Int, $pageSize: Int){
@@ -72,7 +73,7 @@ function Home(){
     },[services_data]);
 
     useEffect(()=>{
-        // retrieveServices({ variables: { type: '' }});
+        retrieveServices({ variables: { type: '' }});
     },[]);
     
     return (
@@ -85,27 +86,27 @@ function Home(){
                         <h1>Through Prayer Massage</h1>
                         <span>Experience the healing power of massage at our Praying Hands Massage and Bodywork studio.</span>
 
-                        <div className="btn-container">
+                        <Link to="/services" className="btn-container">
                             <div className="btn main">Book You Healing Session</div>
                             <div className="btn">Email Us</div>
-                        </div>
+                        </Link>
                     </div>
                     <img src={massuese_logo} className="landing-img" />   
                 </div>
 
                 <div className='contact-info-container'>
                     <div className="spacer sz-1" />
-                    <a href="" target="_blank" className='icon-container'>
+                    <a href={FACEBOOK_LINK} target="_blank" className='icon-container'>
                         <FontAwesomeIcon icon={faFacebookF} />
                     </a>
 
                     <div className="spacer sz-f-20" />
-                    <a href="" target="_blank" className='icon-container'>
+                    <a href={INSTAGRAM_LINK} target="_blank" className='icon-container'>
                         <FontAwesomeIcon icon={faInstagram} />
                     </a>
 
                     <div className="spacer sz-f-20" />
-                    <a href="" target="_blank" className='icon-container'>
+                    <a href={GOOGLE_LINK} target="_blank" className='icon-container'>
                         <FontAwesomeIcon icon={faGoogle} />
                     </a>
 
@@ -136,20 +137,31 @@ function Home(){
                         <p>Treat yourself or loved one to a massage today, why wait.</p>
 
                         <div className="btn-container ctr">
-                            <div className="btn main">About Us</div>
+                            <Link to="/aboutus" className="btn main">About Us</Link>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <section className='home-section contained alt-color'>
+            <section className='home-section contained alt-color mobile-full'>
                 <h1 className='section-title'>Services + Sessions</h1>
                 <span className='section-subtitle'>Relax and Rejuvenate with Praying Hands Massage and Bodywork</span>
 
                 <div className='services-container paged'>
-                    {services?.map((service, i)=>
-                        <ServiceItem key={i} service={service} size={3} max_lines={3} show_learn_more={true} show_more_toggle={false} />
-                    )}
+                    {services_loading ?
+                        <>
+                            {emptyList(3).map((_svc, i) =>
+                                <div className='service-info sz-3' key={i}>
+                                    <div className='service-info-container empty' />
+                                </div>
+                            )}
+                        </> :
+                        <>
+                            {services?.map((service, i)=>
+                                <ServiceItem key={i} service={service} size={TOTAL_SERVICE_SIZE} max_lines={3} show_learn_more={true} show_more_toggle={false} />
+                            )}
+                        </>
+                    }
                 </div>
 
                 <div className='services-pagination'>

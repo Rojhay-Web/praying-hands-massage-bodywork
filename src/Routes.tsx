@@ -1,7 +1,7 @@
 import "./styles/app.less";
 
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route  } from "react-router-dom";
 
 /* Types */
 import { AdminPathType, UserContextType } from "./datatypes";
@@ -20,9 +20,11 @@ import AdminHome from "./admin/pages/adminHome";
 import NoMatch from "./core/pages/nomatch";
 import AboutUs from "./core/pages/aboutus";
 import Home from "./core/pages/home";
+import Services from "./core/pages/services";
 
 const paths = [
     { path: "aboutUs", element: AboutUs },
+    { path: "services", element: Services },
     { path: "*", element: NoMatch }
 ];
 
