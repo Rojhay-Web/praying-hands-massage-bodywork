@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { ripples } from 'ldrs';
-
-import ServiceItem from '../components/serviceItem';
-import PagerCtrl from '../components/pageCtrl';
+import parse from 'html-react-parser';
 
 import { externalSiteConfirm, handleGQLError } from '../../utils';
 import { Service } from '../../datatypes';
@@ -11,6 +9,7 @@ import { Service } from '../../datatypes';
 // Images
 import heallist from '../../assets/logos/heallist.png';
 import massagebook from '../../assets/logos/massageBook.png';
+import logo from '../../assets/logos/logo_color.png';
 
 
 const GET_SERVICES_QUERY = gql`
@@ -27,7 +26,7 @@ query getServices($type: String, $page:Int, $pageSize: Int){
     }
 }`;
 
-const TOTAL_SERVICE_SIZE = 2,
+const TOTAL_SERVICE_SIZE = 3,
     serviceTypes = [
         { display: "all", value: "" },
         { display: "massages", value: "massage" },
@@ -35,6 +34,156 @@ const TOTAL_SERVICE_SIZE = 2,
         { display: "workshops", value: "workshop" },
         { display: "healings", value: "healing" }
     ];
+
+    type ServiceItemDetailsType = {
+    serviceList:Service[], pagePos:number, maxPages:number,
+    setPagePos: (d:number) => void
+}
+
+function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: ServiceItemDetailsType){
+    const [selService, setSelService] = useState<Service>();
+    const [showMore, setShowMore] = useState(false);
+
+    const timeString = (time?: number | null) => {
+        let ret = "";
+        try {
+            ret = `${!time ? 'Time may vary' : `${time} mins`}`;
+        }
+        catch(ex){
+            console.log(`Building Time Str: ${ex}`);
+        }
+        return ret;
+    }
+
+    const priceString = (price?: number | null) => {
+        let ret = "";
+        try {
+            ret = (!price ? 'Prices may vary' : 
+                new Intl.NumberFormat('en-US', {
+                    style: 'currency', currency: 'USD',
+                }).format(price)
+            );
+        }
+        catch(ex){
+            console.log(`Building Time Str: ${ex}`);
+        }
+        return ret;
+    }
+
+    const changePage = (dir: number) => {
+        try {
+            if(dir < 0 && pagePos > 1){
+                setPagePos(pagePos - 1);
+            }
+            else if(dir > 0 && (pagePos < maxPages)){
+                setPagePos(pagePos + 1);
+            }
+        }
+        catch(ex){
+            console.log(`Changing Page: ${ex}`);
+        }
+    }
+
+    const getBookingLink = (service: Service) => {
+        let ret = "";
+        try {
+            if(service.bookingSite === "massagebook") {
+                ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+            }
+            else if(service.bookingSite === "heallist") {
+                ret = "https://app.heallist.com/p/patricia-blakey";
+            }
+        }
+        catch(ex){
+            console.log(`Get Booking Link: ${ex}`);
+        }
+        return ret;
+    }
+
+    const formatDesc = () => {
+        let ret= {};
+        try {
+            if(!showMore) {
+                // -webkit-line-clamp
+                ret = { "WebkitLineClamp": `5` };
+            }
+        }
+        catch(ex){
+            console.log(`Error Formating Desc: ${ex}`);
+        }
+
+        return ret;
+    }
+
+    const toggleShow = () => {
+        setShowMore((d) => { return !d; } )
+    }
+
+    useEffect(()=>{
+        if(serviceList?.length){
+            setSelService(serviceList[0]);
+        }
+    },[serviceList]);
+
+    return(
+        <div className='service-details-container'>
+            <div className='title-outer-container'>
+                <span className={`material-symbols-outlined ctrl ${pagePos == 1 ? 'disable': ''}`} onClick={()=> { changePage(-1); }}>chevron_left</span>
+
+                <div className='title-list-container'>
+                    {serviceList.map((svc, i)=>
+                        <span className={(svc._id === selService?._id ? "sel" : "")} 
+                            key={i} onClick={()=>{ setSelService(svc); }}>{svc.title ?? 'N/A'}</span>
+                    )}
+                </div>
+
+                <span className={`material-symbols-outlined ctrl ${pagePos == maxPages ? 'disable': ''}`} onClick={()=> { changePage(1); }}>chevron_right</span>
+            </div>
+            
+
+            <div className='sel-details'>
+                {!selService ? <></> :
+                    <>
+                        <div className='img-container'>
+                            <img src={(selService.image ?? logo)} />
+                        </div>
+
+                        <div className='detail-content'>
+                            <h2>{selService.title}</h2>
+
+                            <div className='sub-title-details'>
+                                <span>{timeString(selService.time)}</span>
+                                <span>{priceString(selService.price)}</span>
+                            </div>
+
+                            <div className='content-title'>Description</div>
+
+                            <div className="description-content web">{parse(selService?.description ?? "Please contact us for more information on this service.")}</div>
+                            {/* Mobile Description */}
+                            <>
+                                <div className="description-content mobile" style={formatDesc()}>{parse(selService?.description ?? "Please contact us for more information on this service.")}</div>
+
+                                <div className="more-toggle" onClick={toggleShow}>
+                                    <span className="material-symbols-outlined">{showMore ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</span>
+                                    <span>{`Show ${showMore ? 'Less' : 'More'}`}</span>
+                                    <span className="material-symbols-outlined">{showMore ? 'keyboard_arrow_up' : 'keyboard_arrow_down'}</span>
+                                </div>
+                            </>
+                            
+                            <div className="btn-container">
+                                {selService.bookingSite ?
+                                    <a href={getBookingLink(selService)} target="_blank" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                                    <div className="btn main c1">Reserve</div>
+                                }
+                            </div>
+                        </div>
+                    </>
+                }
+                <></>
+            </div>
+        </div>
+    );
+}
 
 function Services(){
     const [selectType, setSelectType] = useState("");
@@ -135,22 +284,13 @@ function Services(){
                         <>
                             {services.length > 0 ?
                                 <>
-                                    {services?.map((service, i)=>
-                                        <ServiceItem key={i} service={service} size={TOTAL_SERVICE_SIZE} max_lines={3} show_learn_more={false} show_more_toggle={true} />
-                                    )}
+                                    <ServiceItemDetails serviceList={services} maxPages={pages.total} pagePos={pages.page} setPagePos={setPage} />
                                 </> :
                                 <div className='empty-message'>
                                     Currently we don't offer any of this specific type
                                 </div>
                             }                            
                         </>
-                    }
-                </div>
-                    
-                <div className='services-pagination'>
-                    {pages?.total > 0 ?
-                        <PagerCtrl maxPages={pages.total} pagePos={pages.page} setPagePos={setPage} />
-                        : <></>
                     }
                 </div>
             </section>

@@ -6,6 +6,7 @@ type PagerCtrlType = {
     maxPages:number, pagePos?:number, maxLen?: number,
     setPagePos: (d:number) => void
 }
+
 export default function PagerCtrl({ maxPages, setPagePos, pagePos=0, maxLen = 5 }: PagerCtrlType){
     const [pageEnd, setPageEnd] = useState<number[]>([]);
     const [groupList, setGroupList] = useState<number[]>([]);
