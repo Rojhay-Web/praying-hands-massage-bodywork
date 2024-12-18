@@ -21,10 +21,13 @@ import NoMatch from "./core/pages/nomatch";
 import AboutUs from "./core/pages/aboutus";
 import Home from "./core/pages/home";
 import Services from "./core/pages/services";
+import Gallery from "./core/pages/gallery";
 
 const paths = [
     { path: "aboutUs", element: AboutUs },
     { path: "services", element: Services },
+    { path: "gallery", element: Gallery },
+
     { path: "*", element: NoMatch }
 ];
 

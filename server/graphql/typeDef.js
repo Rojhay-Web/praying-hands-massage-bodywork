@@ -14,6 +14,7 @@ module.exports = gql`
         photos(page:Int, pageSize: Int):PagedPhotos
         photosets:[Photosets]
         photosetImages(id:String!, page:Int, pageSize: Int):PagedPhotos
+        siteGallery(page:Int, pageSize: Int):PagedPhotos
 
         services(type: String, page:Int, pageSize: Int):[Service]
 

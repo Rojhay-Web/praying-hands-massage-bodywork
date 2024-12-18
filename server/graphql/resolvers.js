@@ -81,6 +81,13 @@ module.exports = function (localStore) {
 
                 return ret;
             },
+            siteGallery: async(_obj, args, _context, _info) => {
+                // Validate Active User               
+                let ret = await localStore.getGallery(args?.page, args?.pageSize);
+                util.checkGQLResults(ret);
+
+                return ret;
+            },
 
             /* Services */
             services: async(_obj, args, context, _info) => {

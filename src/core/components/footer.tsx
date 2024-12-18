@@ -42,7 +42,7 @@ function Footer(){
                 <div className="footer-content">
                     <Link className={`footer-item nav-link`}  to="/aboutUs">About Us</Link>
                     <Link className={`footer-item nav-link`}  to="/services">Bookings + Services</Link>
-                    <Link className={`footer-item nav-link`}  to="/">Gallery</Link>
+                    <Link className={`footer-item nav-link`}  to="/gallery">Gallery</Link>
                     <Link className={`footer-item nav-link`}  to="/">Contact Us</Link>
                 </div>
             </div>

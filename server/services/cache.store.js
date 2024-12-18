@@ -2,15 +2,18 @@
 require('dotenv').config();
 const fns = require('date-fns');
 
-const log = require('./log.service');
+const log = require('./log.service'),
+    gallery = require('./gallery.service');
 
 class CacheStore {
     constructor() {
         this.storeExpiration = {
-            flickr_keys: 0
+            flickr_keys: 0,
+            gallery: 1
         };
         this.store = {
-            flickr_keys: {}
+            flickr_keys: {},
+            gallery: {}
         };
     }
 
@@ -92,6 +95,29 @@ class CacheStore {
         }
         catch(ex){
             log.error(`Init Cache: ${ex}`);
+        }
+    }
+
+    /* Site Gallery */
+    async getGallery(page=1, pageSize=20){
+        try {
+            const key =`${page}|${pageSize}`;
+            let cacheGallery = this.searchCacheStore('gallery',key);
+
+            if(cacheGallery) {
+                return cacheGallery;
+            }
+            
+            const flickrGallery = await gallery.photosets.getImages(process.env.GALLERY_DEFAULT_ID, page, pageSize);
+            if(flickrGallery?.results) {
+                this.updateCacheStore("gallery", key, flickrGallery);
+            }
+
+            return flickrGallery;
+        }
+        catch(ex){
+            log.error(`Getting Cache Gallery: ${ex}`);
+            return { error: `Getting Cache Gallery: ${ex}`};
         }
     }
 }
