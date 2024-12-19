@@ -3436,6 +3436,11 @@ html {
   display: flex;
   flex-direction: row;
 }
+.contactus .contact-us-container .content .hours-container .day-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
 .contactus .contact-us-container .content .hours-container .day-container .day {
   display: flex;
   flex-direction: row;
@@ -3462,10 +3467,26 @@ html {
 .contactus .contact-us-container .content .hours-container .day-container .day + .day {
   margin-top: 4px;
 }
+.contactus .contact-us-container .content .hours-container .day-container .holiday-text {
+  color: #cd853f;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 8px;
+}
 .contactus .contact-us-container .content .hours-container .toggle {
   cursor: pointer;
   color: #cd853f;
-  margin-left: 16px;
+  margin-right: 16px;
+  border: 2px solid #cd853f;
+  border-radius: 50%;
+  max-height: 24px;
+  max-width: 24px;
+  overflow: hidden;
+  transition: 0.5s all ease-in-out;
+}
+.contactus .contact-us-container .content .hours-container .toggle:hover {
+  background: #cd853f;
+  color: #ffffff;
 }
 .contactus .contact-us-container .map {
   width: 500px;

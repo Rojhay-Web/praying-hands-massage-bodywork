@@ -85,3 +85,18 @@ export type Service = {
     image?: string | null, 
     description?: string | null
 }
+
+export type Reviewer = {
+    profilePhotoUrl: String
+    displayName: String
+    isAnonymous: Boolean
+}
+
+export type Review = {
+    name: string | null
+    reviewId: string | null
+    reviewer: Reviewer
+    starRating: string | null
+    comment: string | null
+    createTime: Date
+}

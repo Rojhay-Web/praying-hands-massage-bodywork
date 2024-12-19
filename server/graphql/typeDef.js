@@ -10,6 +10,7 @@ module.exports = gql`
         
         sitePages:[SitePage]
         sitePage(key: String!):SitePage
+        cachedSitePage(key: String!):SitePage
 
         photos(page:Int, pageSize: Int):PagedPhotos
         photosets:[Photosets]

@@ -17,6 +17,9 @@
                 display: flex; flex-direction: row;
 
                 .day-container { 
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
                     .day {
                         display: flex; flex-direction: row;
                         span { 
@@ -31,11 +34,23 @@
 
                         &+.day { margin-top: 4px; }
                     }
+                    .holiday-text {
+                        color: @color2; font-weight: bold;
+                        text-align: center; margin-top: 8px;
+                    }
                 }
 
                 .toggle { 
                     cursor: pointer; color: @color2;
-                    margin-left: 16px;
+                    margin-right: 16px; border: 2px solid @color2;
+                    border-radius: 50%; max-height: 24px; 
+                    max-width: 24px; overflow: hidden;
+                    transition: 0.5s all ease-in-out;
+
+                    &:hover { 
+                        background: @color2; 
+                        color: rgba(255,255,255,1);
+                    }
                 }
             }
         }

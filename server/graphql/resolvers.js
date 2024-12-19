@@ -54,6 +54,15 @@ module.exports = function (localStore) {
 
                 return ret?.results;
             },
+            cachedSitePage: async(_obj, args, _context, _info) => {
+                util.validateGQLParams(["key"], args);
+
+                let ret = await localStore.getPagesData(args.key);
+                util.checkGQLResults(ret);
+
+                return ret?.results;
+            },
+            
             /* Gallery */
             photos: async(_obj, args, context, _info) => {
                 // Validate Active User

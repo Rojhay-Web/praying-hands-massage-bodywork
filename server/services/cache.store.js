@@ -3,17 +3,20 @@ require('dotenv').config();
 const fns = require('date-fns');
 
 const log = require('./log.service'),
+    db = require('./db.service'),
     gallery = require('./gallery.service');
 
 class CacheStore {
     constructor() {
         this.storeExpiration = {
             flickr_keys: 0,
-            gallery: 1
+            gallery: 1,
+            pages: 1
         };
         this.store = {
             flickr_keys: {},
-            gallery: {}
+            gallery: {},
+            pages:{}
         };
     }
 
@@ -118,6 +121,29 @@ class CacheStore {
         catch(ex){
             log.error(`Getting Cache Gallery: ${ex}`);
             return { error: `Getting Cache Gallery: ${ex}`};
+        }
+    }
+
+    /* Get Page Data */
+    async getPagesData(page){
+        try {
+            const key =`${page}`;
+            let pageData = this.searchCacheStore('pages',key);
+
+            if(pageData) {
+                return pageData;
+            }
+
+            const dbPage = await db.getPageData(page);
+            if(dbPage?.results) {
+                this.updateCacheStore("pages", key, dbPage);
+            }
+
+            return dbPage;
+        }
+        catch(ex){
+            log.error(`Getting Page Data: ${ex}`);
+            return { error: `Getting Page Data: ${ex}`};
         }
     }
 }

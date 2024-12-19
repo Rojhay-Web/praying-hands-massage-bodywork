@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Holidays from 'date-holidays';
 
 import type { LatLngTuple } from 'leaflet';
 import L from 'leaflet';
@@ -21,6 +22,7 @@ function ContactUs(){
     const [hoursList, setHoursList] = useState<any[]>([]);
     const [curDay, setCurDay] = useState<any>();
     const [toggleDay, setToggleDay] = useState(true);
+    const [isHoliday, setIsHoliday] = useState(false);
 
     const buildHoursList = () => {
         try {
@@ -66,7 +68,7 @@ function ContactUs(){
             let mStr = timeStr.splice(-2,2).join("");
             let hStr = timeStr.splice(-2,2).join("");
 
-            let h = Number(hStr), m = Number(mStr);
+            let h = Number(hStr);
             h = (h > 12 ? (h - 12) : h);
 
             return `${h}:${mStr} ${isPM ? 'pm' : 'am'}`;
@@ -82,9 +84,22 @@ function ContactUs(){
         setToggleDay((d)=> { return !d; });
     }
 
+    const checkHoliday = () => {
+        try {
+            const hd = new Holidays('US');
+            const tmp_check = hd.isHoliday(new Date());
+
+            setIsHoliday(!!tmp_check);
+        }
+        catch(ex){
+            console.log(`Checking if today is holiday: ${ex}`)
+        }
+    }
+
     useEffect(()=> { 
         document.title = "Contact Us";
         buildHoursList(); getCurDayHours();
+        checkHoliday();
     },[]);
 
     return(
@@ -105,17 +120,22 @@ function ContactUs(){
 
                         <p className='l2'>By Appointment Only</p>
                         <div className='hours-container'>
+                            <span className="material-symbols-outlined toggle" onClick={toggle}>{toggleDay ? 'expand_content' : 'collapse_content'}</span>                          
+
                             <div className='day-container'>
                                 {toggleDay ? 
                                     <>
                                         {curDay ?
-                                            <div className='day cur'>
-                                                <span>{curDay?.isOpened ? "Open today" : "Sorry We're Closed Today"}</span>
-                                                {curDay?.isOpened ?
-                                                    <span className='hours'>{getTimeStr(curDay?.open)} - {getTimeStr(curDay?.close)}</span> :
-                                                    <></>
-                                                }
-                                            </div> : <></>
+                                            <>
+                                                <div className='day cur'>
+                                                    <span>{curDay?.isOpened ? "Open today" : "Sorry We're Closed Today"}</span>
+                                                    {curDay?.isOpened ?
+                                                        <span className='hours'>{getTimeStr(curDay?.open)} - {getTimeStr(curDay?.close)}</span> :
+                                                        <></>
+                                                    }
+                                                </div> 
+                                                {isHoliday ? <span className='holiday-text'>~ Holiday hours may differ</span> : <></>}
+                                            </>: <></>
                                         }
                                     </> :
                                     <>
@@ -133,8 +153,6 @@ function ContactUs(){
                                     </>
                                 }
                             </div>
-                            
-                            <span className="material-symbols-outlined toggle" onClick={toggle}>{toggleDay ? 'expand_content' : 'collapse_content'}</span>                          
                         </div>
                     </div>
 
