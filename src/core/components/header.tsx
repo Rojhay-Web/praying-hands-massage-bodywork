@@ -15,7 +15,7 @@ function MobileNav({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (s:boole
                 <NavLink className="m-sidenav-link" to="/aboutUs" onClick={() => setIsOpen(false)}>About Us</NavLink>
                 <NavLink className="m-sidenav-link" to="/services" onClick={() => setIsOpen(false)}>Bookings + Services</NavLink>
                 <NavLink className="m-sidenav-link" to="/gallery" onClick={() => setIsOpen(false)}>Gallery</NavLink>
-                <NavLink className="m-sidenav-link mini-link" to="/" onClick={() => setIsOpen(false)}>Contact Us</NavLink>
+                <NavLink className="m-sidenav-link mini-link" to="/contactUs" onClick={() => setIsOpen(false)}>Contact Us</NavLink>
                 <div className="m-sidenav-admin-access-container">
                     <AdminBtn />
                 </div>
@@ -75,7 +75,7 @@ function Header(){
                         </div>
 
                         <div className="page-nav-container extra">
-                            <NavLink className={`nav-item nav-link`}  to="/">Contact Us</NavLink>
+                            <NavLink className={`nav-item nav-link`}  to="/contactUs">Contact Us</NavLink>
                             <AdminBtn />
                         </div>
                     </div>

@@ -1,0 +1,62 @@
+.contactus {
+    .contact-us-container {
+        display: flex; flex-direction: row;
+
+        .content {
+            display: flex; flex-direction: column; flex: 1;
+            justify-content: center;
+
+            .section-title , .section-subtitle { text-align: left; }
+
+            p {
+                margin-top: 0; font-size: 1rem;
+                &.l2 { font-weight: bold; font-size: 1.1rem; margin-top: 16px; }
+            }
+            
+            .hours-container {
+                display: flex; flex-direction: row;
+
+                .day-container { 
+                    .day {
+                        display: flex; flex-direction: row;
+                        span { 
+                            font-size: 1rem; 
+
+                            &.day-str { width: 40px; }
+                            &+span { margin-left: 8px; }
+                        }
+
+                        &.sel { font-weight: bold; color: @color2; }
+                        &.cur { font-weight: bold; .hours { color: @color2; }}
+
+                        &+.day { margin-top: 4px; }
+                    }
+                }
+
+                .toggle { 
+                    cursor: pointer; color: @color2;
+                    margin-left: 16px;
+                }
+            }
+        }
+
+        .map { 
+            width: 500px; margin-left: 40px; 
+
+            .map-container {
+                position: relative; width: 100%; max-height: 700px;
+                overflow: hidden; margin: 16px 0; border-radius: 8px;
+
+                -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+                .leaflet-container { z-index: 0; filter: grayscale(90%); }
+            }
+
+            @media @mobile-device { margin: 40px 0 0; width: initial; }
+        }
+
+        @media @mobile-device { flex-direction: column; }
+    }
+}

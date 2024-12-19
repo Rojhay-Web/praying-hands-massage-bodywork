@@ -45,7 +45,7 @@ function Footer(){
                     <Link className={`footer-item nav-link`}  to="/aboutUs">About Us</Link>
                     <Link className={`footer-item nav-link`}  to="/services">Bookings + Services</Link>
                     <Link className={`footer-item nav-link`}  to="/gallery">Gallery</Link>
-                    <Link className={`footer-item nav-link`}  to="/">Contact Us</Link>
+                    <Link className={`footer-item nav-link`}  to="/contactUs">Contact Us</Link>
                 </div>
             </div>
         </div>
