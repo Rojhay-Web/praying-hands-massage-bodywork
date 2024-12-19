@@ -51,18 +51,18 @@ export default function PagerCtrl({ maxPages, setPagePos, pagePos=0, maxLen = 5 
                 {(maxPages <= maxLen) ?
                     <>
                         {emptyList(maxPages).map((_item: any, i: number) =>
-                            <div className={`pager-bullet ${(pagePos-1) == i ? 'sel' : ''}`} key={i} />
+                            <div className={`pager-bullet ${(pagePos-1) === i ? 'sel' : ''}`} key={i} />
                         )}
                     </> :
                     <>
                         {[1,2].map((item: any, i: number) =>
-                            <div className={`pager-bullet ${pagePos == item ? 'sel' : ''}`} key={i} />
+                            <div className={`pager-bullet ${pagePos === item ? 'sel' : ''}`} key={i} />
                         )}
 
                         <div className={`pager-bullet full ${isInList() ? 'sel' : ''}`} />
 
                         {pageEnd.map((item: any, i: number) =>
-                            <div className={`pager-bullet ${pagePos == item ? 'sel' : ''}`} key={i} />
+                            <div className={`pager-bullet ${pagePos === item ? 'sel' : ''}`} key={i} />
                         )}
                     </>
                 }

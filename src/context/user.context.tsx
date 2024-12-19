@@ -115,4 +115,5 @@ function Provider({ children }: { children: any }) {
     return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading, loading_permissions, activeComponents }}>{children}</UserContext.Provider>;
 }
 
-export default { UserContext, Provider };
+const contextRet = { UserContext, Provider };
+export default contextRet;

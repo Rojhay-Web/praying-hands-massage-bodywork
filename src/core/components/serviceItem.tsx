@@ -87,7 +87,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                     </div>
 
                     <div className='img-container'>
-                        <img src={(service.image ?? logo)} />
+                        <img src={(service.image ?? logo)} alt={`${service.title} Representation`} />
                     </div>
                 </div>
 
@@ -108,7 +108,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                         <Link to="/services" className="btn">Learn More</Link> : <></>
                     }
                     {service.bookingSite ?
-                        <a href={getBookingLink()} target="_blank" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                        <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
                         <div className="btn main c1">Reserve</div>
                     }
                 </div>

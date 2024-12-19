@@ -11,15 +11,6 @@ type LocationType = {
 const position:LatLngTuple = [39.4359383,-75.6295269], zoom: number = 9.25,
     icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
-const markers: LatLngTuple[] = [
-    [39.448280, -75.716669], // Middletown, DE
-    [39.746218, -75.548481], // Wilmington, DE
-    [39.578624, -75.594368], // Delaware City, DE
-    [39.681885, -75.753538], // Newark, DE
-    [39.296962, -75.606399], // Smyrna, DE
-    [39.185133, -75.526127], // Dover, DE
-];
-
 const locations: LocationType[] = [
     { show:true, title: "Middletown, DE", mark: [39.448280, -75.716669]},
     { show:true, title: "Wilmington, DE", mark: [39.746218, -75.548481]},

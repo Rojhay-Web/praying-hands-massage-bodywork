@@ -24,7 +24,7 @@ function MobileNav({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (s:boole
     );
 }
 
-function Header({ }){
+function Header(){
     const [navChange, setNavChange] = useState(false);
     const [sideNav, setSideNav] = useState(false);
     

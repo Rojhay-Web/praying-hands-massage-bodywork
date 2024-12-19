@@ -50,9 +50,9 @@ function UserManagement(){
     const [retrieveUsers,{ loading: users_loading, data: users_data }] = useLazyQuery(GET_USER_QUERY, {fetchPolicy: 'no-cache', ...authHeader});
     
     // Mutations
-    const [addUser,{ loading: add_loading, error: add_error, data: add_data }] = useMutation(ADD_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
-    const [updateUser,{ loading: update_loading, error: update_error, data: update_data }] = useMutation(UPDATE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
-    const [removeUser,{ loading: remove_loading, error: remove_error, data: remove_data }] = useMutation(REMOVE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
+    const [addUser,{ loading: add_loading, /*error: add_error,*/ data: add_data }] = useMutation(ADD_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError });
+    const [updateUser,{ loading: update_loading, /*error: update_error,*/ data: update_data }] = useMutation(UPDATE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
+    const [removeUser,{ loading: remove_loading, /*error: remove_error,*/ data: remove_data }] = useMutation(REMOVE_USER_MUTATION, {fetchPolicy: 'no-cache', ...authHeader, onError: handleGQLError});
 
     const searchQuery = (e:any) => {
         try {

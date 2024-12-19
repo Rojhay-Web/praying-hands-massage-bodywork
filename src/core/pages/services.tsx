@@ -11,7 +11,6 @@ import heallist from '../../assets/logos/heallist.png';
 import massagebook from '../../assets/logos/massageBook.png';
 import logo from '../../assets/logos/logo_color.png';
 
-
 const GET_SERVICES_QUERY = gql`
 query getServices($type: String, $page:Int, $pageSize: Int){
     services(type: $type, page:$page, pageSize:$pageSize){
@@ -128,7 +127,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
     return(
         <div className='service-details-container'>
             <div className='title-outer-container'>
-                <span className={`material-symbols-outlined ctrl ${pagePos == 1 ? 'disable': ''}`} onClick={()=> { changePage(-1); }}>chevron_left</span>
+                <span className={`material-symbols-outlined ctrl ${pagePos === 1 ? 'disable': ''}`} onClick={()=> { changePage(-1); }}>chevron_left</span>
 
                 <div className='title-list-container'>
                     {serviceList.map((svc, i)=>
@@ -137,7 +136,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                     )}
                 </div>
 
-                <span className={`material-symbols-outlined ctrl ${pagePos == maxPages ? 'disable': ''}`} onClick={()=> { changePage(1); }}>chevron_right</span>
+                <span className={`material-symbols-outlined ctrl ${pagePos === maxPages ? 'disable': ''}`} onClick={()=> { changePage(1); }}>chevron_right</span>
             </div>
             
 
@@ -145,7 +144,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                 {!selService ? <></> :
                     <>
                         <div className='img-container'>
-                            <img src={(selService.image ?? logo)} />
+                            <img src={(selService.image ?? logo)} alt={`${selService.time} representation`}/>
                         </div>
 
                         <div className='detail-content'>
@@ -172,7 +171,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                             
                             <div className="btn-container">
                                 {selService.bookingSite ?
-                                    <a href={getBookingLink(selService)} target="_blank" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                                    <a href={getBookingLink(selService)} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
                                     <div className="btn main c1">Reserve</div>
                                 }
                             </div>
@@ -192,7 +191,7 @@ function Services(){
     
     const initService = useRef(false);
 
-    const [retrieveServices,{ loading: services_loading, error, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
+    const [retrieveServices,{ loading: services_loading, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
 
     const setPage = (pg:number) => {
         try {
@@ -208,7 +207,7 @@ function Services(){
     }
     const setType = (type: string) => {
         try {
-            if(type != selectType){
+            if(type !== selectType){
                 setSelectType(type);
             }
         }
@@ -257,11 +256,11 @@ function Services(){
                 <div className='booking-cards'>
                     <h1 className='section-title mini'>Our Booking Sites</h1>
 
-                    <a href="https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork" target="_blank" onClick={externalSiteConfirm} className='card-container'>
+                    <a href="https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork" target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className='card-container'>
                         <img src={massagebook} alt="MassageBook Logo" />
                     </a>
 
-                    <a href="https://app.heallist.com/p/patricia-blakey" target="_blank" onClick={externalSiteConfirm} className='card-container'>
+                    <a href="https://app.heallist.com/p/patricia-blakey" target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className='card-container'>
                         <img src={heallist} alt="HealList Logo" />
                     </a>
                 </div>

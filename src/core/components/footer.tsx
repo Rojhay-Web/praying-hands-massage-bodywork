@@ -2,6 +2,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
+import { FACEBOOK_LINK, GOOGLE_LINK, INSTAGRAM_LINK } from "../../utils";
+
 // Images
 import logoB from '../../assets/logos/logo_b.png';
 
@@ -21,15 +23,15 @@ function Footer(){
                     </Link>
 
                     <div className='contact-info-container'>
-                        <a href="" target="_blank" className='icon-container'>
+                        <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                             <FontAwesomeIcon icon={faFacebookF} />
                         </a>
 
-                        <a href="" target="_blank" className='icon-container'>
+                        <a href={INSTAGRAM_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                             <FontAwesomeIcon icon={faInstagram} />
                         </a>
 
-                        <a href="" target="_blank" className='icon-container'>
+                        <a href={GOOGLE_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                             <FontAwesomeIcon icon={faGoogle} />
                         </a>
 

@@ -40,7 +40,7 @@ function Home(){
     const [services, setServices] = useState<Service[]>([]);
     const [pages, setPages] = useState({ page: 0, total: 0 });
 
-    const [retrieveServices,{ loading: services_loading, error, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
+    const [retrieveServices,{ loading: services_loading, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
 
     const setPage = (pg:number) => {
         try {
@@ -79,7 +79,7 @@ function Home(){
     return (
         <div className="core-page home">              
             <section className="home-landing">
-                <img src={background} className="landing-background" />
+                <img src={background} className="landing-background" alt='Landing page background' />
                 <div className="landing-content-container">
                     <div className="landing-content">
                         <h1>Experience Healing & Restoration</h1>
@@ -91,22 +91,22 @@ function Home(){
                             <div className="btn">Email Us</div>
                         </Link>
                     </div>
-                    <img src={massuese_logo} className="landing-img" />   
+                    <img src={massuese_logo} className="landing-img" alt="landing page default" />   
                 </div>
 
                 <div className='contact-info-container'>
                     <div className="spacer sz-1" />
-                    <a href={FACEBOOK_LINK} target="_blank" className='icon-container'>
+                    <a href={FACEBOOK_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                         <FontAwesomeIcon icon={faFacebookF} />
                     </a>
 
                     <div className="spacer sz-f-20" />
-                    <a href={INSTAGRAM_LINK} target="_blank" className='icon-container'>
+                    <a href={INSTAGRAM_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                         <FontAwesomeIcon icon={faInstagram} />
                     </a>
 
                     <div className="spacer sz-f-20" />
-                    <a href={GOOGLE_LINK} target="_blank" className='icon-container'>
+                    <a href={GOOGLE_LINK} target="_blank" rel="noreferrer" className='icon-container'>
                         <FontAwesomeIcon icon={faGoogle} />
                     </a>
 
