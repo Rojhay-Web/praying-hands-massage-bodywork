@@ -1125,6 +1125,9 @@ html {
   padding: 24px;
   text-align: center;
 }
+.reservation-form .rodal-dialog .form-status .icon-loading-container {
+  margin: 0 auto 16px;
+}
 .reservation-form .rodal-dialog .form-status .form-icon {
   margin: 0 auto 16px;
   padding: 16px;
@@ -1140,12 +1143,19 @@ html {
   -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
+.reservation-form .rodal-dialog .form-status .form-icon.complete {
+  background: radial-gradient(#228b22, #ffffff);
+}
+.reservation-form .rodal-dialog .form-status .form-icon.complete span {
+  background: #228b22;
+}
 .reservation-form .rodal-dialog .form-status .title {
   font-weight: bold;
   font-size: 1rem;
 }
 .reservation-form .rodal-dialog .form-status p {
   font-size: 1rem;
+  margin-bottom: 0;
 }
 .reservation-form .rodal-dialog .form-status .btn-container {
   flex-direction: column;
@@ -1159,6 +1169,7 @@ html {
   border-radius: 8px;
   background-color: #e6e6e6;
   padding: 32px 16px 16px;
+  overflow-y: auto;
 }
 .reservation-form .rodal-dialog .form-actions .title {
   font-size: 1.5rem;
@@ -1218,6 +1229,12 @@ html {
   font-weight: bold;
   opacity: 0.7;
   transition: 0.5s all ease-in-out;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot.disabled {
+  cursor: default;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot.disabled:not(.sel) {
+  opacity: 0.1;
 }
 .reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot.sel {
   background: #323232;

@@ -690,6 +690,10 @@ body, html {
             justify-content: center; padding: 24px;
             text-align: center;
 
+            .icon-loading-container {
+                margin: 0 auto 16px;
+            }
+            
             .form-icon {
                 margin: 0 auto 16px; padding: 16px; border-radius: 50%; 
                 background: radial-gradient(@color2, rgba(255,255,255,1));
@@ -702,12 +706,17 @@ body, html {
                     -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
                     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
                 }
+
+                &.complete {
+                    background: radial-gradient(rgba(34,139,34,1), rgba(255,255,255,1));
+                    span { background: rgba(34,139,34,1); }
+                }
             }
 
             .title { 
                 font-weight: bold; font-size: 1rem;
             }
-            p { font-size: 1rem; }
+            p { font-size: 1rem; margin-bottom: 0; }
 
             .btn-container { 
                 flex-direction: column; margin-top: 40px;
@@ -719,8 +728,7 @@ body, html {
         .form-actions { 
             width: 55%; border-radius: 8px;
             background-color: rgba(230,230,230,1);
-
-            padding: 32px 16px 16px;
+            padding: 32px 16px 16px; overflow-y: auto;
 
             .title {
                 font-size: 1.5rem; margin-bottom: 8px;
@@ -764,10 +772,16 @@ body, html {
                         border: 2px solid @color2; color: @color2; cursor: pointer;
                         font-weight: bold; opacity: 0.7; transition: 0.5s all ease-in-out;
 
+                        &.disabled{
+                            cursor: default;
+                            &:not(.sel) { opacity: 0.1; }
+                        }
+
                         &.sel { 
                             background: rgba(50,50,50,1); color: #fff; 
                             border-color: rgba(50,50,50,1);
                         }
+
                         &:hover { background: @color2; color: #fff;  }
                     }
                 }

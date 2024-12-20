@@ -12,14 +12,14 @@ const {
 
 module.exports = {
     event: {
-        create: async function(service, name, email, phone, startTime, endTime) {
+        create: async function(service, name, email, phone, price, startTime, endTime) {
             try {
                 let googleAuth = getGoogleAuth();
                 if(!googleAuth){
                     return { 'error': 'Creating Event [E01]' };
                 }
 
-                let event = buildEvent(service, name, email, phone, startTime, endTime);
+                let [event, priceStr] = buildEvent(service, name, email, phone, price, startTime, endTime);
 
                 if(!event) {
                     return { error: "Creating Event [E02]" };
@@ -32,19 +32,22 @@ module.exports = {
                 const adminEmailBody = [
                     `Good ${greetingTime},`,
                     `There has been a new appointment requested by ${name} for "${service}" at ${fns.format(fns.parseISO(startTime), "MMM dd, yyyy hh:mm aaaa")}.
-                     I have taken the liberty of adding this to your connected calendar, there also has been a confirmation email sent to them so feel free to reach out to them with any updates to their reservation.`,
+                     I have taken the liberty of adding this to your connected calendar, there also has been a confirmation email sent to them so please follow up with them to confirm their appointment.`,
                     `Below you will find their appointment information:`,'',
                     `Name: ${name}`, `Email: ${email}`, `Phone #: ${phone}`, 
                     `Scheduled Appointment Time: ${fns.format(fns.parseISO(startTime), "MMM dd, yyyy hh:mm aaaa")} - ${fns.format(fns.parseISO(endTime), "hh:mm aaaa")}`,
+                    `Price: ${priceStr}`,
                     '',
                     '~ Site Service Scheduler'
                 ],
                 userEmailBody = [
                     `Good ${greetingTime},`,
                     `Thank you for requesting the following appointment: `,
-                    `Service: ${service}`, `Name: ${name}`, `Email: ${email}`, `Phone #: ${phone}`, 
-                    `Scheduled Appointment Time: ${fns.format(fns.parseISO(startTime), "MMM dd, yyyy hh:mm aaaa")} - ${fns.format(fns.parseISO(endTime), "hh:mm aaaa")}`,
-                    '', `If any questions, concerns, or this information is incorrect please contact us at ${DEFAULT_EMAIL_ADDRESS} asap.`,
+                    `Service: ${service}`, `${priceStr}`,'',
+                    `Name: ${name}`, `Email: ${email}`, `Phone #: ${phone}`, 
+                    `Requested Appointment Time: ${fns.format(fns.parseISO(startTime), "MMM dd, yyyy hh:mm aaaa")} - ${fns.format(fns.parseISO(endTime), "hh:mm aaaa")}`,
+                    '','This appointment is not officially confirmed we will reach out to you soon to follow up on this request.', 
+                    `If any questions, concerns, or this information is incorrect please contact us at ${DEFAULT_EMAIL_ADDRESS} asap.`,
                     `We look forward to seeing you.`
                 ];
 
@@ -199,8 +202,8 @@ function getGoogleAuth(){
     return ret;
 }
 
-function buildEvent(service, name, email, phone, startTime, endTime){
-    let ret = {};
+function buildEvent(service, name, email, phone, price, startTime, endTime){
+    let ret = {}, priceStr = '';
     try {
         if(!service || service.length <= 0){ log.warning(`Invalid Event Service`); return null; }
         if(!name || name.length <= 0){ log.warning(`Invalid Event Name`); return null; }
@@ -210,11 +213,18 @@ function buildEvent(service, name, email, phone, startTime, endTime){
 
         if(!startTime || !util.validateDate(startTime)){ log.warning(`Invalid Event Start Time`); return null; }
         if(!endTime || !util.validateDate(endTime)){ log.warning(`Invalid End Time Service`); return null; }
+        
+        priceStr = (!price ? 'Prices may vary' : 
+            new Intl.NumberFormat('en-US', {
+                style: 'currency', currency: 'USD',
+            }).format(price)
+        );
 
         ret = {
             "summary": `${service} Appointment (${name})`,
             "description":
             `${service} Appointment\n
+            ${priceStr}\n\n
             Name: ${name}\n
             Email: ${email}\n
             Phone #: ${phone}\n
@@ -233,10 +243,10 @@ function buildEvent(service, name, email, phone, startTime, endTime){
     }
     catch(ex){
         log.error(`Building Event: ${ex}`);
-        return null;
+        return [null, null];
     }
 
-    return ret;
+    return [ret, priceStr];
 }
 
 function parseDateString(date, start=false){
@@ -261,7 +271,6 @@ function determineAvalibility(startDt, calBusy=[], time, windows) {
             let windowTime = windows[i].start;
             
             while(windowTime < windows[i].end){
-                
                 let end = calcTime(windowTime, time),
                     isAvaliable = true;
 
@@ -276,8 +285,9 @@ function determineAvalibility(startDt, calBusy=[], time, windows) {
                 }
                 
                 if(isAvaliable) {
+                    let parsedDt = fns.parseISO(startDt);
                     ret.push({
-                        dateTime: `${fns.format(startDt,'yyyy-MM-dd')}T${calcTimeStr(windowTime)}`,
+                        dateTime: `${fns.format(parsedDt,'yyyy-MM-dd')}T${calcTimeStr(windowTime)}`,
                         timeZone: "America/New_York"
                     });
                 }

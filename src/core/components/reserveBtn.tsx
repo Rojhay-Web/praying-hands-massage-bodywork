@@ -4,7 +4,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import Rodal from "rodal";
 import parse from 'html-react-parser';
 import { ripples } from 'ldrs';
-import { addDays, addHours, addMinutes, format } from "date-fns";
+import { addDays, addMinutes, format } from "date-fns";
 
 import { Service } from "../../datatypes";
 import { handleGQLError, priceString, timeString } from "../../utils";
@@ -28,14 +28,15 @@ query getEventAvailability($startDt: String!, $endDt:String!, $time:Int){
     }
  }`,
  CREATE_EVENT = gql`
- mutation createEvent($service: String!, $name: String!, $email:String!, $phone:String!, $startTime: String, $endTime: String){
-	createEvent(service: $service, name: $name, email: $email, phone: $phone, startTime: $startTime, endTime: $endTime)
+ mutation createEvent($service: String!, $name: String!, $email:String!, $phone:String!, $price:Int, $startTime: String, $endTime: String){
+	createEvent(service: $service, name: $name, email: $email, phone: $phone, price: $price, startTime: $startTime, endTime: $endTime)
  }`;
 
 function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
     const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
     const [selDate, setSelDate] = useState<Date | null>(null);
     const [selTime, setSelTime] = useState<Date|null>(null);
+    const [completed, setCompleted] = useState(false);
 
     const [contactInfo, setContactInfo] = useState({ name:'', email:'', phone:''});
     const [invalidFields, setInvalidFields] = useState<{ [key:string]:boolean }>({});
@@ -79,9 +80,11 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
 
     const toggleSelTime = (time:Date) => {
         try {
-            setSelTime((d) => {
-                return time === d ? null : time;
-            })
+            if(!completed){
+                setSelTime((d) => {
+                    return time === d ? null : time;
+                });
+            }
         }
         catch(ex){
             console.log(`Toggling Sel Time: ${ex}`);
@@ -162,6 +165,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
 
                 createEvent({ variables: {
                     "service":service.title,
+                    "price":service.price,
                     "startTime": format(selTime,'yyyy-MM-dd HH:mm:ss'),
                     "endTime": format(endTime,'yyyy-MM-dd HH:mm:ss'),
                     ...contactInfo
@@ -171,6 +175,14 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
         catch(ex){
             console.log(`Submitting Form: ${ex}`);
         }
+    }
+
+    const resetForm = (close: boolean) => {
+        setSelDate(null); setSelTime(null);
+        setContactInfo({ name:'', email:'', phone:''});
+        setCompleted(false); setInvalidFields({});
+        formInit.current = false;
+        if(close){ closeAction(); }
     }
 
     useEffect(()=> { 
@@ -193,12 +205,18 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
         }
     },[contactInfo]);
 
+    useEffect(()=>{
+        if(create_event_data?.createEvent){
+            setCompleted(!!create_event_data?.createEvent)
+        }
+    },[create_event_data]);
+
     useEffect(()=> {
         function handleResize() {
             setWindowSize({ width: window.innerWidth, height: window.innerHeight });
         }
           
-        ripples.register();
+        ripples.register(); resetForm(false);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize); 
     },[]);
@@ -206,7 +224,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
     return(
         <Rodal className="reservation-form" visible={visible} onClose={closeAction} 
             width={calcModalSize().width} height={calcModalSize().height} animation={"slideRight"}>
-            <div className="form-container">
+            <div className={`form-container ${completed ? 'complete' : ''}`}>
                 <div className="form-actions">
                     <div className="title">{service.title}</div>
                     <div className="subtitle">{timeString(service.time)} | {priceString(service.price)}</div>
@@ -216,9 +234,9 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                         <div className="selection-title">Contact Information</div>
 
                         <div className="contact-form">
-                            <input className={`sel-input sz-10 ${"name" in invalidFields ? 'err' : ''}`} type="text" name="name" placeholder="Name" value={contactInfo.name} onChange={handleChange}/>
-                            <input className={`sel-input sz-5 ${"email" in invalidFields ? 'err' : ''}`} type="text" name="email" placeholder="Email" value={contactInfo.email} onChange={handleChange}/>
-                            <input className={`sel-input sz-5 ${"phone" in invalidFields ? 'err' : ''}`} type="text" name="phone" placeholder="Phone Number" value={contactInfo.phone} onChange={handleChange}/>
+                            <input className={`sel-input sz-10 ${"name" in invalidFields ? 'err' : ''}`} type="text" name="name" placeholder="Name" value={contactInfo.name} onChange={handleChange} disabled={completed}/>
+                            <input className={`sel-input sz-5 ${"email" in invalidFields ? 'err' : ''}`} type="text" name="email" placeholder="Email" value={contactInfo.email} onChange={handleChange} disabled={completed}/>
+                            <input className={`sel-input sz-5 ${"phone" in invalidFields ? 'err' : ''}`} type="text" name="phone" placeholder="Phone Number" value={contactInfo.phone} onChange={handleChange} disabled={completed}/>
                         </div>
                     </div>
 
@@ -229,6 +247,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                             onChange={(date) => setSelDate(date)}
                             isClearable={true}
                             filterDate={isWeekday}
+                            disabled={completed}
                             minDate={addDays(new Date(), 2)}
                         />
                     </div>
@@ -246,7 +265,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                                             {data?.eventAvailability?.length > 0 ?
                                                 <>
                                                     {data.eventAvailability.map((time:any, i:number) =>
-                                                        <div className={`time-slot ${selTime === time.dateTime ? 'sel' :''}`} onClick={()=>{ toggleSelTime(time.dateTime) }}>
+                                                        <div className={`time-slot ${selTime === time.dateTime ? 'sel' :''} ${completed ? 'disabled': ''}`} onClick={()=>{ toggleSelTime(time.dateTime) }}>
                                                             {formatTime(time)}
                                                         </div>
                                                     )}
@@ -264,16 +283,23 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                     </div>
                 </div>
                 <div className="form-status">
-                    <div className="form-icon">
-                        <span className="material-symbols-outlined">calendar_month</span>
-                    </div>
+                    {create_event_loading ?
+                        <div className='icon-loading-container'>
+                            <l-ripples size="72" speed="0.9" color="rgba(160, 82, 45,1)"></l-ripples>   
+                        </div> :
+                        <div className={`form-icon ${completed ? 'complete' : ''}`}>
+                            <span className="material-symbols-outlined">{completed ? 'check' : 'calendar_month'}</span>
+                        </div>
+                    }
+                    
 
-                    <div className="title">Requesting a new appointment</div>
-                    <p>Thank you for your interest in our <b>{service.title}</b>.  Please complete the form with the required information to proceed.</p>
+                    <div className="title">{completed ? 'Requested' : 'Requesting'} a new appointment</div>
+                    <p>Thank you for your interest in our <b>{service.title}</b>.</p>
+                    <p>{completed ? 'We will follow up with you pending your request.' : 'Please complete the form with the required information to proceed.'}</p>
 
                     <div className="btn-container">
-                        <div className={`btn main c1 ${selTime && checkInvalidFields()?.length === 0 ? '' : 'disable'}`}>Request Appointment</div>
-                        <div className="btn">Return to services</div>
+                        <div className={`btn main c1 ${selTime && checkInvalidFields()?.length === 0 && !completed ? '' : 'disable'}`} onClick={submitForm}>Request Appointment</div>
+                        <div className="btn" onClick={()=> resetForm(true)}>Return to services</div>
                     </div>
                 </div>
             </div>

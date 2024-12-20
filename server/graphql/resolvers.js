@@ -299,7 +299,7 @@ module.exports = function (localStore) {
                 //util.activeUserCheck(context);
                 util.validateGQLParams(["service", "name", "email", "phone" ], args);
 
-                let ret = await event.event.create(args.service, args.name, args.email, args.phone, args?.startTime, args?.endTime);
+                let ret = await event.event.create(args.service, args.name, args.email, args.phone, args?.price, args?.startTime, args?.endTime);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
