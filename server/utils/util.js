@@ -86,7 +86,7 @@ module.exports = {
     validateEmail(value){
         let ret = false;
         try {
-            var validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
             ret = (value?.length > 0 && value.match(validRegex));
         }
         catch(ex){
@@ -97,7 +97,7 @@ module.exports = {
     validatePhone(value){
         let ret = false;
         try {
-            var validRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+            let validRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
             ret = (value?.length > 0 && value.match(validRegex));
         }
         catch(ex){

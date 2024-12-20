@@ -48,6 +48,7 @@
     "multer": "^1.4.5-lts.1",
     "nodemailer": "^6.9.16",
     "react": "^18.3.1",
+    "react-datepicker": "^7.5.0",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-modal-sheet": "^3.3.0",

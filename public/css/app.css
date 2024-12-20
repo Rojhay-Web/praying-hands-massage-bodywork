@@ -607,17 +607,21 @@ html {
   background: rgba(205, 133, 63, 0.7) !important;
   color: #fff;
 }
-.btn-container .btn.main:hover {
+.btn-container .btn.main:hover:not(.disable) {
   background: #a0522d !important;
 }
 .btn-container .btn.main.c1 {
   background: rgba(160, 82, 45, 0.7) !important;
   color: #fff;
 }
-.btn-container .btn.main.c1:hover {
+.btn-container .btn.main.c1:hover:not(.disable) {
   background: #a0522d !important;
 }
-.btn-container .btn:hover:not(.main) {
+.btn-container .btn.disable {
+  opacity: 0.3;
+  cursor: default;
+}
+.btn-container .btn:hover:not(.main):not(.disable) {
   color: #cd853f;
 }
 @media (max-width: 770px) {
@@ -1092,6 +1096,161 @@ html {
     flex-direction: column;
     top: 93px;
     transform: translate(-50%, 0);
+  }
+}
+/* Reservation Modal */
+.reservation-form .rodal-dialog {
+  border-radius: 8px;
+}
+.reservation-form .rodal-dialog .rodal-close {
+  top: 24px;
+  right: 24px;
+}
+.reservation-form .rodal-dialog .form-container {
+  display: flex;
+  flex-direction: row-reverse;
+  height: 100%;
+}
+@media (max-width: 770px) {
+  .reservation-form .rodal-dialog .form-container {
+    flex-direction: column;
+    overflow-y: auto;
+  }
+}
+.reservation-form .rodal-dialog .form-status {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+.reservation-form .rodal-dialog .form-status .form-icon {
+  margin: 0 auto 16px;
+  padding: 16px;
+  border-radius: 50%;
+  background: radial-gradient(#cd853f, #ffffff);
+}
+.reservation-form .rodal-dialog .form-status .form-icon span {
+  color: #ffffff;
+  background: #cd853f;
+  border-radius: 50%;
+  padding: 8px;
+  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.reservation-form .rodal-dialog .form-status .title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+.reservation-form .rodal-dialog .form-status p {
+  font-size: 1rem;
+}
+.reservation-form .rodal-dialog .form-status .btn-container {
+  flex-direction: column;
+  margin-top: 40px;
+}
+.reservation-form .rodal-dialog .form-status .btn-container .btn {
+  margin: 4px 0;
+}
+.reservation-form .rodal-dialog .form-actions {
+  width: 55%;
+  border-radius: 8px;
+  background-color: #e6e6e6;
+  padding: 32px 16px 16px;
+}
+.reservation-form .rodal-dialog .form-actions .title {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+}
+.reservation-form .rodal-dialog .form-actions .subtitle {
+  color: #646464;
+}
+.reservation-form .rodal-dialog .form-actions .description {
+  margin: 16px 0;
+  text-overflow: ellipsis;
+  line-height: 1.5rem;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container {
+  display: flex;
+  flex-direction: column;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .selection-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .react-datepicker-wrapper {
+  width: 200px;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container input {
+  width: calc(100% - 20px);
+  padding: 8px;
+  border-radius: 4px;
+  border: 2px solid #000;
+  color: #cd853f;
+  font-weight: bold;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container button::after {
+  background-color: #cd853f;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .empty-message {
+  color: #646464;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot {
+  margin: 4px 8px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 2px solid #cd853f;
+  color: #cd853f;
+  cursor: pointer;
+  font-weight: bold;
+  opacity: 0.7;
+  transition: 0.5s all ease-in-out;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot.sel {
+  background: #323232;
+  color: #fff;
+  border-color: #323232;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container .time-container .time-slot:hover {
+  background: #cd853f;
+  color: #fff;
+}
+.reservation-form .rodal-dialog .form-actions .selection-container + .selection-container {
+  margin-top: 24px;
+}
+.reservation-form .rodal-dialog .form-actions .contact-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+.reservation-form .rodal-dialog .form-actions .contact-form .sel-input {
+  margin: 4px;
+}
+.reservation-form .rodal-dialog .form-actions .contact-form .sel-input.sz-10 {
+  width: 100%;
+}
+.reservation-form .rodal-dialog .form-actions .contact-form .sel-input.sz-5 {
+  width: calc(50% - 28px);
+}
+.reservation-form .rodal-dialog .form-actions .contact-form .sel-input.err {
+  border-color: red;
+}
+@media (max-width: 770px) {
+  .reservation-form .rodal-dialog .form-actions {
+    width: calc(100% - 32px);
   }
 }
 /* Animations */
@@ -3183,7 +3342,7 @@ html {
   flex: 1;
   margin-left: 40px;
 }
-.services .service-details-container .sel-details .detail-content h2 {
+.services .service-details-container .sel-details .detail-content .content-title {
   margin: 0 0 16px;
   font-size: 2rem;
   font-family: "Fraunces", serif;
@@ -3191,7 +3350,7 @@ html {
   color: #323232;
 }
 @media (max-width: 770px) {
-  .services .service-details-container .sel-details .detail-content h2 {
+  .services .service-details-container .sel-details .detail-content .content-title {
     text-align: center;
   }
 }

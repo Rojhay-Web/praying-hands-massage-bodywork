@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import parse from 'html-react-parser';
 
+import ReserveBtn from "./reserveBtn";
+
 import { Service } from "../../datatypes"
 
 import logo from '../../assets/logos/logo_color.png';
@@ -109,7 +111,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                     }
                     {service.bookingSite ?
                         <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
-                        <div className="btn main c1">Reserve</div>
+                        <ReserveBtn service={service} />
                     }
                 </div>
             </div>

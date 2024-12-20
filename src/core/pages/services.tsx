@@ -3,13 +3,16 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { ripples } from 'ldrs';
 import parse from 'html-react-parser';
 
-import { externalSiteConfirm, handleGQLError } from '../../utils';
+import ReserveBtn from '../components/reserveBtn';
+
+import { externalSiteConfirm, handleGQLError, priceString, timeString } from '../../utils';
 import { Service } from '../../datatypes';
 
 // Images
 import heallist from '../../assets/logos/heallist.png';
 import massagebook from '../../assets/logos/massageBook.png';
 import logo from '../../assets/logos/logo_color.png';
+
 
 const GET_SERVICES_QUERY = gql`
 query getServices($type: String, $page:Int, $pageSize: Int){
@@ -42,32 +45,6 @@ const TOTAL_SERVICE_SIZE = 3,
 function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: ServiceItemDetailsType){
     const [selService, setSelService] = useState<Service>();
     const [showMore, setShowMore] = useState(false);
-
-    const timeString = (time?: number | null) => {
-        let ret = "";
-        try {
-            ret = `${!time ? 'Time may vary' : `${time} mins`}`;
-        }
-        catch(ex){
-            console.log(`Building Time Str: ${ex}`);
-        }
-        return ret;
-    }
-
-    const priceString = (price?: number | null) => {
-        let ret = "";
-        try {
-            ret = (!price ? 'Prices may vary' : 
-                new Intl.NumberFormat('en-US', {
-                    style: 'currency', currency: 'USD',
-                }).format(price)
-            );
-        }
-        catch(ex){
-            console.log(`Building Time Str: ${ex}`);
-        }
-        return ret;
-    }
 
     const changePage = (dir: number) => {
         try {
@@ -148,7 +125,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                         </div>
 
                         <div className='detail-content'>
-                            <h2>{selService.title}</h2>
+                            <h2 className='content-title'>{selService.title}</h2>
 
                             <div className='sub-title-details'>
                                 <span>{timeString(selService.time)}</span>
@@ -172,7 +149,7 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                             <div className="btn-container">
                                 {selService.bookingSite ?
                                     <a href={getBookingLink(selService)} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
-                                    <div className="btn main c1">Reserve</div>
+                                    <ReserveBtn service={selService} />
                                 }
                             </div>
                         </div>

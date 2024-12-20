@@ -63,3 +63,29 @@ export const handleGQLError = (err:any) => {
 export const externalSiteConfirm = () => {
     return window.confirm('We are now navigating you to an external site via a new tab. To return to our website please switch via your browsers tabs bar.');
 }
+
+export const timeString = (time?: number | null) => {
+    let ret = "";
+    try {
+        ret = `${!time ? 'Time may vary' : `${time} mins`}`;
+    }
+    catch(ex){
+        console.log(`Building Time Str: ${ex}`);
+    }
+    return ret;
+}
+
+export const priceString = (price?: number | null) => {
+    let ret = "";
+    try {
+        ret = (!price ? 'Prices may vary' : 
+            new Intl.NumberFormat('en-US', {
+                style: 'currency', currency: 'USD',
+            }).format(price)
+        );
+    }
+    catch(ex){
+        console.log(`Building Time Str: ${ex}`);
+    }
+    return ret;
+}
