@@ -233,11 +233,11 @@ function Services(){
                 <div className='booking-cards'>
                     <h1 className='section-title mini'>Our Booking Sites</h1>
 
-                    <a href="https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork" target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className='card-container'>
+                    <a href="https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork" target="_blank" rel="noreferrer" className='card-container'>
                         <img src={massagebook} alt="MassageBook Logo" />
                     </a>
 
-                    <a href="https://app.heallist.com/p/patricia-blakey" target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className='card-container'>
+                    <a href="https://app.heallist.com/p/patricia-blakey" target="_blank" rel="noreferrer" className='card-container'>
                         <img src={heallist} alt="HealList Logo" />
                     </a>
                 </div>

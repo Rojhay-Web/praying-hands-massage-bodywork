@@ -6,6 +6,8 @@ const log = require('./log.service'),
     db = require('./db.service'),
     gallery = require('./gallery.service');
 
+const { FLICKR_OAUTH_TOKEN, FLICKR_OAUTH_TOKEN_SECRET, GALLERY_DEFAULT_ID } = process.env;
+
 class CacheStore {
     constructor() {
         this.storeExpiration = {
@@ -93,8 +95,8 @@ class CacheStore {
 
     init(){
         try {
-            this.updateCacheStore("flickr_keys", "oauthToken", process.env.FLICKR_OAUTH_TOKEN);
-            this.updateCacheStore("flickr_keys", "oauthTokenSecret", process.env.FLICKR_OAUTH_TOKEN_SECRET);
+            this.updateCacheStore("flickr_keys", "oauthToken", FLICKR_OAUTH_TOKEN);
+            this.updateCacheStore("flickr_keys", "oauthTokenSecret", FLICKR_OAUTH_TOKEN_SECRET);
         }
         catch(ex){
             log.error(`Init Cache: ${ex}`);
@@ -111,7 +113,7 @@ class CacheStore {
                 return cacheGallery;
             }
             
-            const flickrGallery = await gallery.photosets.getImages(process.env.GALLERY_DEFAULT_ID, page, pageSize);
+            const flickrGallery = await gallery.photosets.getImages(GALLERY_DEFAULT_ID, page, pageSize);
             if(flickrGallery?.results) {
                 this.updateCacheStore("gallery", key, flickrGallery);
             }

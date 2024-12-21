@@ -2,9 +2,10 @@ require('dotenv').config();
 const { MongoClient, ObjectId } = require('mongodb');
 const { v4: uuidv4 } = require('uuid');
 
+const { DatabaseConnectionString, DatabaseName } = process.env;
 const log = require('./log.service');
 
-const client = new MongoClient(process.env.DatabaseConnectionString);
+const client = new MongoClient(DatabaseConnectionString);
 (async () => { await client.connect(); log.debug(`Connected Successfully to server`); })();
 
 const appTables = {
@@ -341,7 +342,7 @@ async function dbCollection(conn_collection) {
     let collection = null;
     try {
         //await client.connect(); //log.debug(`Connected Successfully to server`);
-        const db = client.db(process.env.DatabaseName);
+        const db = client.db(DatabaseName);
         collection = db.collection(conn_collection);
     }
     catch(ex){

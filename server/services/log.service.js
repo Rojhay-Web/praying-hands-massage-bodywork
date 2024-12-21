@@ -1,6 +1,8 @@
 require('dotenv').config();
 const fs = require('fs');
 
+const { DEBUG, MAX_LOG_SZ, MAX_LOG_CNT }= process.env;
+
 module.exports = {
     error: function(message){
         try {
@@ -28,7 +30,7 @@ module.exports = {
     },
     debug: function(message){
         try {
-            if(process.env.DEBUG === "1"){
+            if(DEBUG === "1"){
                 updateLog(" [DEBUG] ");
                 updateLog(message);  
             }          
@@ -42,7 +44,7 @@ module.exports = {
 // Update LogFile
 function updateLog(msg){
     try {
-        if(process.env.DEBUG === "1"){
+        if(DEBUG === "1"){
             update_log_file(msg);
         }
         else {
@@ -65,8 +67,8 @@ function update_log_file(msg){
         if(!fs.existsSync(`${dir}/log.txt`)){
             fs.appendFileSync(`${dir}/log.txt`, "-- --\n");
         }
-
-        if(fs.statSync(`${dir}/log.txt`).size >= process.env.MAX_LOG_SZ){
+        
+        if(fs.statSync(`${dir}/log.txt`).size >= MAX_LOG_SZ){
             // Change File Name to old date name
             fs.renameSync(`${dir}/log.txt`, `${dir}/log_${d.getTime()}.txt`);
             // Create new log file
@@ -74,14 +76,14 @@ function update_log_file(msg){
 
             let dirList = fs.readdirSync(dir);
 
-            if(dirList.length >= process.env.MAX_LOG_CNT) {
+            if(dirList.length >= MAX_LOG_CNT) {
                 let fileList = [];
                 dirList.forEach(function (file) {
                     if(fs.existsSync(`${dir}/${file}`)){
                         let tmpStats = fs.statSync(`${dir}/${file}`);
                         tmpStats.path = `${dir}/${file}`; fileList.push(tmpStats);
                     }
-                    else if(process.env.DEBUG) { console.log(`File DNE: ${file}`); }
+                    else if(DEBUG) { console.log(`File DNE: ${file}`); }
                 });
 
                 const minFile = fileList.reduce(function(prev, current) {
@@ -89,12 +91,12 @@ function update_log_file(msg){
                 });
 
                 // Delete Oldest File       
-                if(process.env.DEBUG) { console.log(`Delete File: ${minFile.path}`); }           
+                if(DEBUG) { console.log(`Delete File: ${minFile.path}`); }           
                 fs.unlinkSync(minFile.path);                    
             }
         }
 
-        if(process.env.DEBUG) { console.log(msg); }
+        if(DEBUG) { console.log(msg); }
         fs.appendFileSync(`${dir}/log.txt`, ` ${d.toString()} | ${msg} \n`); 
     }
     catch(ex){

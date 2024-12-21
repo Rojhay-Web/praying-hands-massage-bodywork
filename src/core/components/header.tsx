@@ -28,9 +28,14 @@ function Header(){
     const [navChange, setNavChange] = useState(false);
     const [sideNav, setSideNav] = useState(false);
     
+    const setSidebarDisplay = (status: boolean) => {
+        document.body.classList.toggle('noscroll', status);
+        setSideNav(status);
+    }
+
     useEffect(()=> {
         function handleScroll() {
-            const height = 100;
+            const height = 75;
 
             setNavChange((d)=>{
                 if(window.scrollY <= height && d) { 
@@ -50,7 +55,7 @@ function Header(){
 
     return (
         <>
-            <MobileNav isOpen={sideNav} setIsOpen={setSideNav}/>
+            <MobileNav isOpen={sideNav} setIsOpen={setSidebarDisplay}/>
             <nav className={`navbar navbar-expand-lg ${navChange ? 'back' : ''}`}>
                 <Link className="navbar-brand" to="/">
                     <div className="initial-wrapper">
@@ -62,7 +67,7 @@ function Header(){
                     </div>
                 </Link>
 
-                <button className="navbar-toggler" type="button" aria-label="Toggle navigation" onClick={() => setSideNav(true) }>
+                <button className="navbar-toggler" type="button" aria-label="Toggle navigation" onClick={() => setSidebarDisplay(true) }>
                     <span className="material-symbols-outlined navbar-toggler-icon">menu_open</span>
                 </button>
 

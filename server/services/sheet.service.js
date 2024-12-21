@@ -3,6 +3,8 @@ require('dotenv').config();
 const { google } = require('googleapis');
 const { v4: uuidv4 } = require('uuid');
 
+const { GOOGLE_SHEET_ID, PRIVATE_KEY, CLIENT_EMAIL } = process.env;
+
 const log = require('./log.service'),
     util = require('../utils/util');
 
@@ -49,7 +51,7 @@ module.exports = {
             const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
             const updateSheet = await sheetInstance.spreadsheets.values.append({
                 auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
+                spreadsheetId: GOOGLE_SHEET_ID,
                 range: 'users',
                 valueInputOption: 'RAW',
                 resource:{ values: formatted_data.data }
@@ -89,7 +91,7 @@ module.exports = {
             const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
             const updateSheet = await sheetInstance.spreadsheets.values.update({
                 auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
+                spreadsheetId: GOOGLE_SHEET_ID,
                 range: `users!${(sheetRow + 2)}:${(sheetRow + 2)}`,
                 valueInputOption: 'RAW',
                 resource:{ values: formatted_data }
@@ -121,7 +123,7 @@ module.exports = {
             const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth});
             const updateSheet = await sheetInstance.spreadsheets.values.clear ({
                 auth: googleAuth,
-                spreadsheetId: process.env.GOOGLE_SHEET_ID,
+                spreadsheetId: GOOGLE_SHEET_ID,
                 range: `users!${(sheetRow + 2)}:${(sheetRow + 2)}`
             });
 
@@ -139,10 +141,10 @@ module.exports = {
 function getGoogleAuth(){
     let ret = null;
     try {
-        const privateKey = process.env.PRIVATE_KEY;
+        const privateKey = PRIVATE_KEY;
         
         ret = new google.auth.JWT(
-            process.env.CLIENT_EMAIL,
+            CLIENT_EMAIL,
             null,
             privateKey.replace(/\\n/g, '\n'),
             'https://www.googleapis.com/auth/spreadsheets'
@@ -186,7 +188,7 @@ async function getSheetData(sheetName){
         const sheetInstance = await google.sheets({ version: 'v4', auth: googleAuth });
         const sheetInfo = await sheetInstance.spreadsheets.values.get({
             auth: googleAuth,
-            spreadsheetId: process.env.GOOGLE_SHEET_ID,
+            spreadsheetId: GOOGLE_SHEET_ID,
             range: `${sheetName}`
         });
 

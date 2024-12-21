@@ -3,8 +3,10 @@ const path = require('path');
 const fs = require('fs');
 const { createFlickr } = require("flickr-sdk");
 
+const { FLICKR_KEY, FLICKR_USERID, FLICKR_SECRET } = process.env;
+
 const log = require('./log.service');
-const { flickr } = createFlickr(process.env.FLICKR_KEY);
+const { flickr } = createFlickr(FLICKR_KEY);
 
 const FLICKR_IMG_SIZE = 'b';
 
@@ -13,7 +15,7 @@ module.exports = {
         search: async function(page=1, page_size=20){
             try {
                 const res = await flickr("flickr.photos.search", {
-                    user_id: process.env.FLICKR_USERID,
+                    user_id: FLICKR_USERID,
                     page: page, per_page: page_size
                 });
 
@@ -82,7 +84,7 @@ module.exports = {
         getAll: async function(){
             try {
                 const res = await flickr("flickr.photosets.getList", {
-                    user_id: process.env.FLICKR_USERID
+                    user_id: FLICKR_USERID
                 });
 
                 const filterPhotoSets = res?.photosets?.photoset.map((p)=>{
@@ -102,7 +104,7 @@ module.exports = {
         getImages: async function(id, page=1, page_size=20){
             try {
                 const res = await flickr("flickr.photosets.getPhotos", {
-                    user_id: process.env.FLICKR_USERID,
+                    user_id: FLICKR_USERID,
                     photoset_id: id, page: page, per_page: page_size
                 });
 
@@ -186,7 +188,7 @@ module.exports = {
             try {
                 // Get Photoset current images 
                 const all_res = await flickr("flickr.photosets.getPhotos", {
-                    user_id: process.env.FLICKR_USERID, photoset_id: id
+                    user_id: FLICKR_USERID, photoset_id: id
                 });
 
                 let idPhotos = (all_res?.photoset?.photo ? 
@@ -245,8 +247,8 @@ function runElevatedFlickr(localStore){
         }
 
         const { flickr: elevatedFlickr, upload  } = createFlickr({
-            consumerKey: process.env.FLICKR_KEY,
-            consumerSecret: process.env.FLICKR_SECRET,
+            consumerKey: FLICKR_KEY,
+            consumerSecret: FLICKR_SECRET,
             oauthToken: oauthToken, oauthTokenSecret: oauthTokenSecret
         });
 

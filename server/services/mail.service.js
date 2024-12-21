@@ -1,13 +1,15 @@
 const nodemailer = require('nodemailer');
 
 require('dotenv').config();
+
+const { EMAIL_ADDRESS, EMAIL_TOKEN } = process.env;
 const log = require('./log.service');
 
 let mailTransporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.EMAIL_ADDRESS,
-        pass: process.env.EMAIL_TOKEN
+        user: EMAIL_ADDRESS,
+        pass: EMAIL_TOKEN
     }
 });
 
@@ -22,7 +24,7 @@ module.exports = {
             }
 
             const mailDetails = {
-                from: `Praying Hands Massage & Bodywork <${process.env.EMAIL_ADDRESS}>`, // sender address
+                from: `Praying Hands Massage & Bodywork <${EMAIL_ADDRESS}>`, // sender address
                 to: toEmail, 
                 subject: subject,
                 text: emailText,
@@ -54,7 +56,7 @@ module.exports = {
             });
 
             const mailDetails = {
-                from: `St. Elizabeth HSA Website <${process.env.EMAIL_ADDRESS}>`, // sender address
+                from: `St. Elizabeth HSA Website <${EMAIL_ADDRESS}>`, // sender address
                 to: toEmail, 
                 subject: subject,
                 text: emailText,

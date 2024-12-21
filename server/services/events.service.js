@@ -7,7 +7,8 @@ const log = require('./log.service'),
     util = require('../utils/util');
 
 const { 
-    DEFAULT_EMAIL_ADDRESS, EVENT_PROJECT_NUMBER, CALENDAR_ID
+    DEFAULT_EMAIL_ADDRESS, EVENT_PROJECT_NUMBER, CALENDAR_ID,
+    EVENT_PRIVATE_KEY, EVENT_CLIENT_EMAIL
 } = process.env;
 
 module.exports = {
@@ -186,10 +187,10 @@ module.exports = {
 function getGoogleAuth(){
     let ret = null;
     try {
-        const privateKey = process.env.EVENT_PRIVATE_KEY;
+        const privateKey = EVENT_PRIVATE_KEY;
         
         ret = new google.auth.JWT(
-            process.env.EVENT_CLIENT_EMAIL,
+            EVENT_CLIENT_EMAIL,
             null,
             privateKey.replace(/\\n/g, '\n'),
             'https://www.googleapis.com/auth/calendar'
