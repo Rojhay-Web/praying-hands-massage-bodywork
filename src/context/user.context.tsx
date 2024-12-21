@@ -10,6 +10,7 @@ import CmsSiteEditor from '../admin/pages/cmsEditor';
 import UserManagement from '../admin/pages/userManagement';
 import SiteEditor from '../admin/pages/siteEditor';
 import ImageGallery from '../admin/pages/imageGallery';
+import ServicesEditor from '../admin/pages/services';
 
 const GET_USER_QUERY = gql`
 query getUser($id: String!){
@@ -33,10 +34,11 @@ query getUserPermissions($_id: String!){
 const UserContext = createContext<UserContextType | null>(null);
 
 const adminComponents: AdminPathType[] = [
-    { title: "CMS Editor", scope:"cms_admin", icon:"engineering", path:"cms_editor", element: CmsSiteEditor },
     { title: "User Management", scope:"users", icon:"group", path:"user_management", element: UserManagement },
-    { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail", path:"image_gallery", element: ImageGallery },
+    { title: "CMS Editor", scope:"cms_admin", icon:"engineering", path:"cms_editor", element: CmsSiteEditor },
     { title: "Site Editor", scope:"site_content", icon:"dvr", path:"site_editor", element: SiteEditor },
+    { title: "Services", scope:"services", icon:"playing_cards", path:"services", element: ServicesEditor },
+    { title: "Image Gallery", scope:"gallery", icon:"gallery_thumbnail", path:"image_gallery", element: ImageGallery },
 ]; 
 
 function Provider({ children }: { children: any }) {
@@ -113,4 +115,5 @@ function Provider({ children }: { children: any }) {
     return <UserContext.Provider value={{ user, setUser, userToken, setUserToken, loading, loading_permissions, activeComponents }}>{children}</UserContext.Provider>;
 }
 
-export default { UserContext, Provider };
+const contextRet = { UserContext, Provider };
+export default contextRet;

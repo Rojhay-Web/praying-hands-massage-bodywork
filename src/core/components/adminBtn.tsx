@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useGoogleLogin } from '@react-oauth/google';
 import { toast } from 'react-toastify';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Rodal from "rodal";
 
 import userContext from "../../context/user.context";
@@ -13,7 +13,6 @@ function AdminBtn(){
     const [windowSize, setWindowSize] = useState({ width: window.innerWidth, height: window.innerHeight });
 
     const { user, setUser, setUserToken } = useContext(userContext.UserContext) as UserContextType;
-    const navigate = useNavigate();
     
     const gLogin = useGoogleLogin({
         onSuccess: (tokenResponse) => { setUserToken(tokenResponse); },

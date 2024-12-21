@@ -10,10 +10,20 @@ module.exports = gql`
         
         sitePages:[SitePage]
         sitePage(key: String!):SitePage
+        cachedSitePage(key: String!):SitePage
 
         photos(page:Int, pageSize: Int):PagedPhotos
         photosets:[Photosets]
         photosetImages(id:String!, page:Int, pageSize: Int):PagedPhotos
+        siteGallery(page:Int, pageSize: Int):PagedPhotos
+
+        services(type: String, page:Int, pageSize: Int):[Service]
+
+        events(startDt: String!, endDt:String!):[Event]
+        event(id: String!):Event
+        eventAvailability(startDt: String!, endDt: String!, time:Int):[EventDate]
+
+        reviews: [Review]
     }
 
     type Mutation {
@@ -33,6 +43,11 @@ module.exports = gql`
         deletePhotoset(id:String!):Boolean
         addPhotosetPhotos(id:String!, photoIds: [String]!):Boolean
         removePhotosetPhotos(id:String!, photoIds: [String]!):Boolean
+
+        upsertService(title:String!, type:String, _id:String, time:Int, price:Int, bookingSite:String, image:String, description:String): String
+        removeService(_id:String!): Boolean
+
+        createEvent(service: String!, name: String!, email:String!, phone:String!, price:Int, startTime: String, endTime: String):String
     }
 
     input PageKeyInput {
@@ -87,5 +102,49 @@ module.exports = gql`
     type PagedPhotos {
         pagesLeft: Boolean
         results:[Photo]
+    }
+
+    type Service {
+        _id: String 
+        title: String
+        type: String
+        time: Int 
+        price: Int 
+        bookingSite: String 
+        image: String
+        description: String
+    }
+
+    type EventDate {
+        date: Date
+        dateTime: Date
+        timeZone: String
+    }
+
+    type Event {
+        id: String
+        summary: String
+        description: String
+        status: String
+        htmlLink: String
+        created: Date
+        location: String
+        start: EventDate
+        end: EventDate
+    }
+
+    type Reviewer {
+        profilePhotoUrl: String
+        displayName: String
+        isAnonymous: Boolean
+    }
+
+    type Review {
+        name: String
+        reviewId: String
+        reviewer: Reviewer
+        starRating: String
+        comment: String
+        createTime: Date
     }
 `;

@@ -109,7 +109,7 @@ function GalleryUpload({ maxSelect, hasSecondAction = false, secondActionStatus,
     const toggleImage = (photo: FilePhoto) =>{
         try {
             setSelected((d)=> {
-                let tmp = d.filter((fp) => { return fp?.fileId != photo?.fileId; });
+                let tmp = d.filter((fp) => { return fp?.fileId !== photo?.fileId; });
                 return tmp;
             });
         }

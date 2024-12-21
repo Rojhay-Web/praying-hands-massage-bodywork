@@ -1,0 +1,202 @@
+.services {
+    .booking-cards {
+        display: flex; flex-direction: row;
+        justify-content: center; margin: 16px 0;
+
+        .mini { margin-right: 24px; }
+        .card-container {
+            border-radius: 4px;  height: 50px;
+            display: flex; flex-direction: column;
+            justify-content: center; flex:1; // width: 160px;
+            background: rgba(255,255,255,1);
+            padding: 8px 16px; margin: 0 24px; position: relative;
+            transition: 0.5s all ease-in-out;
+
+            -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+
+            &::before {
+                content: ''; position: absolute;
+                top: 0; left: 0; .color2(background, 0.1);
+                width: 100%; height: 100%;
+            }
+
+            img { 
+                margin: 0 auto; height: 100%; position: relative; z-index: 0;
+                filter: grayscale(0.7);
+            }
+
+            &:hover {
+                transform: scale(1.1);
+            }
+        }
+        
+        @media @mobile-device {
+            overflow-x: auto; justify-content: start;
+            padding: 16px 5%; margin: 0;
+        }
+    }
+
+    .service-type-outer-container {
+        display: flex; flex-direction: row;
+        justify-content: center;
+    }
+
+    .service-type-container {
+        display: flex; flex-direction: row;
+        justify-content: space-between; padding: 8px;
+        border-radius: 32px; margin: 8px auto;
+
+        -moz-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+        -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+        box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+
+        .type-sel {
+            padding: 4px 16px; border-radius: 32px;
+            text-transform: capitalize; font-family: "Fraunces", serif;
+            cursor: pointer; transition: 0.5s all ease-in-out;
+
+            &.sel { background: @color2; cursor: default; }
+
+            &:hover:not(.sel) { background: rgba(50,50,50,0.2); }
+            &+.type-sel { margin-left: 16px; }
+        }
+
+        @media @mobile-device { 
+            overflow-x: auto; 
+        }
+    }
+
+    .services-container { 
+        margin-top: 24px; 
+
+        .loading-container { margin: 0 auto;}
+
+        .empty-message {
+            text-align: center; font-size: 1.5rem; font-weight: bold;
+            font-family: "Fraunces", serif; margin: 8px auto;
+
+            background: -webkit-linear-gradient(0deg, rgba(50,50,50,0.7) 40%, rgba(100,100,100,0.7));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    }
+
+    .services-pagination {
+        display: flex; justify-content: center;
+        margin-top: 24px; 
+    }
+
+    .service-details-container {
+        width: 100%; display: flex; flex-direction: column;
+
+        .title-outer-container {
+            display: flex; flex-direction: row;
+            justify-content: space-between;
+
+            .ctrl { 
+                color: @color2; cursor: pointer;
+                border: 2px solid @color2;
+                padding: 4px; border-radius: 50%;
+                transition: 0.5s all ease-in-out;
+                max-height: 24px; max-width: 24px;
+
+                &.disable { opacity: 0.1; cursor: default; }
+                &:hover:not(.disable) { color: #fff; background-color: @color2; }
+                
+                @media @mobile-device { margin: auto 0; }
+            }
+        }
+
+        .title-list-container {
+            display: flex; flex-direction: row; justify-content: space-around; flex: 1;
+            white-space: nowrap; 
+            span {
+                font-weight: bold; padding: 8px; margin: 0 8px;
+                border-bottom: 2px solid rgba(0,0,0,0); cursor: pointer;
+                overflow: hidden; text-overflow: ellipsis;
+                &.sel { 
+                    color: @color1; border-bottom-color: @color1;
+                    cursor: default;
+                }
+
+                &:hover:not(.sel) { color: rgba(50,50,50,0.7); }
+
+                @media @mobile-device { text-align: center; }
+            }
+
+            @media @mobile-device {
+                overflow-x: auto; margin: 0 8px; flex-direction: column;
+            }
+        }
+        
+        .sel-details {
+            display: flex; flex-direction: row; margin: 40px 0;
+
+            .img-container {
+                border-radius: 4px; overflow: hidden; width: 40%;
+                img { width: 100%; min-height: 100%; object-fit: cover; border-radius: 4px; }
+
+                @media @mobile-device { width: 100%; }
+            }
+
+            .detail-content {
+                display: flex; flex-direction: column; flex: 1;
+                margin-left: 40px; 
+
+                .content-title { 
+                    margin: 0 0 16px; font-size: 2rem;
+                    font-family: "Fraunces", serif;
+                    text-align: left; color: rgba(50,50,50,1);
+
+                    @media @mobile-device { text-align: center; }
+                }
+                .sub-title-details {
+                    display: flex; flex-direction: row;
+                    justify-content: space-between;
+
+                    span { font-size: 1.2rem; }
+                }
+
+                .content-title {
+                    font-weight: bold; font-size: 1.2rem;
+                    margin: 16px 0 8px;
+                }
+
+                .description-content {
+                    line-height: 1.5rem; font-size: 1rem;
+
+                    p { margin-top: 0; }
+
+                    &.web {
+                        display: block;
+                        @media @mobile-device { display: none; }
+                    }
+
+                    &.mobile { 
+                        display: none; overflow: hidden; text-overflow: ellipsis;
+                        @media @mobile-device { display: -webkit-box; -webkit-box-orient: vertical; }
+                    }
+                }
+
+                .more-toggle { 
+                    display: none; flex-direction: row; justify-content: center;
+                    color: @color1; cursor: pointer; margin: 8px 0 24px; font-weight: bold;
+    
+                    span {
+                        display: flex; flex-direction: column; justify-content: center;
+    
+                        &+span { margin-left: 4px; }
+                    }
+
+                    @media @mobile-device { display: flex; }
+                }
+
+                @media @mobile-device { margin: 0 0 24px; }
+            }
+
+            @media @mobile-device { flex-direction: column-reverse; }
+        }
+    }
+}

@@ -25,7 +25,7 @@ function SmartPhoto({ uploadFlag, selecting, photo, uploadSuccess, toggleImage }
     const { user } = useContext(userContext.UserContext) as UserContextType;
 
     const checkToggleImage = () => {
-        if(status == ""){
+        if(status === ""){
             toggleImage(photo);
         }
     }
@@ -67,7 +67,7 @@ function SmartPhoto({ uploadFlag, selecting, photo, uploadSuccess, toggleImage }
     }
 
     useEffect(()=>{
-        if(uploadFlag && photo.type === 'file' && status != "success"){
+        if(uploadFlag && photo.type === 'file' && status !== "success"){
             setStatus("uploading");
             uploadFile();
         }
@@ -87,7 +87,7 @@ function SmartPhoto({ uploadFlag, selecting, photo, uploadSuccess, toggleImage }
                 <span className="material-symbols-outlined success">task_alt</span>
                 <span className="material-symbols-outlined warning">warning</span>
             </div>
-            <img src={photo.url} />
+            <img src={photo.url} alt='upload representation' />
         </div>
     );
 }

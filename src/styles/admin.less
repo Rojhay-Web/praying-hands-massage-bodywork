@@ -21,8 +21,8 @@
     &:hover { opacity: 0.7; }
 
     &.non-user { 
-        background-color: rgba(150,150,150,1);
-        color: rgba(50,50,50,1); opacity: 0.5;
+        //background-color: rgba(150,150,150,1);
+        color: rgba(0,0,0,1); opacity: 0.5;
 
         &:hover {  opacity: 1; }
     }
@@ -239,6 +239,36 @@
                         &:hover { opacity: 1; }
                     }
                 }
+            }
+        }
+    }
+}
+
+.quill-editor-container {
+    .rodal-dialog {
+        display: flex; flex-direction: column; position: relative;
+        overflow: hidden;
+    
+        .quill-title { margin-top: 0;}
+        .text-editor-container {
+            flex: 1; display: flex ;
+            flex-direction: column;
+
+            .quill {
+                flex: 1; overflow: hidden;
+                display: flex; flex-direction: column;
+            }
+        }
+
+        .btn-row {
+            display: flex; flex-direction: row; justify-content: center;
+            margin: 8px 0;
+            .close-btn { 
+                padding: 4px 16px; border-radius: 32px; cursor: pointer;
+                color: @admin-color1; border: 1px solid @admin-color1;
+                opacity: 0.7; transition: 0.5s all ease-in-out;
+
+                &:hover { opacity: 1; }
             }
         }
     }
@@ -687,6 +717,8 @@
                 .admin-background(background-color, 0.2);
 
                 &:placeholder { font-size: .8rem; }
+
+                &.number { width: 50px; }
             }
 
             .admin-select {
@@ -761,6 +793,29 @@
 
                     &+.scope-pill { margin-left: 8px; }
                 }
+            }
+
+            .img-container {
+                width: 30px; height: 30px; border-radius: 4px;
+                overflow: hidden; cursor: pointer;
+
+                img { width: 100%; object-fit: cover; }
+                .empty-img { width: 100%; height: 100%; background-color: rgba(150,150,150,1); }
+            }
+
+            .text-btn {
+                text-align: center; padding: 4px 16px; border: 2px solid @admin-color1;
+                color: @admin-color1; display: inline-flex; flex-direction: row; cursor: pointer;
+                opacity: 0.5; border-radius: 32px; font-size: .8rem;
+                transition: 0.5s all ease-in-out;
+
+                .edit_icon { 
+                    margin: auto 0; font-size: 1rem;                    
+                }
+
+                .text { margin: auto 0 auto 8px; }
+
+                &:hover { opacity: 1; }
             }
 
             .table-btns {

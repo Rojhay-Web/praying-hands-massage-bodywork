@@ -3,7 +3,7 @@ import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { toast } from 'react-toastify';
 import * as _ from 'lodash';
 import ReactQuill from 'react-quill-new';
-// import 'react-quill-new/dist/quill.snow.css';
+import 'react-quill-new/dist/quill.snow.css';
 
 import SelectedPhotosCtrl from "../components/selectedPhotoCtrl";
 import GalleryCtrlModal from "../components/galleryCtrlModal";
@@ -75,7 +75,7 @@ SEARCH_PHOTOS_QUERY = gql`
                url
            }
        }
-   }`
+   }`;
 
 function PillListEditor({ list, updateList }:{ list:string[], updateList: (e:string[]) => void }){
     const [newItem, setNewItem] = useState("");

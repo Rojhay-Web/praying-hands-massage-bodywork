@@ -1,7 +1,7 @@
 import "./styles/app.less";
 
 import { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route  } from "react-router-dom";
 
 /* Types */
 import { AdminPathType, UserContextType } from "./datatypes";
@@ -10,32 +10,34 @@ import { AdminPathType, UserContextType } from "./datatypes";
 import userContext from "./context/user.context";
 
 /* Layouts */
-import LayoutUC from "./core/components/layoutuc";
-//import Layout from "./core/components/layout";
-//import AdminLayout from "./admin/components/adminLayout";
+import Layout from "./core/components/layout";
+import AdminLayout from "./admin/components/adminLayout";
 
 /* Admin Pages */
-//import AdminHome from "./admin/pages/adminHome";
+import AdminHome from "./admin/pages/adminHome";
 
 /* Core Pages */
 import NoMatch from "./core/pages/nomatch";
-//import Home from "./core/pages/home";
-import UC from "./core/pages/uc";
+import AboutUs from "./core/pages/aboutus";
+import Home from "./core/pages/home";
+import Services from "./core/pages/services";
+import Gallery from "./core/pages/gallery";
+import ContactUs from "./core/pages/contact";
 
 const paths = [
+    { path: "aboutUs", element: AboutUs },
+    { path: "services", element: Services },
+    { path: "gallery", element: Gallery },
+    { path: "contactUs", element: ContactUs },
+
     { path: "*", element: NoMatch }
 ];
 
 function SiteRoutes(){
-    //const { user, activeComponents } = useContext(userContext.UserContext) as UserContextType;
+    const { user, activeComponents } = useContext(userContext.UserContext) as UserContextType;
 
     return(
         <Routes>
-            <Route path="/" element={<LayoutUC />}>
-                <Route index element={<UC />} />
-                <Route path="*" element={<UC />} />
-            </Route>
-            {/*
             <Route path="/" element={<Layout />}>
                 <Route index element={<Home />} />
                 {paths.map((rt, i) => 
@@ -50,7 +52,6 @@ function SiteRoutes(){
                 )}
                 <Route path="*" element={<NoMatch />} />
             </Route>
-            */}
         </Routes>
     )
 }

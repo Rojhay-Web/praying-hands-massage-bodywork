@@ -2,15 +2,23 @@
 require('dotenv').config();
 const fns = require('date-fns');
 
-const log = require('./log.service');
+const log = require('./log.service'),
+    db = require('./db.service'),
+    gallery = require('./gallery.service');
+
+const { FLICKR_OAUTH_TOKEN, FLICKR_OAUTH_TOKEN_SECRET, GALLERY_DEFAULT_ID } = process.env;
 
 class CacheStore {
     constructor() {
         this.storeExpiration = {
-            flickr_keys: 0
+            flickr_keys: 0,
+            gallery: 1,
+            pages: 1
         };
         this.store = {
-            flickr_keys: {}
+            flickr_keys: {},
+            gallery: {},
+            pages:{}
         };
     }
 
@@ -87,11 +95,57 @@ class CacheStore {
 
     init(){
         try {
-            this.updateCacheStore("flickr_keys", "oauthToken", process.env.FLICKR_OAUTH_TOKEN);
-            this.updateCacheStore("flickr_keys", "oauthTokenSecret", process.env.FLICKR_OAUTH_TOKEN_SECRET);
+            this.updateCacheStore("flickr_keys", "oauthToken", FLICKR_OAUTH_TOKEN);
+            this.updateCacheStore("flickr_keys", "oauthTokenSecret", FLICKR_OAUTH_TOKEN_SECRET);
         }
         catch(ex){
             log.error(`Init Cache: ${ex}`);
+        }
+    }
+
+    /* Site Gallery */
+    async getGallery(page=1, pageSize=20){
+        try {
+            const key =`${page}|${pageSize}`;
+            let cacheGallery = this.searchCacheStore('gallery',key);
+
+            if(cacheGallery) {
+                return cacheGallery;
+            }
+            
+            const flickrGallery = await gallery.photosets.getImages(GALLERY_DEFAULT_ID, page, pageSize);
+            if(flickrGallery?.results) {
+                this.updateCacheStore("gallery", key, flickrGallery);
+            }
+
+            return flickrGallery;
+        }
+        catch(ex){
+            log.error(`Getting Cache Gallery: ${ex}`);
+            return { error: `Getting Cache Gallery: ${ex}`};
+        }
+    }
+
+    /* Get Page Data */
+    async getPagesData(page){
+        try {
+            const key =`${page}`;
+            let pageData = this.searchCacheStore('pages',key);
+
+            if(pageData) {
+                return pageData;
+            }
+
+            const dbPage = await db.getPageData(page);
+            if(dbPage?.results) {
+                this.updateCacheStore("pages", key, dbPage);
+            }
+
+            return dbPage;
+        }
+        catch(ex){
+            log.error(`Getting Page Data: ${ex}`);
+            return { error: `Getting Page Data: ${ex}`};
         }
     }
 }

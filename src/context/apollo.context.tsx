@@ -1,4 +1,4 @@
-import { createContext, useEffect } from 'react';
+import { createContext, useEffect, useMemo } from 'react';
 import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
@@ -13,9 +13,9 @@ function Provider({ children }: { children: any }) {
                 headers: { ...headers }
             }
         }), 
-        client = new ApolloClient({
+        client = useMemo(() => new ApolloClient({
             link: authLink.concat(httpLink), cache: new InMemoryCache(),
-        });
+        }),[authLink, httpLink]);
     
     useEffect(()=>{ client.resetStore(); },[client]);
 
@@ -24,4 +24,5 @@ function Provider({ children }: { children: any }) {
         </ApolloContext.Provider>;
 }
 
-export default { ApolloContext, Provider };
+const contextRet = { ApolloContext, Provider };
+export default contextRet;

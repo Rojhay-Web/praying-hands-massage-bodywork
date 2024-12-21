@@ -9,6 +9,8 @@ const app = express();
 const auth = require('./server/services/auth.service'), 
     log = require('./server/services/log.service');
 
+const { PORT } = process.env;
+
 // init local cache store
 const CacheStore = require('./server/services/cache.store.js');
 let localStore = new CacheStore();
@@ -59,6 +61,6 @@ app.get('*', (req, res) => {
 });
 
 // Start App
-app.listen({ port: process.env.PORT || 8080 }, ()=> {
-    log.info(`PHW-BP is open on port ${process.env.PORT || 8080}`);
+app.listen({ port: PORT || 8080 }, ()=> {
+    log.info(`PHW-BP is open on port ${PORT || 8080}`);
 });

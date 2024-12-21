@@ -2,9 +2,10 @@ require('dotenv').config();
 const { MongoClient, ObjectId } = require('mongodb');
 const { v4: uuidv4 } = require('uuid');
 
+const { DatabaseConnectionString, DatabaseName } = process.env;
 const log = require('./log.service');
 
-const client = new MongoClient(process.env.DatabaseConnectionString);
+const client = new MongoClient(DatabaseConnectionString);
 (async () => { await client.connect(); log.debug(`Connected Successfully to server`); })();
 
 const appTables = {
@@ -103,7 +104,7 @@ module.exports = {
             const query = { _id: new ObjectId(_id) };
             const findUser = await collection.findOne(query);
             if(!findUser){
-                return { error: `User DNE` };
+                return { error: `User DNE 2` };
             }
 
             return { results: findUser };
@@ -273,6 +274,66 @@ module.exports = {
             log.error(`Removing Page Key: ${ex}`);
             return { "error": `Removing Page Key`};
         }
+    },
+
+    /* Services */
+    getServices: async function(type=null, page=1, page_size=20){
+        try {
+            const collection = await dbCollection("services");
+            if(collection == null){
+                return { error: "Unable to connect to DB [Please contact site admin]"};
+            }
+
+            const page_skip = (page - 1) * page_size;
+
+            const appData = await collection.find({
+                ...(type ? { type: type } : {})
+            })
+            //.skip(page_skip).limit(page_size)
+            .toArray();
+
+            return { results: appData};
+        }
+        catch(ex){
+            log.error(`Getting All By Table: ${ex}`);
+            return { 'error': 'Getting All By Table [E00]'};
+        }
+    },
+    upsertService: async function(title, type="", _id=null, time=null, price=null, bookingSite=null, image=null, description=null){
+        try {
+            const collection = await dbCollection("services");
+            if(collection == null){
+                return { error: "Unable to connect to DB [Please contact site admin]"};
+            }
+
+            let service = {
+                title, time, price, bookingSite, 
+                image, description, type
+            };
+
+            const validation = validatingService(service);
+            if(validation.length > 0){
+                log.error(`Invalid Service Upsert: ${validation.join(",")}`);
+                return { error: "Invalid Service Upsert" };
+            }
+            
+            if(_id){
+                // Update Service
+                const result = await collection.updateOne(
+                    { _id: new ObjectId(_id) },  { $set: service }
+                );
+
+                return { results: (result.matchedCount ? _id : null) };
+            }
+        
+            // Add Service
+            const result = await collection.insertOne(service);
+            return { results: (result?.insertedId ?? null) };
+        }
+        catch(ex){
+            log.error(`Upserting Service: ${ex}`);
+            return { 'error': 'Upserting Service [E00]'};
+        }
     }
 }
 
@@ -281,7 +342,7 @@ async function dbCollection(conn_collection) {
     let collection = null;
     try {
         //await client.connect(); //log.debug(`Connected Successfully to server`);
-        const db = client.db(process.env.DatabaseName);
+        const db = client.db(DatabaseName);
         collection = db.collection(conn_collection);
     }
     catch(ex){
@@ -312,6 +373,45 @@ function validatePageKeys(pageKeys){
         log.error(`Validating Page Keys: ${ex}`);
         return { error: `Validating Page Keys: ${ex}`};
     }
+}
+
+function validatingService(service){
+    let ret = [];
+    try{
+        if(!("title" in service) || service.title.length <= 0){
+            ret.push(`Title`);
+        }
+
+        if(!("type" in service)){
+            ret.push(`Type`);
+        }
+
+        if(!("time" in service)){
+            ret.push(`Time`);
+        }
+
+        if(!("price" in service)){
+            ret.push(`Price`);
+        }
+
+        if(!("bookingSite" in service)){
+            ret.push(`Booking Site`);
+        }
+
+        if(!("image" in service)){
+            ret.push(`image`);
+        }
+
+        if(!("description" in service)){
+            ret.push(`Description`);
+        }
+    }
+    catch(ex){
+        log.error(`Validating Service: ${ex}`);
+        ret.push('validating');
+    }
+
+    return ret;
 }
 
 /* Connection Clean Up */

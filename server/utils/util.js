@@ -82,5 +82,37 @@ module.exports = {
         }
 
         return ret;
+    },
+    validateEmail(value){
+        let ret = false;
+        try {
+            let validRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+            ret = (value?.length > 0 && value.match(validRegex));
+        }
+        catch(ex){
+            console.log(`Validating Email: ${ex}`);
+        }
+        return ret;
+    },
+    validatePhone(value){
+        let ret = false;
+        try {
+            let validRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+            ret = (value?.length > 0 && value.match(validRegex));
+        }
+        catch(ex){
+            console.log(`Validating Phone Number: ${ex}`);
+        }
+        return ret;
+    },
+    validateDate(value){
+        let ret = false;
+        try {
+            ret = !isNaN((new Date(value)).getTime());
+        }
+        catch(ex){
+            console.log(`Validating Date: ${ex}`);
+        }
+        return ret;
     }
 }
