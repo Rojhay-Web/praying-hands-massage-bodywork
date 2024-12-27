@@ -4,6 +4,7 @@ import Holidays from 'date-holidays';
 import type { LatLngTuple } from 'leaflet';
 import L from 'leaflet';
 import { MapContainer, TileLayer, Marker  } from 'react-leaflet';
+import { tagPageview } from '../../utils';
 
 const hoursOfOperations: { [key:string]:any} = {
     "1": { id: "1", "day": "Mon", "isOpened": true, "open": 900, "close":1700 },
@@ -98,6 +99,7 @@ function ContactUs(){
 
     useEffect(()=> { 
         document.title = "Contact Us";
+        tagPageview('/contactUs', 'View Page');
         buildHoursList(); getCurDayHours();
         checkHoliday();
     },[]);

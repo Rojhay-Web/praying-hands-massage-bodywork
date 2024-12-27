@@ -8,7 +8,7 @@ import trish2 from '../../assets/stock/trish2.jpg';
 import trish3 from '../../assets/stock/trish3.jpg';
 import about1 from '../../assets/stock/about1.jpg';
 import AreaMap from '../components/areaMap';
-import { handleGQLError } from '../../utils';
+import { handleGQLError, tagPageview } from '../../utils';
 
 const PAGE_KEY = 'about_us';
 const GET_PAGE_QUERY = gql`
@@ -41,7 +41,10 @@ function AboutUs(){
         }
     },[data]);
 
-    useEffect(()=> { document.title = "About Us"; },[]);
+    useEffect(()=> { 
+        document.title = "About Us";
+        tagPageview('/aboutUs', 'View Page');
+    },[]);
 
     return(
         <div className="core-page aboutus">

@@ -1,5 +1,6 @@
 import { isPast, addDays } from "date-fns";
 import { toast } from "react-toastify";
+import ReactGA from "react-ga4";
 
 import { User } from "../datatypes";
 
@@ -8,6 +9,8 @@ const rootPath = (window.location.href.indexOf("localhost") > -1  ? "http://loca
 export const appSessKey = "phw_bprint|usr";
 export const GQL_URL = `${rootPath}/v1/gql`;
 export const API_URL = `${rootPath}/v1/api`;
+
+export const GA_MEASUREMENT_ID = "G-DEY50Q7M7B";
 
 export const GOOGLE_LINK = "https://www.google.com/maps/place/Praying+Hands+Massage+and+Bodywork/@39.5146624,-75.7139167,17z/data=!3m1!4b1!4m6!3m5!1s0x89c7a16c990b9bc3:0xa72cb1cda5affc10!8m2!3d39.5146583!4d-75.7113418!16s%2Fg%2F11tfktb4z6?entry=ttu&g_ep=EgoyMDI0MTExOC4wIKXMDSoASAFQAw%3D%3D";
 export const FACEBOOK_LINK = "https://www.facebook.com/sparklewithtrish";
@@ -88,4 +91,23 @@ export const priceString = (price?: number | null) => {
         console.log(`Building Time Str: ${ex}`);
     }
     return ret;
+}
+
+// Analytics
+export const tagEvent = (category: string, action: string) => {
+    try {
+        ReactGA.event({ category: category, action: action });
+    }
+    catch(ex){
+        console.log(`Tagging Event: ${ex}`);
+    }
+}
+
+export const tagPageview = (page: string, title: string) => {
+    try {
+        ReactGA.send({ hitType: "pageview", page: page, title: title });
+    }
+    catch(ex){
+        console.log(`Tagging Page View: ${ex}`);
+    }
 }

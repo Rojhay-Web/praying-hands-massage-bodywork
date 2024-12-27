@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
 import { Service } from '../../datatypes';
-import { emptyList, FACEBOOK_LINK, GOOGLE_LINK, handleGQLError, INSTAGRAM_LINK } from '../../utils';
+import { emptyList, FACEBOOK_LINK, GOOGLE_LINK, handleGQLError, INSTAGRAM_LINK, tagPageview } from '../../utils';
 
 import ServiceItem from '../components/serviceItem';
 import PagerCtrl from '../components/pageCtrl';
@@ -74,6 +74,7 @@ function Home(){
 
     useEffect(()=>{
         retrieveServices({ variables: { type: '' }});
+        tagPageview('/', 'View Page');
     },[]);
     
     return (
