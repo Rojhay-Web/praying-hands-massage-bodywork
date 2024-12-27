@@ -4,7 +4,7 @@ import { ripples } from 'ldrs';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
 
-import { FACEBOOK_LINK, GOOGLE_LINK, handleGQLError, INSTAGRAM_LINK } from '../../utils';
+import { FACEBOOK_LINK, GOOGLE_LINK, handleGQLError, INSTAGRAM_LINK, tagPageview } from '../../utils';
 
 const MAX_PAGE_SIZE = 7,
 layout1 = [
@@ -112,6 +112,7 @@ function Gallery(){
 
     useEffect(()=> { 
         document.title = "Gallery";
+        tagPageview('/gallery', 'View Page');
         ripples.register();
     },[]);
 

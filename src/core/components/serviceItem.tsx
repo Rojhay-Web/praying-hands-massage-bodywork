@@ -7,7 +7,7 @@ import ReserveBtn from "./reserveBtn";
 import { Service } from "../../datatypes"
 
 import logo from '../../assets/logos/logo_color.png';
-import { externalSiteConfirm } from "../../utils";
+import { externalSiteConfirm, tagEvent } from "../../utils";
 
 type ServiceItemType = {
     service: Service, size?: number, max_lines?:number,
@@ -62,7 +62,8 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
         let ret = "";
         try {
             if(service.bookingSite === "massagebook") {
-                ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+                // ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+                ret = "https://www.massagebook.com/business/16656731/select-product/services/inhouse";
             }
             else if(service.bookingSite === "heallist") {
                 ret = "https://app.heallist.com/p/patricia-blakey";
@@ -76,6 +77,11 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
 
     const toggleShow = () => {
         setShowMore((d) => { return !d; } )
+    }
+
+    const selectBooking = () => {
+        externalSiteConfirm();
+        tagEvent("Book External Service",`Book: ${service.title}`);
     }
 
     return(
@@ -110,7 +116,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                         <Link to="/services" className="btn">Learn More</Link> : <></>
                     }
                     {service.bookingSite ?
-                        <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                        <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={selectBooking} className="btn main">Book</a>:
                         <ReserveBtn service={service} />
                     }
                 </div>

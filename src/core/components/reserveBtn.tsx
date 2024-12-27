@@ -7,7 +7,7 @@ import { ripples } from 'ldrs';
 import { addDays, addMinutes, format } from "date-fns";
 
 import { Service } from "../../datatypes";
-import { handleGQLError, priceString, timeString } from "../../utils";
+import { handleGQLError, priceString, tagEvent, timeString } from "../../utils";
 import { Link } from "react-router-dom";
 
 type ReserveBtnType = {
@@ -170,6 +170,8 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                     "endTime": format(endTime,'yyyy-MM-dd HH:mm:ss'),
                     ...contactInfo
                 }});
+
+                tagEvent("Service Reservation",`Reserve: ${service.title}`);
             }
         }
         catch(ex){

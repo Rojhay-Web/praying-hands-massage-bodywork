@@ -3,11 +3,15 @@ import { spiral } from 'ldrs'
 
 import userContext from "../../context/user.context";
 import { UserContextType } from "../../datatypes";
+import { tagPageview } from "../../utils";
 
 function NoMatch(){
     const { loading, loading_permissions } = useContext(userContext.UserContext) as UserContextType;
     
-    useEffect(()=>{ spiral.register(); },[])
+    useEffect(()=>{ 
+        spiral.register(); 
+        tagPageview('/nomatch', 'Page No Match'); 
+    },[])
 
     return (
         <div className="no-match-page">              

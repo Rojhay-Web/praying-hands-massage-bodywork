@@ -5,7 +5,7 @@ import parse from 'html-react-parser';
 
 import ReserveBtn from '../components/reserveBtn';
 
-import { externalSiteConfirm, handleGQLError, priceString, timeString } from '../../utils';
+import { externalSiteConfirm, handleGQLError, priceString, tagPageview, timeString } from '../../utils';
 import { Service } from '../../datatypes';
 
 // Images
@@ -64,7 +64,8 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
         let ret = "";
         try {
             if(service.bookingSite === "massagebook") {
-                ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+                // ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
+                ret = "https://www.massagebook.com/business/16656731/select-product/services/inhouse";
             }
             else if(service.bookingSite === "heallist") {
                 ret = "https://app.heallist.com/p/patricia-blakey";
@@ -220,6 +221,7 @@ function Services(){
 
     useEffect(()=> { 
         document.title = "Bookings & Services"; 
+        tagPageview('/services', 'View Page');
         ripples.register();
     },[]);
 
