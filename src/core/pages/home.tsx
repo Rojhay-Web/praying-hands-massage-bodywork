@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookF, faInstagram, faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -39,11 +39,14 @@ function Home(){
     // Services Paging
     const [services, setServices] = useState<Service[]>([]);
     const [pages, setPages] = useState({ page: 0, total: 0 });
+    const serviceSectionRef = useRef<HTMLDivElement>(null);
 
     const [retrieveServices,{ loading: services_loading, data: services_data }] = useLazyQuery(GET_SERVICES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
 
     const setPage = (pg:number) => {
         try {
+            serviceSectionRef?.current?.scrollIntoView();
+
             setPages((d:any)=> {
                 let tmpD = {...d, page: pg };
 
@@ -73,6 +76,7 @@ function Home(){
     },[services_data]);
 
     useEffect(()=>{
+        document.title = "Praying Hands Massage & Bodywork";
         retrieveServices({ variables: { type: '' }});
         tagPageview('/', 'View Page');
     },[]);
@@ -145,6 +149,7 @@ function Home(){
             </section>
 
             <section className='home-section contained alt-color mobile-full'>
+                <div className='section-anchor' ref={serviceSectionRef}/>
                 <h1 className='section-title'>Services + Sessions</h1>
                 <span className='section-subtitle'>Relax and Rejuvenate with Praying Hands Massage and Bodywork</span>
 

@@ -42,6 +42,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
     const [invalidFields, setInvalidFields] = useState<{ [key:string]:boolean }>({});
 
     const formInit = useRef(false);
+    const reserveFormStart = useRef<HTMLDivElement>(null);
 
     const [retrieveTimes,{ loading, data }] = useLazyQuery(GET_TIMES_QUERY, {fetchPolicy: 'no-cache', onError: handleGQLError});
     const [createEvent,{ loading: create_event_loading, data: create_event_data }] = useMutation(CREATE_EVENT, {fetchPolicy: 'no-cache', onError: handleGQLError });
@@ -227,12 +228,32 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
         <Rodal className="reservation-form" visible={visible} onClose={closeAction} 
             width={calcModalSize().width} height={calcModalSize().height} animation={"slideRight"}>
             <div className={`form-container ${completed ? 'complete' : ''}`}>
+                <div className="form-status">
+                    {create_event_loading ?
+                        <div className='icon-loading-container'>
+                            <l-ripples size="72" speed="0.9" color="rgba(160, 82, 45,1)"></l-ripples>   
+                        </div> :
+                        <div className={`form-icon ${completed ? 'complete' : ''}`}>
+                            <span className="material-symbols-outlined">{completed ? 'check' : 'calendar_month'}</span>
+                        </div>
+                    }
+                    
+
+                    <div className="title">{completed ? 'Requested' : 'Requesting'} a new appointment</div>
+                    <p>Thank you for your interest in our <b>{service.title}</b>.</p>
+                    <p>{completed ? 'We will follow up with you pending your request.' : 'Please complete the form with the required information to proceed.'}</p>
+                </div>
                 <div className="form-actions">
                     <div className="title">{service.title}</div>
                     <div className="subtitle">{timeString(service.time)} | {priceString(service.price)}</div>
+                    <div className="sub-instructions" onClick={()=>{ reserveFormStart?.current?.scrollIntoView();}}>
+                        <span className="material-symbols-outlined">stat_minus_2</span>
+                        <span>Complete Form Below</span>
+                        <span className="material-symbols-outlined">stat_minus_2</span>
+                    </div>
 
                     <p className="description">{parse(service?.description ?? "Please contact us for more information on this service.")}</p>
-                    <div className="selection-container">
+                    <div className="selection-container" ref={reserveFormStart}>
                         <div className="selection-title">Contact Information</div>
 
                         <div className="contact-form">
@@ -284,21 +305,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                         </div>
                     </div>
                 </div>
-                <div className="form-status">
-                    {create_event_loading ?
-                        <div className='icon-loading-container'>
-                            <l-ripples size="72" speed="0.9" color="rgba(160, 82, 45,1)"></l-ripples>   
-                        </div> :
-                        <div className={`form-icon ${completed ? 'complete' : ''}`}>
-                            <span className="material-symbols-outlined">{completed ? 'check' : 'calendar_month'}</span>
-                        </div>
-                    }
-                    
-
-                    <div className="title">{completed ? 'Requested' : 'Requesting'} a new appointment</div>
-                    <p>Thank you for your interest in our <b>{service.title}</b>.</p>
-                    <p>{completed ? 'We will follow up with you pending your request.' : 'Please complete the form with the required information to proceed.'}</p>
-
+                <div className="form-status cta">
                     <div className="btn-container">
                         <div className={`btn main c1 ${selTime && checkInvalidFields()?.length === 0 && !completed ? '' : 'disable'}`} onClick={submitForm}>Request Appointment</div>
                         <div className="btn" onClick={()=> resetForm(true)}>Return to services</div>
@@ -311,6 +318,10 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
 
 function ReserveBtn({ service }: ReserveBtnType){
     const [open, setOpen] = useState(false);
+
+    useEffect(()=> { 
+        document.body.classList.toggle('noscroll', (open == true));        
+    }, [open]);
     
     return(
         <>

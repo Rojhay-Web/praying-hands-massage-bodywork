@@ -695,6 +695,7 @@ html {
 }
 .services-container .service-info .service-info-container .info-title .img-container img {
   width: 100%;
+  min-height: 100%;
   object-fit: cover;
 }
 .services-container .service-info .service-info-container .description-container {
@@ -744,7 +745,7 @@ html {
 }
 @media (max-width: 770px) {
   .services-container .service-info.sz-2 {
-    width: calc(90% - 16px);
+    width: calc(100% - 16px);
     min-width: calc(90% - 16px);
   }
 }
@@ -753,7 +754,7 @@ html {
 }
 @media (max-width: 770px) {
   .services-container .service-info.sz-3 {
-    width: calc(80% - 16px);
+    width: calc(100% - 16px);
     min-width: calc(80% - 16px);
   }
 }
@@ -761,13 +762,9 @@ html {
   flex-wrap: nowrap;
 }
 @media (max-width: 770px) {
-  .services-container.paged {
-    overflow-x: auto;
-  }
-}
-@media (max-width: 770px) {
   .services-container {
     padding: 0 5%;
+    flex-direction: column;
   }
 }
 .pager-container {
@@ -1125,7 +1122,7 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 24px;
+  padding: 8px 24px 24px;
   text-align: center;
 }
 .reservation-form .rodal-dialog .form-status .icon-loading-container {
@@ -1157,12 +1154,12 @@ html {
   font-size: 1rem;
 }
 .reservation-form .rodal-dialog .form-status p {
-  font-size: 1rem;
+  font-size: 0.8rem;
   margin-bottom: 0;
 }
 .reservation-form .rodal-dialog .form-status .btn-container {
   flex-direction: column;
-  margin-top: 40px;
+  margin-top: 24px;
 }
 .reservation-form .rodal-dialog .form-status .btn-container .btn {
   margin: 4px 0;
@@ -1173,6 +1170,7 @@ html {
   background-color: #e6e6e6;
   padding: 32px 16px 16px;
   overflow-y: auto;
+  scroll-behavior: smooth;
 }
 .reservation-form .rodal-dialog .form-actions .title {
   font-size: 1.5rem;
@@ -1181,8 +1179,22 @@ html {
 .reservation-form .rodal-dialog .form-actions .subtitle {
   color: #646464;
 }
+.reservation-form .rodal-dialog .form-actions .sub-instructions {
+  text-align: center;
+  color: rgba(160, 82, 45, 0.7) !important;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 16px 0 0;
+  cursor: pointer;
+}
+.reservation-form .rodal-dialog .form-actions .sub-instructions span {
+  margin: auto 0;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
 .reservation-form .rodal-dialog .form-actions .description {
-  margin: 16px 0;
+  margin: 0 0 16px;
   text-overflow: ellipsis;
   line-height: 1.5rem;
   display: -webkit-box;
@@ -3027,6 +3039,14 @@ html {
 .home .home-section .slider-container {
   margin: 24px 0;
 }
+.home .home-section .section-anchor {
+  display: none;
+}
+@media (max-width: 770px) {
+  .home .home-section .section-anchor {
+    display: block;
+  }
+}
 .home .home-section.contained {
   padding: 80px 10%;
   overflow: hidden;
@@ -3072,8 +3092,14 @@ html {
   object-fit: cover;
 }
 @media (max-width: 770px) {
+  .aboutus .about-img-grid .img-col .img-container {
+    max-width: calc(50% - 16px);
+  }
+}
+@media (max-width: 770px) {
   .aboutus .about-img-grid .img-col {
     flex-direction: row;
+    justify-content: center;
     height: calc(33% - 16px);
   }
 }

@@ -37,6 +37,24 @@ module.exports = {
             console.log(res.data);
 */  
             const tmpReviews = [
+                {
+                    name: 'Jennifer Bowman', reviewId: '',
+                    reviewer: { displayName: "Jennifer Bowman" },
+                    starRating: 'FIVE', comment: "An outstanding, professional, and wholesome massage experience! Patricia is a real local treasure for healing and massage care. I was grateful to find her and highly recommend Praying Hands for anyone seeking solid massage therapy care.",
+                    createTime: new Date(),
+                },
+                {
+                    name: 'Christine Riccardi', reviewId: '',
+                    reviewer: { displayName: "Christine Riccardi" },
+                    starRating: 'FIVE', comment: "Trish is wonderful. I have been in DE for 2 years and finally found my massage therapist.",
+                    createTime: new Date(),
+                },
+                {
+                    name: 'Valerie Baul', reviewId: '',
+                    reviewer: { displayName: "Valerie Baul" },
+                    starRating: 'FIVE', comment: "Excellent Massage and Reiki session!  Trish does have praying and healing hands!",
+                    createTime: new Date(),
+                },
                 { 
                     name: 'Theresa Legar', reviewId: '',
                     reviewer: { displayName: "Theresa Legar" },
