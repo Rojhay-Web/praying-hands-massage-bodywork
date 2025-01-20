@@ -242,11 +242,16 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                     <div className="title">{completed ? 'Requested' : 'Requesting'} a new appointment</div>
                     <p>Thank you for your interest in our <b>{service.title}</b>.</p>
                     <p>{completed ? 'We will follow up with you pending your request.' : 'Please complete the form with the required information to proceed.'}</p>
+                    
+                    <div className="btn-container mobile-hide">
+                        <div className={`btn main c1 ${selTime && checkInvalidFields()?.length === 0 && !completed ? '' : 'disable'}`} onClick={submitForm}>Request Appointment</div>
+                        <div className="btn" onClick={()=> resetForm(true)}>Return to services</div>
+                    </div>
                 </div>
                 <div className="form-actions">
                     <div className="title">{service.title}</div>
                     <div className="subtitle">{timeString(service.time)} | {priceString(service.price)}</div>
-                    <div className="sub-instructions" onClick={()=>{ reserveFormStart?.current?.scrollIntoView();}}>
+                    <div className="sub-instructions default-hide" onClick={()=>{ reserveFormStart?.current?.scrollIntoView();}}>
                         <span className="material-symbols-outlined">stat_minus_2</span>
                         <span>Complete Form Below</span>
                         <span className="material-symbols-outlined">stat_minus_2</span>
@@ -305,7 +310,7 @@ function ReserveModal({ service, visible, closeAction }: ReserveModalType) {
                         </div>
                     </div>
                 </div>
-                <div className="form-status cta">
+                <div className="form-status default-hide">
                     <div className="btn-container">
                         <div className={`btn main c1 ${selTime && checkInvalidFields()?.length === 0 && !completed ? '' : 'disable'}`} onClick={submitForm}>Request Appointment</div>
                         <div className="btn" onClick={()=> resetForm(true)}>Return to services</div>

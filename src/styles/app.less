@@ -678,7 +678,7 @@ body, html {
         .rodal-close { top: 24px; right: 24px; }
 
         .form-container {
-            display: flex; flex-direction: row-reverse; height: 100%;
+            display: flex; flex-direction: row; height: 100%;
 
             @media @mobile-device { 
                 flex-direction: column; overflow-y: auto;                
@@ -814,6 +814,15 @@ body, html {
             }
 
             @media @mobile-device { width: calc(100% - 32px); }
+        }
+
+        .mobile-hide {
+            @media @mobile-device { display: none !important; }
+        }
+
+        .default-hide {
+            display: none !important;
+            @media @mobile-device { display: flex !important; }
         }
     }
 }

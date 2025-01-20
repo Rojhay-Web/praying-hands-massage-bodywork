@@ -1108,7 +1108,7 @@ html {
 }
 .reservation-form .rodal-dialog .form-container {
   display: flex;
-  flex-direction: row-reverse;
+  flex-direction: row;
   height: 100%;
 }
 @media (max-width: 770px) {
@@ -1283,6 +1283,19 @@ html {
 @media (max-width: 770px) {
   .reservation-form .rodal-dialog .form-actions {
     width: calc(100% - 32px);
+  }
+}
+@media (max-width: 770px) {
+  .reservation-form .rodal-dialog .mobile-hide {
+    display: none !important;
+  }
+}
+.reservation-form .rodal-dialog .default-hide {
+  display: none !important;
+}
+@media (max-width: 770px) {
+  .reservation-form .rodal-dialog .default-hide {
+    display: flex !important;
   }
 }
 /* Animations */
