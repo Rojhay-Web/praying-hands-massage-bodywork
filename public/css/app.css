@@ -2412,6 +2412,7 @@ html {
 }
 .admin-component .admin-table-container .admin-table .img-container img {
   width: 100%;
+  min-height: 100%;
   object-fit: cover;
 }
 .admin-component .admin-table-container .admin-table .img-container .empty-img {
@@ -3485,6 +3486,9 @@ html {
     flex-direction: column-reverse;
   }
 }
+.gallery {
+  /* Gallery 2 */
+}
 .gallery .loading-container {
   display: flex;
   flex-direction: row;
@@ -3627,6 +3631,48 @@ html {
   .gallery .additional-galleries .gallery-info-container {
     flex-direction: column;
   }
+}
+.gallery .gallery-stack-section {
+  display: flex;
+  flex-direction: row;
+}
+.gallery .gallery-stack-section .gallery-col {
+  flex: 1;
+}
+.gallery .gallery-stack-section .gallery-col .col-img-container {
+  padding: 8px;
+  border-radius: 8px;
+}
+.gallery .gallery-stack-section .gallery-col .col-img-container img {
+  width: 100%;
+  min-height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+@media (max-width: 770px) {
+  .gallery .gallery-stack-section.default {
+    display: none;
+  }
+}
+.gallery .gallery-stack-section.mobile {
+  display: none;
+}
+@media (max-width: 770px) {
+  .gallery .gallery-stack-section.mobile {
+    display: flex;
+  }
+}
+.gallery .btn-container {
+  justify-content: center;
+  margin-top: 16px;
+}
+.gallery .btn-container .end-list {
+  margin-top: 24px;
+}
+.gallery .btn-container .end-list h1 {
+  font-size: 1.5rem;
+  margin: 0;
+  text-align: center;
 }
 .contactus .contact-us-container {
   display: flex;

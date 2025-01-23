@@ -55,7 +55,7 @@ function AboutUs(){
                 <div className='about-img-grid'>
                     <div className='img-col'>
                         <div className='img-container'>
-                            <img src={trish1} alt="about praying hands massage" />
+                            <img src={trish3} alt="about praying hands massage" />
                         </div>
                     </div>
 
@@ -64,7 +64,7 @@ function AboutUs(){
                             <img src={trish2} alt="about praying hands massage" />
                         </div>
                         <div className='img-container'>
-                            <img src={trish3} alt="about praying hands massage" />
+                            <img src={trish1} alt="about praying hands massage" />
                         </div>
                     </div>
 
