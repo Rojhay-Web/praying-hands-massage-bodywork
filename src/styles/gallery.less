@@ -82,4 +82,37 @@
             @media @mobile-device { flex-direction: column; }
         }
     }
+
+    /* Gallery 2 */
+    .gallery-stack-section {
+        display: flex; flex-direction: row;
+
+        .gallery-col { 
+            flex: 1;
+
+            .col-img-container {
+                padding: 8px; border-radius: 8px;
+                img { 
+                    width: 100%; min-height: 100%; object-fit: cover; border-radius: 8px; 
+                }
+            }
+        }
+
+        &.default { 
+            @media @mobile-device { display: none; }
+        }
+        &.mobile {
+            display: none;
+            @media @mobile-device { display: flex; }
+        }
+    }
+
+    .btn-container { 
+        justify-content: center; margin-top: 16px; 
+
+        .end-list {
+            margin-top: 24px;
+            h1 { font-size: 1.5rem; margin: 0; text-align: center; }
+        }
+    }
 }
