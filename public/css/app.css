@@ -3385,6 +3385,7 @@ html {
   border-radius: 4px;
   overflow: hidden;
   width: 40%;
+  min-width: 40%;
 }
 .services .service-details-container .sel-details .img-container img {
   width: 100%;
@@ -3402,6 +3403,7 @@ html {
   flex-direction: column;
   flex: 1;
   margin-left: 40px;
+  overflow: hidden;
 }
 .services .service-details-container .sel-details .detail-content .content-title {
   margin: 0 0 16px;
@@ -3453,6 +3455,34 @@ html {
     display: -webkit-box;
     -webkit-box-orient: vertical;
   }
+}
+.services .service-details-container .sel-details .detail-content .video-outer-container .video-inner-container {
+  display: flex;
+  flex-direction: row;
+  white-space: nowrap;
+  overflow-x: auto;
+  padding: 8px 0;
+}
+.services .service-details-container .sel-details .detail-content .video-outer-container .video-inner-container .video-item {
+  margin-right: 16px;
+  overflow: hidden;
+  position: relative;
+  width: 164px;
+  height: 124px;
+  min-width: 164px;
+}
+.services .service-details-container .sel-details .detail-content .video-outer-container .video-inner-container .video-item .video-frame {
+  border-radius: 8px;
+  position: relative;
+  border: 2px solid rgba(50, 50, 50, 0.3);
+  z-index: 1;
+}
+.services .service-details-container .sel-details .detail-content .video-outer-container .video-inner-container .video-item .loading-item {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0;
 }
 .services .service-details-container .sel-details .detail-content .more-toggle {
   display: none;

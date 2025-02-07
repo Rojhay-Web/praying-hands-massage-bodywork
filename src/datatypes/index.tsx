@@ -84,6 +84,7 @@ export type Service = {
     bookingSite?: string | null, 
     image?: string | null, 
     description?: string | null
+    videos?: [string]
 }
 
 export type Reviewer = {

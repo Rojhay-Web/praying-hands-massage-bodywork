@@ -113,6 +113,7 @@ module.exports = gql`
         bookingSite: String 
         image: String
         description: String
+        videos: [String]
     }
 
     type EventDate {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { gql, useLazyQuery } from '@apollo/client';
-import { ripples } from 'ldrs';
+import { ripples, ring } from 'ldrs';
 import parse from 'html-react-parser';
 
 import ReserveBtn from '../components/reserveBtn';
@@ -25,6 +25,7 @@ query getServices($type: String, $page:Int, $pageSize: Int){
       bookingSite
       image
       description
+      videos
     }
 }`;
 
@@ -102,6 +103,8 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
         }
     },[serviceList]);
 
+    useEffect(()=>{ ring.register(); },[]);
+
     return(
         <div className='service-details-container'>
             <div className='title-outer-container'>
@@ -132,6 +135,24 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                                 <span>{timeString(selService.time)}</span>
                                 <span>{priceString(selService.price)}</span>
                             </div>
+
+                            {selService?.videos && selService.videos.length > 0 ?
+                                <>
+                                    <div className='content-title'>Videos</div>
+                                    <div className='video-outer-container'>
+                                        <div className='video-inner-container'>
+                                            {selService.videos.map((vid, i) =>
+                                                <div className='video-item'>
+                                                    <iframe src={`${vid}/preview`} className='video-frame' width="160" height="120" key={i}/>
+                                                    <div className='loading-item'>
+                                                        <l-ring size="40" stroke="5" bg-opacity="0" speed="2" color="rgba(160, 82, 45, 0.7)"></l-ring>
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                </> : <></>
+                            }
 
                             <div className='content-title'>Description</div>
 
