@@ -7,15 +7,17 @@ import logoC from '../../assets/logos/logo_color.png';
 import AdminBtn from "./adminBtn";
 
 function MobileNav({ isOpen, setIsOpen }: { isOpen: boolean, setIsOpen: (s:boolean) => void }) {
+    const navActivityClass = ({ isActive, additionalClass }: { isActive: boolean, additionalClass?:string }) => (isActive ? `sel m-sidenav-link ${additionalClass}`: `m-sidenav-link ${additionalClass}`);
+
     return (
         <div className={`m-sidenav-container ${(isOpen ? "active": "")}`}>
             <div className="m-nav-close" onClick={() => setIsOpen(false)}><span className="close-nav" /></div>
             <div className="m-sidenav-section">
-                <NavLink className="m-sidenav-link" to="/" onClick={() => setIsOpen(false)}>Home</NavLink>
-                <NavLink className="m-sidenav-link" to="/aboutUs" onClick={() => setIsOpen(false)}>About Us</NavLink>
-                <NavLink className="m-sidenav-link" to="/services" onClick={() => setIsOpen(false)}>Bookings + Services</NavLink>
-                <NavLink className="m-sidenav-link" to="/gallery" onClick={() => setIsOpen(false)}>Gallery</NavLink>
-                <NavLink className="m-sidenav-link mini-link" to="/contactUs" onClick={() => setIsOpen(false)}>Contact Us</NavLink>
+                <NavLink className={({ isActive }) => navActivityClass({ isActive })} to="/" onClick={() => setIsOpen(false)}>Home</NavLink>
+                <NavLink className={({ isActive }) => navActivityClass({ isActive })} to="/aboutUs" onClick={() => setIsOpen(false)}>About Us</NavLink>
+                <NavLink className={({ isActive }) => navActivityClass({ isActive })} to="/services" onClick={() => setIsOpen(false)}>Bookings + Services</NavLink>
+                <NavLink className={({ isActive }) => navActivityClass({ isActive })} to="/gallery" onClick={() => setIsOpen(false)}>Gallery</NavLink>
+                <NavLink className={({ isActive }) => navActivityClass({ isActive, additionalClass:"mini-link" })} to="/contactUs" onClick={() => setIsOpen(false)}>Contact Us</NavLink>
                 <div className="m-sidenav-admin-access-container">
                     <AdminBtn />
                 </div>
@@ -32,6 +34,8 @@ function Header(){
         document.body.classList.toggle('noscroll', status);
         setSideNav(status);
     }
+
+    const navActivityClass = ({ isActive }: { isActive: boolean }) => (isActive ? `sel nav-item nav-link`: `nav-item nav-link`);
 
     useEffect(()=> {
         function handleScroll() {
@@ -74,13 +78,13 @@ function Header(){
                 <div className="collapse navbar-collapse">
                     <div className="collapse-container">
                         <div className='page-nav-container'>
-                            <NavLink className={`nav-item nav-link`}  to="/aboutUs">About Us</NavLink>
-                            <NavLink className={`nav-item nav-link`}  to="/services">Bookings + Services</NavLink>
-                            <NavLink className={`nav-item nav-link`}  to="/gallery">Gallery</NavLink>
+                            <NavLink className={navActivityClass} to="/aboutUs">About Us</NavLink>
+                            <NavLink className={navActivityClass} to="/services">Bookings + Services</NavLink>
+                            <NavLink className={navActivityClass} to="/gallery">Gallery</NavLink>
                         </div>
 
                         <div className="page-nav-container extra">
-                            <NavLink className={`nav-item nav-link`}  to="/contactUs">Contact Us</NavLink>
+                            <NavLink className={navActivityClass}  to="/contactUs">Contact Us</NavLink>
                             <AdminBtn />
                         </div>
                     </div>

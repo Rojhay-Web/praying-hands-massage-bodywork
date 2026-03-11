@@ -7,6 +7,8 @@ import ReserveBtn from "./reserveBtn";
 import { Service } from "../../datatypes"
 
 import logo from '../../assets/logos/logo_color.png';
+import wellness_logo from '../../assets/logos/wellnessliving.svg';
+
 import { externalSiteConfirm, tagEvent } from "../../utils";
 
 type ServiceItemType = {
@@ -21,8 +23,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
         let ret = "";
         try {
             ret = `${!time ? 'Time may vary' : `${time} mins`}`;
-        }
-        catch(ex){
+        } catch(ex){
             console.log(`Building Time Str: ${ex}`);
         }
         return ret;
@@ -36,8 +37,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                     style: 'currency', currency: 'USD',
                 }).format(price)
             );
-        }
-        catch(ex){
+        } catch(ex){
             console.log(`Building Time Str: ${ex}`);
         }
         return ret;
@@ -50,8 +50,7 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                 // -webkit-line-clamp
                 ret = { "WebkitLineClamp": `${max_lines}` };
             }
-        }
-        catch(ex){
+        } catch(ex){
             console.log(`Error Formating Desc: ${ex}`);
         }
 
@@ -61,15 +60,9 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
     const getBookingLink = () => {
         let ret = "";
         try {
-            if(service.bookingSite === "massagebook") {
-                // ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
-                ret = "https://www.massagebook.com/business/16656731/select-product/services/inhouse";
-            }
-            else if(service.bookingSite === "heallist") {
-                ret = "https://app.heallist.com/p/patricia-blakey";
-            }
-        }
-        catch(ex){
+            // &is_widget=1 &is_microsite=0 id_screen=3 &id_mode=11 &is_all=1 &id_class_tab=4
+            ret = "https://www.wellnessliving.com/rs/appointment-start.html?k_business=766502";            
+        } catch(ex){
             console.log(`Get Booking Link: ${ex}`);
         }
         return ret;
@@ -116,7 +109,10 @@ export default function ServiceItem({ service, size=2, max_lines=3, show_learn_m
                         <Link to="/services" className="btn">Learn More</Link> : <></>
                     }
                     {service.bookingSite ?
-                        <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={selectBooking} className="btn main">Book</a>:
+                        <a href={getBookingLink()} target="_blank" rel="noreferrer" onClick={selectBooking} className="btn img-icon border-base">
+                            <img src={wellness_logo} alt={`Sponsored By WellnessLiving`} />
+                            <span>Book</span>
+                        </a>:
                         <ReserveBtn service={service} />
                     }
                 </div>

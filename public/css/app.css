@@ -309,14 +309,13 @@ html {
   justify-content: center;
   font-size: 1.2rem;
   font-weight: 500;
-  transition: 0.5s all ease-in-out;
+  transition: 0.2s all ease-in-out;
 }
 .navbar .navbar-collapse .collapse-container .page-nav-container .nav-item.sel {
-  color: #deb887;
+  color: rgba(50, 50, 50, 0.5);
   cursor: default;
-  font-weight: bold;
 }
-.navbar .navbar-collapse .collapse-container .page-nav-container .nav-item:hover:not(.sel) {
+.navbar .navbar-collapse .collapse-container .page-nav-container .nav-item:hover:not(.navbar .navbar-collapse .collapse-container .page-nav-container .nav-item.sel) {
   color: #646464;
   opacity: 0.7;
 }
@@ -338,7 +337,7 @@ html {
 .navbar.back .title {
   color: #a0522d !important;
 }
-.navbar.back .nav-item:hover {
+.navbar.back .nav-item:hover:not(.sel) {
   color: #a0522d !important;
 }
 .navbar.back .navbar-toggler {
@@ -590,7 +589,7 @@ html {
   flex-direction: row;
 }
 .btn-container .btn {
-  padding: 8px 24px;
+  padding: 8px 16px;
   border-radius: 16px;
   text-decoration: none;
   color: #000;
@@ -620,11 +619,29 @@ html {
 .btn-container .btn.main.c1:hover:not(.disable) {
   background: #a0522d !important;
 }
+.btn-container .btn.border-base {
+  background: transparent;
+  border: 2px solid #646464;
+  color: #646464;
+}
+.btn-container .btn.border-base:hover:not(.disable) {
+  background: #646464;
+  color: #fff;
+}
+.btn-container .btn.img-icon {
+  display: flex;
+  flex-direction: row;
+}
+.btn-container .btn.img-icon img {
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.5rem;
+}
 .btn-container .btn.disable {
   opacity: 0.3;
   cursor: default;
 }
-.btn-container .btn:hover:not(.main):not(.disable) {
+.btn-container .btn:hover:not(.main):not(.disable):not(.img-icon) {
   color: #cd853f;
 }
 @media (max-width: 770px) {
@@ -1297,6 +1314,10 @@ html {
   .reservation-form .rodal-dialog .default-hide {
     display: flex !important;
   }
+}
+.wl-widget {
+  height: 100%;
+  width: 100%;
 }
 /* Animations */
 @keyframes shimmer {
@@ -3061,6 +3082,50 @@ html {
     display: block;
   }
 }
+.home .home-section .review-tab-container {
+  display: flex;
+  flex-direction: column;
+  margin: 2rem 0 0;
+}
+.home .home-section .review-tab-container .review-tab-outer-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+.home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 8px;
+  border-radius: 32px;
+  margin: 8px auto;
+  -moz-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+.home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container .type-sel {
+  padding: 4px 16px;
+  border-radius: 32px;
+  text-transform: capitalize;
+  font-family: "Fraunces", serif;
+  cursor: pointer;
+  transition: 0.5s all ease-in-out;
+}
+.home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container .type-sel.sel {
+  background: #cd853f;
+  cursor: default;
+}
+.home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container .type-sel:hover:not(.sel) {
+  background: rgba(50, 50, 50, 0.2);
+}
+.home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container .type-sel + .type-sel {
+  margin-left: 16px;
+}
+@media (max-width: 770px) {
+  .home .home-section .review-tab-container .review-tab-outer-container .review-tab-inner-container {
+    overflow-x: auto;
+  }
+}
 .home .home-section.contained {
   padding: 80px 10%;
   overflow: hidden;
@@ -3216,9 +3281,9 @@ html {
   margin: 0 24px;
   position: relative;
   transition: 0.5s all ease-in-out;
-  -moz-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+  -webkit-box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
+  box-shadow: 0 2px 8px rgba(50, 50, 50, 0.3);
 }
 .services .booking-cards .card-container::before {
   content: '';
@@ -3237,7 +3302,7 @@ html {
   filter: grayscale(0.7);
 }
 .services .booking-cards .card-container:hover {
-  transform: scale(1.1);
+  transform: scale(1.03);
 }
 @media (max-width: 770px) {
   .services .booking-cards {

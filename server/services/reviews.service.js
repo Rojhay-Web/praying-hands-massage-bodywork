@@ -4,6 +4,7 @@ const { google } = require('googleapis');
 const log = require('./log.service'),
     util = require('../utils/util');
 
+const reviewList = require('../utils/review.json');
 const { EVENT_PRIVATE_KEY, EVENT_CLIENT_EMAIL } = process.env;
 
 module.exports = {
@@ -119,9 +120,23 @@ module.exports = {
                     createTime: new Date(),
                 }
             ];
-            return { results: tmpReviews};
+            return { results: tmpReviews };
         }
         catch(ex){
+            log.error(`Getting Reviews: ${ex}`);
+            return { error: "Getting Reviews [E00]" };
+        }
+    },
+    getReviewsByType: async function(type=""){
+        try {
+            type = type.toLowerCase();
+
+            if(type === "google") {
+                return { results: reviewList.google };
+            } 
+
+            return { results: reviewList.base };
+        } catch(ex){
             log.error(`Getting Reviews: ${ex}`);
             return { error: "Getting Reviews [E00]" };
         }

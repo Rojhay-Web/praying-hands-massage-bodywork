@@ -9,10 +9,8 @@ import { externalSiteConfirm, handleGQLError, priceString, tagPageview, timeStri
 import { Service } from '../../datatypes';
 
 // Images
-import heallist from '../../assets/logos/heallist.png';
-import massagebook from '../../assets/logos/massageBook.png';
 import logo from '../../assets/logos/logo_color.png';
-
+import wellness_logo from '../../assets/logos/wellnessliving.svg';
 
 const GET_SERVICES_QUERY = gql`
 query getServices($type: String, $page:Int, $pageSize: Int){
@@ -29,6 +27,7 @@ query getServices($type: String, $page:Int, $pageSize: Int){
     }
 }`;
 
+const booking_link = "https://www.wellnessliving.com/rs/appointment-new/praying_hands_massage_and_bodywork?dtu_redirect=2026-03-11+18%3A36%3A28&id_class_tab=3&id_mode=1&s_id=sBKQ2b";
 const TOTAL_SERVICE_SIZE = 3,
     serviceTypes = [
         { display: "all", value: "" },
@@ -64,13 +63,8 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
     const getBookingLink = (service: Service) => {
         let ret = "";
         try {
-            if(service.bookingSite === "massagebook") {
-                // ret = "https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork";
-                ret = "https://www.massagebook.com/business/16656731/select-product/services/inhouse";
-            }
-            else if(service.bookingSite === "heallist") {
-                ret = "https://app.heallist.com/p/patricia-blakey";
-            }
+            // &is_widget=1 &is_microsite=0 id_screen=3 &id_mode=11 &is_all=1 &id_class_tab=4
+            ret = "https://www.wellnessliving.com/rs/appointment-start.html?k_business=766502";  
         }
         catch(ex){
             console.log(`Get Booking Link: ${ex}`);
@@ -170,7 +164,10 @@ function ServiceItemDetails({ serviceList, setPagePos, pagePos, maxPages }: Serv
                             
                             <div className="btn-container">
                                 {selService.bookingSite ?
-                                    <a href={getBookingLink(selService)} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn main">Book</a>:
+                                    <a href={getBookingLink(selService)} target="_blank" rel="noreferrer" onClick={externalSiteConfirm} className="btn img-icon border-base">
+                                        <img src={wellness_logo} alt={`Sponsored By WellnessLiving`} />
+                                        <span>Book</span>
+                                    </a>: 
                                     <ReserveBtn service={selService} />
                                 }
                             </div>
@@ -254,14 +251,10 @@ function Services(){
             
             <section className='core-section mini'>
                 <div className='booking-cards'>
-                    <h1 className='section-title mini'>Our Booking Sites</h1>
+                    <h1 className='section-title mini'>Our Booking Site</h1>
 
-                    <a href="https://www.massagebook.com/therapists/PrayingHandsMassageandBodywork" target="_blank" rel="noreferrer" className='card-container'>
-                        <img src={massagebook} alt="MassageBook Logo" />
-                    </a>
-
-                    <a href="https://app.heallist.com/p/patricia-blakey" target="_blank" rel="noreferrer" className='card-container'>
-                        <img src={heallist} alt="HealList Logo" />
+                    <a href={booking_link} target="_blank" rel="noreferrer" className='card-container'>
+                        <img src={"https://d1v4s90m0bk5bo.cloudfront.net/E/S.png"} alt="Wellnessliving" />
                     </a>
                 </div>
             </section>
