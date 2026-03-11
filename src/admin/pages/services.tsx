@@ -22,7 +22,7 @@ const tableSetup: AdminTableColType[] = [
     { title: "Time", key:"time", type: "number", default: 0, required: true },
     { title: "Price", key:"price", type: "number", default: 0, required: true },
     { title: "Booking Site", key:"bookingSite", type: "select", default: "", 
-        options:["","massagebook","heallist"], required: false  
+        options:["","wellnessliving"], required: false  
     },
     { title: "Description", key:"description", type: "richText", default: "", required: true }
 ];

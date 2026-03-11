@@ -23,7 +23,7 @@ module.exports = gql`
         event(id: String!):Event
         eventAvailability(startDt: String!, endDt: String!, time:Int):[EventDate]
 
-        reviews: [Review]
+        reviews(type: String): [Review]
     }
 
     type Mutation {
@@ -145,6 +145,7 @@ module.exports = gql`
         reviewId: String
         reviewer: Reviewer
         starRating: String
+        title: String
         comment: String
         createTime: Date
     }

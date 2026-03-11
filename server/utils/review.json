@@ -1,0 +1,780 @@
+{
+  "base": [
+    {
+      "name": "Esther R.",
+      "reviewId": "add0089d-026f-4969-a742-0d140d2a70a9",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "The room was so peaceful, the massage was a great experience and Trish saying a prayer over me and my husband was the cherry on the top.",
+      "createTime": "2026-03-01T05:00:00.000Z"
+    },
+    {
+      "name": "Carla J.",
+      "reviewId": "7e448ec9-b8ad-42e1-829e-68a629be2fd2",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Loved the ambiance! Trish was amazing. I left feeling relaxed, peaceful and calm.",
+      "createTime": "2026-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Karen J.",
+      "reviewId": "8fe416b3-7e2c-4019-8fed-281b13638c81",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Very cozy environment and peaceful. Excellent skills",
+      "createTime": "2026-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Valerie B.",
+      "reviewId": "13fb174e-3b95-489f-9047-1bc7d5e92839",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Amazing Massage Therapist and Healer with a beautiful spirit.",
+      "createTime": "2026-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Tim L.",
+      "reviewId": "0a92909d-d853-411d-b7b4-5cad188a5259",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: American Red Cross CPR Certifications with Patricia B.",
+      "comment": "Very pleasant experience",
+      "createTime": "2026-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "3b745d88-6639-4c90-8341-4d6a18926087",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Patricia was so sweet. She said a prayer over me and then she started the massage. It was very relaxing. It was one of the best massages that I’ve had in a long time. I definitely will be going back.",
+      "createTime": "2026-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "ca25fc3e-2474-46e5-b87d-9560b4e8f3b2",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Lovely, relaxing hour.",
+      "createTime": "2025-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Vichelle D.",
+      "reviewId": "cb5cad7c-d7a0-4a7e-8e92-b08c6d64c004",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Barter Swedish  1 hr prayer massage with Patricia B.",
+      "comment": "I’ve been to Trish several times for massages/reiki and I’m never disappointed! She has the perfect ambiance to unwind, relax and receive her divine healing hands! I walked out feeling like I was floating…highly recommended!",
+      "createTime": "2025-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Donna B.",
+      "reviewId": "3383e49c-1b52-4054-bacd-ce1fefb8de2d",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Very skilled and knowledgeable. One of the best massages I ever got.",
+      "createTime": "2025-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "6421071d-9f08-429e-9a2e-eaab021427b4",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "I would not go anywhere else when I book a massage. I totally recommend Trish.",
+      "createTime": "2025-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Beth E.",
+      "reviewId": "30785684-a047-4131-b5fe-dc6995ada170",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Swedish  prayer massage with Patricia B.",
+      "comment": "Trish was wonderful. Super friendly and my massage was great! Would definitely recommend and will be back.",
+      "createTime": "2025-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Arlana H.",
+      "reviewId": "b84d4cb1-0d92-40f5-9fdc-866bc6f21ad7",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Love energy, always professional and one of the best masseuse around. So thankful for Trish 🦋",
+      "createTime": "2025-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Nancy L.",
+      "reviewId": "1343789a-cb83-4545-9b02-a836d8c237bd",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Life coaching  with Patricia B.",
+      "comment": "I would definitely encourage them to schedule an appointment with Trish.  I will share my excellent experience with everyone I can.",
+      "createTime": "2025-10-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "bb13a3e9-e364-4c80-8f5f-70518ceabed2",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Patricia's service is second to none. The atmosphere is very relaxing. She is very professional and knowledgeable of her craft. She gathers information as well as being sensitive to areas that might require more attention than other to give",
+      "createTime": "2025-09-01T04:00:00.000Z"
+    },
+    {
+      "name": "Antoinette W.",
+      "reviewId": "378d3b93-9134-4829-a3cc-c2a7ea05f26e",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Trish was absolutely wonderful.",
+      "createTime": "2025-09-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "6d2addea-6604-4434-bc8f-84c01a47eb9b",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Great 1st time here.",
+      "createTime": "2025-09-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "bc66a493-0777-4bbd-9b84-36da7902f771",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Yes, Awesomeness!!",
+      "createTime": "2025-08-01T04:00:00.000Z"
+    },
+    {
+      "name": "Keith B.",
+      "reviewId": "4fb88b5d-7644-48b1-86ed-18641ba8290a",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Bamboo Bliss Therapeutic Massage with Patricia B.",
+      "comment": "I have already told some of my friends.",
+      "createTime": "2025-07-01T04:00:00.000Z"
+    },
+    {
+      "name": "Amanda M.",
+      "reviewId": "6a367505-0e0d-45ed-b0b7-f3f2b5225bf6",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "One of the best massages I’ve ever had! Highly recommend!",
+      "createTime": "2025-06-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "ceb2c626-2e66-4b2c-ba8a-1fbc0a33d720",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Very relaxing massage experience I had at this place, Ms Trish had a professional massage experience done her job nicely. Surely will visit again soon. Thanks",
+      "createTime": "2025-06-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anthony T.",
+      "reviewId": "9ca08104-ff36-4eda-bf91-6397ccdbe945",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Peaceful Atmosphere ! Miss Trish even prays before the session !",
+      "createTime": "2025-06-01T04:00:00.000Z"
+    },
+    {
+      "name": "ozetta p.",
+      "reviewId": "29aa27db-f16b-43fa-92db-0fc4f4f1c34a",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "The facility was clean and spacious. The overall experience was great. I’m official a regular client after one visit.",
+      "createTime": "2025-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "3c4d8c6b-21cb-467f-a01a-edcfd8129b79",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Love it here! Feel so much better!",
+      "createTime": "2025-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "90a92800-62ed-427a-bcd6-53466b4bda83",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: American Red Cross CPR Certifications with Patricia B.",
+      "comment": "She is very knowledgeable and I loved being there in her space. Which was warming",
+      "createTime": "2025-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Cherrie F.",
+      "reviewId": "50fc6a01-34a1-45d6-8e53-25763f051572",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Bamboo Bliss Therapeutic Massage with Patricia B.",
+      "comment": "Always amazing!!!",
+      "createTime": "2025-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Marilyn D.",
+      "reviewId": "5810aaa7-dbf7-4af4-8a5a-63320076654d",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Bamboo Bliss Therapeutic Massage with Patricia B.",
+      "comment": "Trish is wonderful - all the stress in my body dissipated with her warm bamboo rods.  A delicious experience!",
+      "createTime": "2025-04-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "93300c85-486b-4647-9226-bccfd9bd5478",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Why engage in just a ok massage?",
+      "createTime": "2025-04-01T04:00:00.000Z"
+    },
+    {
+      "name": "Elizabeth P.",
+      "reviewId": "9efd8b80-94fc-43e6-9f3f-405395c04aa7",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Focus with Patricia B.",
+      "comment": "Wonderful, from the beginning to the end of my massage. Can't wait for my next one!",
+      "createTime": "2025-04-01T04:00:00.000Z"
+    },
+    {
+      "name": "Patricia A.",
+      "reviewId": "3d2a2e98-a6b0-42e5-8ce4-65fbf4e9d71a",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "So glad to have met you you!",
+      "createTime": "2025-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Savannah S.",
+      "reviewId": "c1f1f617-f0f9-451a-982b-03422364f842",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Prenatal  Massage with Patricia B.",
+      "comment": "I enjoyed every minute of this massage. Trish was very personable and thoughtful. She made every effort to make sure I was comfortable and relaxed. Best massage I’ve ever had!",
+      "createTime": "2025-02-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "7c10ad13-10ac-4308-acf1-e46ea6242126",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Don't miss out! This massage experience is way beyond a simple massage! Find out for yourself!",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Daniel P.",
+      "reviewId": "455380c2-0708-49a0-99d0-694c7b765245",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Couples Massage with Patricia B.",
+      "comment": "Best massage experience ever! Trish and staff go above and beyond. If my wife and I lived closer we definitely become regulars here!",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "966af57e-04b5-4643-a6e6-83846269e7f2",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Trish is the best! Friendly, professional and her massages always out me to sleep. She has tons of other alacart options as well and her prayers add a special touch.",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Deanne I.",
+      "reviewId": "19652b1c-9d96-4773-a356-849c7d42c223",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Holy Fire ® Reiki Session with Patricia B.",
+      "comment": "I felt so relaxed and at ease following a Reiki session with Tricia and I felt so grounded- physically, mentally, and spiritually.",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Stacy O.",
+      "reviewId": "d3817718-263a-472e-b0fc-69632864be94",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Massage with Patricia B.",
+      "comment": "Absolutely, Trish was amazing, I had a great massage, pressure was perfect and her pray was soothing.",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Dhamiri M.",
+      "reviewId": "e878ae27-d562-4539-aca1-572cdda8447f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "First timer and I will be returning.",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Jennifer B.",
+      "reviewId": "dcd18c36-9044-4b49-b5ab-9a085e2534e3",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Trish is a wonderful and outstanding massage therapist! Her space was so cozy and comfortable. I got an hour long, deep tissue massage and she was so great at finding and working tender muscle spots. I actually fell asleep on the table and  h",
+      "createTime": "2025-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Christine R.",
+      "reviewId": "f783095b-157a-43e5-a02c-a14f450d8c62",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Trish is wonderful. I have been in DE for 2 years and finally found my massage therapist.",
+      "createTime": "2024-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Christina S.",
+      "reviewId": "a926f1ba-9015-4634-a3a8-c382578d50ca",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Amazing!!!!  Beyond any expectations I had going in!",
+      "createTime": "2024-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Valerie B.",
+      "reviewId": "a9940d8a-6829-4922-afac-818a4301ad2e",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Trish is amazing and definately has a gift to help you relax and heal!",
+      "createTime": "2024-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Theresa L.",
+      "reviewId": "67fcd69e-9773-4ee5-ac43-67f7b175ac9f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "This was a magical experience.  Thank you so much.  I almost feel asleep at one point.  Such a needed pampering gift.   Trish prayed for my family before starting my massage.  Definitely felt the love she pores into her art. Everyone should f",
+      "createTime": "2024-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Vichelle D.",
+      "reviewId": "3bd35845-f90c-4824-b461-980ecfc7e9d7",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Couples Massage with Patricia B.",
+      "comment": "This was an amazing experience I shared with my mother for our birthdays (she was the 11th and I'm the 23rd) and Trish went all out to make it special for the both of us! We received a full body massages with Reiki. The atmosphere was very cl",
+      "createTime": "2024-10-01T04:00:00.000Z"
+    },
+    {
+      "name": "Alac M.",
+      "reviewId": "b4b74d86-a1e3-4228-9e39-279168906db2",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Trish was amazing! I love that she prayed for me at the beginning of my massage and was so personable and sweet! My back and shoulders feel amazing! I can’t wait to go back!",
+      "createTime": "2024-10-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "0ff0c91e-0d67-4377-9e35-4741c50b9cdc",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "The best !",
+      "createTime": "2024-09-01T04:00:00.000Z"
+    },
+    {
+      "name": "Arlana H.",
+      "reviewId": "33f1a2c7-6653-42aa-9ae8-15401cd86f3a",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "I walked in with knotted and tight and left relaxed. Trish instinctively knew where my muscles needed attention. Her professionalism and skill is unmatched. She truly has blessed hands! I've already scheduled for another session. May God cont",
+      "createTime": "2024-08-01T04:00:00.000Z"
+    },
+    {
+      "name": "LaToya B.",
+      "reviewId": "f8886edc-8c15-413c-963b-6e0cac32387b",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Had an amazing experience at praying hands massage. Tricia is awesome. Most importantly the next day when I woke up I felt so much better. My muscles were more relaxed and I didn't feel as tight and tense everywhere. I'll definitely be back.",
+      "createTime": "2024-07-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "9017734f-0d6b-4f98-9221-e9ecf4615965",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Couples Massage with Patricia B.",
+      "comment": "Trish was absolutely amazing! She is so thoughtful and makes the entire experience so relaxing. After our couples massage she even had a treat and sparking cider for my husband and I to enjoy.  We already booked our next one!",
+      "createTime": "2024-07-01T04:00:00.000Z"
+    },
+    {
+      "name": "Fletcher J.",
+      "reviewId": "218e0c86-43c5-42ca-8b62-6f558022b18d",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Swedish  prayer massage with Patricia B.",
+      "comment": "I’m sure my parents have prayed for me lol, but having someone actually lay their hands on your head and pray for you was a profound surprise. It infused the session with intention and made it feel like I was being taken care of on a whole ne",
+      "createTime": "2024-07-01T04:00:00.000Z"
+    },
+    {
+      "name": "Cheryl A.",
+      "reviewId": "af6c3da7-21d2-4d07-8e87-2626d9541dcb",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Delightful!",
+      "createTime": "2024-06-01T04:00:00.000Z"
+    },
+    {
+      "name": "Kristina B.",
+      "reviewId": "9b4d8c13-755c-41b3-ba54-59066db8e703",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Sound Healing with Patricia B.",
+      "comment": "Highly recommend",
+      "createTime": "2024-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "0d73c944-f0e4-49c3-a229-751a6d225da9",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Holy Fire ® Reiki Session with Patricia B.",
+      "comment": "Too early to tell results but faith that issues will be resolved. Experience was wonderful!",
+      "createTime": "2024-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "bc094aa7-2b0c-4fcf-b9a9-57037528bb46",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Yes",
+      "createTime": "2024-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "83ab6a0a-0333-4063-a73b-a37d1109061f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "I had an amazing experience!  Transformed my body and spirit!!",
+      "createTime": "2024-04-01T04:00:00.000Z"
+    },
+    {
+      "name": "Londyn H.",
+      "reviewId": "63a5841f-f683-4ac5-9173-4e259eeb6a98",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Couples Massage with Patricia B.",
+      "comment": "Loved my experience! The ladies were sooo nice and made my mom’s birthday special!",
+      "createTime": "2024-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Carolyn W.",
+      "reviewId": "b01663cb-3a36-438f-9e0a-1dbdaffe763d",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Deep Tissue Massage with Patricia B.",
+      "comment": "Immediately, you are drawn in to the atmosphere. Very calming! Trish takes a very personal approach getting to know her clients, making them feel comfortable and cared for. Her prayers before and, if need be, after treatment, are genuine and",
+      "createTime": "2023-12-01T05:00:00.000Z"
+    },
+    {
+      "name": "Sharon W.",
+      "reviewId": "e8ebef3a-7c11-47a2-a2b2-3681da9b3f39",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Focus with Patricia B.",
+      "comment": "Very relaxing",
+      "createTime": "2023-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "fc55fdda-3c33-4b67-9c41-cf9226eaaef3",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "I love Trish! She's amazing at what she does. A special prayer to the start to every session really makes it extra special.",
+      "createTime": "2023-10-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "66e51933-3f6e-42a8-a511-2b38b60f64a5",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "A wonderful experience of rejuvenation and peace. Thank you Trish!!",
+      "createTime": "2023-07-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "ba786c76-1d13-411e-aace-dfd555e1845c",
+      "reviewer": null,
+      "starRating": "FOUR",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "I would have given five stars, but was hard to fine place. Other than that, the experience was great!",
+      "createTime": "2023-05-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "1c76e4e7-fb0e-4758-a536-7f028fb99dd8",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Went above and beyond to ensure I was comfortable and was very helpful for the needs of my headaches.",
+      "createTime": "2023-03-01T05:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "18b79c68-9042-4e76-b938-4bc1a59f5568",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Enjoyed a massage from an experienced professional.  I'll be back.",
+      "createTime": "2023-01-01T05:00:00.000Z"
+    },
+    {
+      "name": "Cheryl A.",
+      "reviewId": "e4be13f5-9c26-44c2-8f32-02461025ca8f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Excited to come back!",
+      "createTime": "2022-11-01T04:00:00.000Z"
+    },
+    {
+      "name": "Anonymous",
+      "reviewId": "69902a3a-f8b4-47f5-beab-cb77260cf96b",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "She is worth so much more!",
+      "createTime": "2022-09-01T04:00:00.000Z"
+    },
+    {
+      "name": "Jen L.",
+      "reviewId": "51784b86-29ca-4ce6-bbb5-e3d1b369181f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "Service Received: Divine Healing Prayer Massage with Patricia B.",
+      "comment": "Trish, you were amazing!!!  I really enjoyed the massage.  I actually felt better sleeping.",
+      "createTime": "2022-04-01T04:00:00.000Z"
+    }
+  ],
+  "google": [
+    {
+      "name": "L Robinson",
+      "reviewId": "5596ec58-7cf4-45de-80e1-39195343796d",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Patricia's service is second to none. The atmosphere is very relaxing. She is very professional and knowledgeable of her craft. She gathers information as well as being sensitive to areas that might require more attention than other to give … More",
+      "createTime": "2025-10-11T16:38:17.600Z"
+    },
+    {
+      "name": "Daniel Pizzichili",
+      "reviewId": "e782c302-9332-45bb-bf71-a32f387c61bb",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish and staff made our anniversary so special. We couldn’t be more grateful and the couples massage was probably the best we have ever had!",
+      "createTime": "2025-03-11T16:38:17.602Z"
+    },
+    {
+      "name": "Ander E",
+      "reviewId": "6e1f6661-febe-4d9c-b480-7f402e3a01a4",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish, one of the sweetest souls out there. I came running to Trish because of the high stress level my husband was going through. It was so easy to book with her. My husband truly enjoyed the bamboo massage, when I saw him after his … More",
+      "createTime": "2025-06-11T16:38:17.603Z"
+    },
+    {
+      "name": "Karen Finney",
+      "reviewId": "57d68394-f92c-49cf-b44e-bb0f836c1ac3",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish at Praying Hand Massage is wonderful.  A beautiful  and healing atmosphere.  Trish's deep tissue is always just what is needed. All knots worked out and leaving feeling amazing.",
+      "createTime": "2025-06-11T16:38:17.604Z"
+    },
+    {
+      "name": "Vichelle Bling",
+      "reviewId": "29c65476-3023-49c2-a589-ac62f619c971",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "This was an amazing experience I shared with my mother for our birthdays (she was the 11th and I’m the 23rd) and Trish went all out to make it special for the both of us! We received a full body massages with Reiki. The atmosphere was very … More",
+      "createTime": "2025-03-11T16:38:17.605Z"
+    },
+    {
+      "name": "Theresa Legar",
+      "reviewId": "e83dc121-e16e-4eb9-b37e-075a68b8d8b8",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish was amazing.  Everyone needs to feel as good as I do after a magical pampering session.  This time of year can be hard on us, why not treat yourself or family and friends to a massage or other pampering sessions she offers.?",
+      "createTime": "2025-03-11T16:38:17.606Z"
+    },
+    {
+      "name": "BlueWatersHorses Santomenna",
+      "reviewId": "947a2fd0-f974-4a34-b9ec-0dbf9201ba84",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Praying Hands Massage and Bodywork is an absolute gem! From the moment you step inside, you're enveloped in a calming atmosphere that instantly soothes the spirit. Trish is incredibly professional and attentive. My Healing Prayer Stress … More",
+      "createTime": "2025-03-11T16:38:17.606Z"
+    },
+    {
+      "name": "Alac Marker",
+      "reviewId": "fd0182aa-2f63-4ce3-925b-bb43ae3aa33f",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish was amazing! I love that she prayed for me at the beginning of my massage and was so personable and sweet! My back and shoulders feel amazing! I can’t wait to go back!",
+      "createTime": "2025-03-11T16:38:17.608Z"
+    },
+    {
+      "name": "Jennifer Bowman",
+      "reviewId": "c2eb88e1-d820-48bb-8cf0-6b92775d6a36",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "An outstanding, professional, and wholesome massage experience! Patricia is a real local treasure for healing and massage care. I was grateful to find her and highly recommend Praying Hands for anyone seeking solid massage therapy care.",
+      "createTime": "2025-03-11T16:38:17.609Z"
+    },
+    {
+      "name": "autochthonous dawata (L'Nabi n Saponi Roots)",
+      "reviewId": "96d4dcf7-c9f2-4900-bf9f-50e639eace33",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "I walked in with knotted and tight and left relaxed. Trish instinctively knew where my muscles needed attention. Her professionalism and skill is unmatched. She truly has blessed hands! I've already scheduled for another session. May God continue to bless her abundantly🙌🏼🦋🌻",
+      "createTime": "2025-03-11T16:38:17.610Z"
+    },
+    {
+      "name": "Lynn Luu",
+      "reviewId": "00ce5799-c898-483d-bd2c-316b76354595",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "I had a wonderful experience with Trish at Praying hands. The space was clean and comfortable. I felt very relaxed and soo good after my 2 hour massage with Trish! I love that she incorporated a little bit of Reiki for me towards the end. I will definitely be coming back.",
+      "createTime": "2023-03-11T17:38:17.610Z"
+    },
+    {
+      "name": "Esther Rich",
+      "reviewId": "c84066a9-fe08-4c37-8577-79718fc80b59",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Best massage I received, the room was so peaceful and calming.Price assessment: … More",
+      "createTime": "2026-03-04T17:38:17.611Z"
+    },
+    {
+      "name": "jackie whittle",
+      "reviewId": "dfb87edc-f1dd-460b-939e-713396a52d10",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish did a fantastic job!!! If your looking for a amazing massage (she hits all the points ) you will feel amazing & refreshed afterwards. I’ve had many massages before, she is def my favorite!!",
+      "createTime": "2024-03-11T16:38:17.612Z"
+    },
+    {
+      "name": "Christine Riccardi",
+      "reviewId": "4994686a-d3a1-4c35-8225-e8b9ed3d1e76",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish is great. I had fallen and was very bruised. Trish helped me so much to relax. She was very gentle and caring with her healing. 💛",
+      "createTime": "2025-03-11T16:38:17.613Z"
+    },
+    {
+      "name": "Hunter Dorris",
+      "reviewId": "b8804123-31a7-4038-8814-8ab283729d72",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Amazing experience. My wife and I went for a couples massage (backstory is that we have two young children and don’t get out too often). We had a couples massage (which was incredible) and then when we were done they brought us two pieces … More",
+      "createTime": "2025-03-11T16:38:17.613Z"
+    },
+    {
+      "name": "Carlos Brinkley",
+      "reviewId": "b6da3702-9a70-478b-adaa-5d41c40dab16",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "I decided to come to Trish for my first ever massage and I am glad I did. This experience was very relaxing, calm, and comfortable for me. It truly healed some parts of me. I am grateful!!!",
+      "createTime": "2023-03-11T17:38:17.614Z"
+    },
+    {
+      "name": "Christine Riccardi",
+      "reviewId": "ae300e91-0b19-41e7-8c2c-2d74ef4b7961",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Trish is wonderful. I have been in DE for 2 years and finally found my massage therapist.",
+      "createTime": "2025-03-11T16:38:17.615Z"
+    },
+    {
+      "name": "Valerie Baul",
+      "reviewId": "38c7cd04-ca03-4001-87f1-812524007345",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Excellent Massage and Reiki session!  Trish does have praying and healing hands!",
+      "createTime": "2025-03-11T16:38:17.615Z"
+    },
+    {
+      "name": "ozetta posey",
+      "reviewId": "b695188d-0416-4a0a-aad3-6ff02a30b922",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "The facility was clean and spacious. The over all experience was great. After one visit, I am a returning customer.",
+      "createTime": "2025-06-11T16:38:17.616Z"
+    },
+    {
+      "name": "Londyn Hackett",
+      "reviewId": "4b4b260a-47fc-4985-a475-fb35359e68fa",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "The best customer service I’ve experienced in a long time! They are the best",
+      "createTime": "2024-03-11T16:38:17.616Z"
+    },
+    {
+      "name": "Tianca Berrien",
+      "reviewId": "7a98815c-86f6-4b5a-9f71-4afbb13f9843",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "Amazing",
+      "createTime": "2025-04-11T16:38:17.617Z"
+    },
+    {
+      "name": "Mighty Flames Ministries",
+      "reviewId": "9ad54731-0cd8-4f45-9df9-bc9e557c4197",
+      "reviewer": null,
+      "starRating": "FIVE",
+      "title": "",
+      "comment": "",
+      "createTime": "2025-06-11T16:38:17.618Z"
+    }
+  ]
+}

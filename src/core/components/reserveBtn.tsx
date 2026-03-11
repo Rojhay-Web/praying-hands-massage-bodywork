@@ -10,6 +10,8 @@ import { Service } from "../../datatypes";
 import { handleGQLError, priceString, tagEvent, timeString } from "../../utils";
 import { Link } from "react-router-dom";
 
+import logo from '../../assets/logos/logo_w.png';
+
 type ReserveBtnType = {
     service: Service
 };
@@ -330,7 +332,10 @@ function ReserveBtn({ service }: ReserveBtnType){
     
     return(
         <>
-            <div className="btn main c1" onClick={()=> { setOpen(true); }}>Reserve</div>
+            <div className="btn img-icon main c1" onClick={()=> { setOpen(true); }}>
+                <img src={logo} alt={`Sponsored By WellnessLiving`} />
+                <span>Reserve</span>
+            </div>
             <ReserveModal service={service} visible={open} closeAction={()=>{ setOpen(false); }} />
         </>
     );

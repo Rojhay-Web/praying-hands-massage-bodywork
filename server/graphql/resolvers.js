@@ -130,8 +130,8 @@ module.exports = function (localStore) {
             },
 
             /* Reviews */
-            reviews: async(_obj, _args, _context, _info) => {
-                let ret = await review.getReviews();
+            reviews: async(_obj, args, _context, _info) => {
+                let ret = await review.getReviewsByType(args?.type);
                 util.checkGQLResults(ret);
 
                 return ret?.results;
