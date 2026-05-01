@@ -16,7 +16,8 @@ const hoursOfOperations: { [key:string]:any} = {
     "0": { id: "0", "day": "Sun", "isOpened": false, "open": 0, "close":0 }
 }
 
-const position:LatLngTuple = [39.5146744,-75.7216415], zoom: number = 14,
+const position:LatLngTuple = [39.6686668, -75.6731193],
+    zoom: number = 15,
     icon = L.icon({ iconUrl: "/images/marker-icon.png" });
 
 function ContactUs(){
@@ -116,7 +117,12 @@ function ContactUs(){
                         <span className='section-subtitle'>Email, call, or complete the form to reach out to us with and book an appointment, questions, or to get more information. We love our clients, but please no walk-ins</span>
 
                         <p className='l2'>Praying Hands Massage and Bodywork</p>
-                        <p>4411 Summit Bridge Road, <br/>Middletown, Delaware 19709, <br/>United States</p>
+                        <p>
+                            260 Chapman Rd, <br/>
+                            University Office Plaza<br />
+                            Suite 100-C<br />
+                            Newark, DE 19702<br/>
+                        </p>
                         <p>302-650-3183</p>
                         <p>Prayinghandswellness@gmail.com</p>
 
