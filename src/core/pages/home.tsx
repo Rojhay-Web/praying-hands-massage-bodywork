@@ -92,7 +92,7 @@ function Home(){
                         <span>Experience the healing power of massage at our Praying Hands Massage and Bodywork studio.</span>
 
                         <div className="btn-container">
-                            <Link to="/services" className="btn main">Book You Healing Session</Link>
+                            <Link to="/services" className="btn main">Book Your Healing Session</Link>
                             <Link to="/contactUs" className="btn">Email Us</Link>
                         </div>
                     </div>
